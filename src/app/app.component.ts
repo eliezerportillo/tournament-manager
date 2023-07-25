@@ -1,4 +1,12 @@
 import { Component } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
+
+
+
+interface Item {
+
+}
 
 @Component({
   selector: 'app-root',
@@ -6,5 +14,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'tournament-manager';
+  
+  
+  
+  
+  listRef: AngularFirestoreCollection<Item[]>;
+
+
+
+  constructor(private db: AngularFirestore) {
+
+    this.listRef = db.collection<Item[]>('items');
+  }
 }
+
