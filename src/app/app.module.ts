@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 
 
 
@@ -28,6 +29,8 @@ import { MatchListComponent } from './matches/match-list/match-list.component';
 import { registerLocaleData } from '@angular/common';
 import localeEsMx from '@angular/common/locales/es-MX'
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RankingComponent } from './standings/ranking/ranking.component';
+import { TeamImageComponent } from './teams/team-image/team-image.component';
 
 registerLocaleData(localeEsMx, 'es-MX');
 
@@ -39,6 +42,8 @@ registerLocaleData(localeEsMx, 'es-MX');
     TournamentComponent,
     MatchComponent,
     MatchListComponent,
+    RankingComponent,
+    TeamImageComponent,
   ],
   imports: [
     CommonModule,
@@ -54,7 +59,8 @@ registerLocaleData(localeEsMx, 'es-MX');
     BrowserAnimationsModule,
     MatTabsModule,
     FlexLayoutModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-MX' }],
   bootstrap: [AppComponent]

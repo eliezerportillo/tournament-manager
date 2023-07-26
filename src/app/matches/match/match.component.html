@@ -7,16 +7,16 @@
 
                 <div fxFlex fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="8px">
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-
-                        <img [src]="match.imageUrlLocal" alt="Imagen equipo Local">
+                        
+                        <app-team-image [src]="match.imageUrlLocal"></app-team-image>
                         <p fxFill>{{ match.local }}</p>
                         <p *ngIf="match.marcadorLocal >= 0">{{match.marcadorLocal}}</p>
 
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-
-                        <img [src]="match.imageUrlVisita" alt="Imagen equipo Local">
+                        
+                        <app-team-image [src]="match.imageUrlVisita"></app-team-image>
                         <p fxFill>{{ match.visita }}</p>
                         <p *ngIf="match.marcadorVisita >= 0">{{match.marcadorVisita}}</p>
 

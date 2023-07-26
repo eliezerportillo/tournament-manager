@@ -52,8 +52,8 @@ export class ImportExcelComponent {
         // Save data to Firestore
         await this.deleteCollection(sheetName);
         await this.saveDataToFirestore(sheetName, trimmedData);
-        this.snackBar.open('Información importada con éxito');
       }
+      this.snackBar.open('Información importada con éxito');
     };
 
     reader.readAsArrayBuffer(file);

@@ -1,0 +1,18 @@
+.team-name {
+    text-align: left;
+    padding-left: 16px;
+    font-size: 14px;
+}
+
+td,
+th {
+    text-align: center;
+    padding: 0 8px;
+    font-size: 12px;    
+}
+
+th {
+    color: var(--accent-color);
+    font-weight: normal;
+    font-size: 14px;
+}
