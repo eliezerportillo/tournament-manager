@@ -34,13 +34,15 @@ export class MatchService {
     return `assets/${teamName}.png`;
   }
 
-  parseDate(dateValue: number): Date | null {
-    // Excel stores dates as the number of days since January 1, 1900
-    // Excel uses 1900 as the base year, but the Date object uses 1970, so we need to adjust for the difference
-    const msPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
-    const daysBetweenDates = dateValue - 25569; // 25569 is the number of days between 1900-01-01 and 1970-01-01
-    const jsDateTimestamp = daysBetweenDates * msPerDay;
-    return new Date(jsDateTimestamp);
+  parseDate(excelDate: number): Date | null {
+    // Adjust the number of days between Excel epoch (January 1, 1900) and JavaScript's epoch (January 1, 1970)
+    const excelEpochDiff = 25568; // for Windows (1900) or 24107 for Mac (1904)
+
+    // Convert the Excel date to JavaScript timestamp (milliseconds since January 1, 1970)
+    const javascriptTimestamp = (excelDate - excelEpochDiff) * 86400 * 1000;
+
+    // Create a new Date object with the JavaScript timestamp
+    return new Date(javascriptTimestamp);
   }
 
   parseHour(excelHour: number): string {
