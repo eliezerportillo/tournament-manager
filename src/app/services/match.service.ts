@@ -12,7 +12,7 @@ export class MatchService {
   private matches$: Observable<Match[]>;
 
   constructor(private db: AngularFirestore) {
-    this.matchesCollection = this.db.collection<Match>('Partidos', ref => ref.orderBy('hora'));
+    this.matchesCollection = this.db.collection<Match>('Partidos');
     this.matches$ = this.matchesCollection.valueChanges();
   }
 
@@ -26,7 +26,8 @@ export class MatchService {
           imageUrlLocal: this.createImageUrl(match.local),
           imageUrlVisita: this.createImageUrl(match.visita),
         })) as Match[]
-      })
+      }),
+      map((matches: Match[]) => matches.slice().sort((a, b) => a.hour.localeCompare(b.hour)))
     );
   }
 
@@ -35,6 +36,10 @@ export class MatchService {
   }
 
   parseDate(excelDate: number): Date | null {
+
+    if (!excelDate) {
+      return null;
+    }
     // Adjust the number of days between Excel epoch (January 1, 1900) and JavaScript's epoch (January 1, 1970)
     const excelEpochDiff = 25568; // for Windows (1900) or 24107 for Mac (1904)
 
@@ -46,6 +51,9 @@ export class MatchService {
   }
 
   parseHour(excelHour: number): string {
+    if (!excelHour) {
+      return '';
+    }
     let hour = Math.floor(excelHour * 24);
     let minute = Math.round((excelHour * 24 - hour) * 60);
 

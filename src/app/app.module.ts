@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 
@@ -37,7 +38,7 @@ registerLocaleData(localeEsMx, 'es-MX');
     ShellComponent,
     TournamentComponent,
     MatchComponent,
-    MatchListComponent
+    MatchListComponent,
   ],
   imports: [
     CommonModule,
@@ -52,7 +53,8 @@ registerLocaleData(localeEsMx, 'es-MX');
     MatProgressBarModule,
     BrowserAnimationsModule,
     MatTabsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatSnackBarModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-MX' }],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-<div *ngIf="match">
+<div *ngIf="match && noPlay(match)">
     <ng-container>
         <div class="match-box">
 
@@ -26,9 +26,14 @@
 
                 <div class="vertical-divider"></div>
 
-                <div class="match-info" *ngIf="match.hora" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                <div class="match-info" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
                     <p>{{ match.date | date }}</p>
-                    <p>{{ match.hour }}</p>
+                    <div *ngIf="match.hora; else noHour">
+                        <p>{{ match.hour }}</p>
+                    </div>
+                    <ng-template #noHour>
+                        <p>Por confirmar</p>
+                    </ng-template>
                     <p>{{match.campo}}</p>
                 </div>
             </div>

@@ -11,5 +11,7 @@ export class MatchComponent {
   @Input()
   match?: Match;
 
-
+  noPlay(match: Match): boolean { 
+    return ![match.local.toLocaleLowerCase(), match.visita.toLocaleLowerCase()].includes('descansa');
+  }
 }

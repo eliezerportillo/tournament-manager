@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import * as XLSX from 'xlsx';
 
@@ -10,19 +11,21 @@ import * as XLSX from 'xlsx';
   templateUrl: './import-excel.component.html',
   styleUrls: ['./import-excel.component.scss']
 })
-export class ImportExcelComponent {  
+export class ImportExcelComponent {
 
 
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private snackBar: MatSnackBar) {
 
-    
+
   }
 
 
   onFileChange(event: any) {
     const file = event.target.files[0];
-    this.readExcelFile(file);
+    if (file) {
+      this.readExcelFile(file);
+    }
   }
 
   async readExcelFile(file: File) {
@@ -45,18 +48,16 @@ export class ImportExcelComponent {
           });
           return trimmedRow;
         });
-       
+
         // Save data to Firestore
         await this.deleteCollection(sheetName);
         await this.saveDataToFirestore(sheetName, trimmedData);
+        this.snackBar.open('Información importada con éxito');
       }
     };
 
     reader.readAsArrayBuffer(file);
   }
-
- 
-
   async saveDataToFirestore(sheetName: string, data: any[]) {
     try {
       const collectionRef = this.db.firestore.collection(sheetName);

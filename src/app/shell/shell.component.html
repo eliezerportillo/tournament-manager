@@ -1,12 +1,12 @@
 <div class="content" fxLayout="column" fxLayoutAlign="space-between stretch">
     
-    <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center" color="accent">
         
         <span class="text-white">{{titulo}}</span>
+        <img src="assets/Logo_AFC_1024px.png" alt="afc logo" style="width: 40px;">
     </mat-toolbar>
     <mat-progress-bar *ngIf="cargando" color="accent" mode="query">
     </mat-progress-bar>
-    <!-- <img src="assets/Logo_AFC_1024px.png" alt="afc logo" style="width: 64px;"> -->
     <div fxFlex class="router-content">
         <router-outlet></router-outlet>
     </div>
