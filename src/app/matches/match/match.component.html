@@ -1,0 +1,37 @@
+<div *ngIf="match">
+    <ng-container>
+        <div class="match-box">
+
+
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+
+                <div fxFlex fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="8px">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+
+                        <img [src]="match.imageUrlLocal" alt="Imagen equipo Local">
+                        <p fxFill>{{ match.local }}</p>
+                        <p *ngIf="match.marcadorLocal >= 0">{{match.marcadorLocal}}</p>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+
+                        <img [src]="match.imageUrlVisita" alt="Imagen equipo Local">
+                        <p fxFill>{{ match.visita }}</p>
+                        <p *ngIf="match.marcadorVisita >= 0">{{match.marcadorVisita}}</p>
+
+                    </div>
+
+                </div>
+
+                <div class="vertical-divider"></div>
+
+                <div class="match-info" *ngIf="match.hora" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                    <p>{{ match.date | date }}</p>
+                    <p>{{ match.hour }}</p>
+                    <p>{{match.campo}}</p>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

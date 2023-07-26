@@ -1,0 +1,38 @@
+.vertical-divider {
+    width: 1px;
+    height: 100%;
+    background-color: #ccc;
+    margin: 0 10px;
+    /* Adjust the margin as needed */
+}
+
+p {
+    margin: 0;
+    line-height: normal;
+}
+.match-info{
+    font-size: 12px;
+}
+.match-box {
+    padding: 16px;
+    border: 1px #ccc solid;
+    border-radius: 8px;
+    margin: 8px;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 80px;
+    background-color: #ccc;
+    
+  
+}
+
+img {
+    width: 32px;
+    /* Set the width and height as needed */
+    height: 32px;
+    border-radius: 50%;
+    /* Set the border-radius to 50% for a circular effect */
+    border: 2px solid #ccc;
+}

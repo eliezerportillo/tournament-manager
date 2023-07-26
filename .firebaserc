@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "afc-torneo"
+  },
+  "targets": {
+    "afc-torneo": {
+      "hosting": {
+        "tournament-manager": [
+          "afc-torneo"
+        ]
+      }
+    }
+  }
+}
