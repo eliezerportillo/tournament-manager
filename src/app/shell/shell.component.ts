@@ -9,7 +9,7 @@ export class ShellComponent {
   titulo: string;
   cargando: boolean;
   constructor(){
-    this.titulo = "Asociación de Futbol Cristiana";
+    this.titulo = "AFC | Asociación de Futbol Cristiana";
     this.cargando = false;
   }
 }

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ImportExcelComponent } from './import-excel/import-excel.component';
 import { ShellComponent } from './shell/shell.component';
 import { TournamentComponent } from './routed/tournament/tournament.component';
+import { LineupComponent } from './routed/matches/lineup/lineup.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
       {
         path: 'import',
         component: ImportExcelComponent
+      },
+      {
+        path: 'lineup',
+        component: LineupComponent
       },
       
     ]

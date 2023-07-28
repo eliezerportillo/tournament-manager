@@ -1,0 +1,7 @@
+<ng-container *ngIf="player">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+
+        <span>{{ player.jugador | shortName }}</span>
+        <img src="assets/gloves.png" alt="Portero" *ngIf="player.portero" title="Portero">
+    </div>
+</ng-container>

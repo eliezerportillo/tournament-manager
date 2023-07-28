@@ -7,6 +7,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 
 
 
@@ -31,6 +35,10 @@ import localeEsMx from '@angular/common/locales/es-MX'
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RankingComponent } from './standings/ranking/ranking.component';
 import { TeamImageComponent } from './teams/team-image/team-image.component';
+import { LineupComponent } from './routed/matches/lineup/lineup.component';
+import { MatchHourComponent } from './matches/match-hour/match-hour.component';
+import { ShortNamePipe } from './pipes/short-name.pipe';
+import { PlayerNameComponent } from './players/player-name/player-name.component';
 
 registerLocaleData(localeEsMx, 'es-MX');
 
@@ -44,6 +52,10 @@ registerLocaleData(localeEsMx, 'es-MX');
     MatchListComponent,
     RankingComponent,
     TeamImageComponent,
+    LineupComponent,
+    MatchHourComponent,
+    ShortNamePipe,
+    PlayerNameComponent,
   ],
   imports: [
     CommonModule,
@@ -60,7 +72,11 @@ registerLocaleData(localeEsMx, 'es-MX');
     MatTabsModule,
     FlexLayoutModule,
     MatSnackBarModule,
-    MatTableModule
+    MatTableModule,
+    MatCardModule,
+    MatRippleModule,
+    MatButtonModule,
+    MatListModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-MX' }],
   bootstrap: [AppComponent]

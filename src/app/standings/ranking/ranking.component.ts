@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Team } from 'src/app/models/team';
+import { ITeam } from 'src/app/models/team';
 import { TeamService } from 'src/app/services/team.service';
 
 @Component({
@@ -9,13 +9,13 @@ import { TeamService } from 'src/app/services/team.service';
   styleUrls: ['./ranking.component.scss']
 })
 export class RankingComponent {
-  teams$: Observable<Team[]>;
+  teams$: Observable<ITeam[]>;
 
   constructor(private teamService: TeamService) {
     this.teams$ = this.teamService.getTeams();
   }
 
-  getImage(team: Team) {
+  getImage(team: ITeam) {
     return `assets/${team.nombre}.png`;
   }
 }

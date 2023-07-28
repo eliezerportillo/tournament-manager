@@ -1,0 +1,30 @@
+mat-card {
+    margin: 8px;
+    // padding: 8px;
+}
+
+.example-header-image {
+    background-image: url('/assets/Logo_AFC_1024px.png');
+    background-size: cover;
+}
+
+.no-lineup {
+    height: 200px;
+    padding: 16px;
+    text-align: center;
+    font-weight: lighter;
+    font-size: 12px;
+}
+
+.standings {
+
+    mat-toolbar {
+        background-color: transparent;
+        font-weight: 400;
+        font-size: 12px;
+    }
+}
+
+.visita{
+    text-align: right;
+}

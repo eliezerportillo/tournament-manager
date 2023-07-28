@@ -1,13 +1,14 @@
 <div *ngIf="match && noPlay(match)">
     <ng-container>
-        <div class="match-box">
+        <div class="match-box" matRipple routerLink="lineup"
+            [queryParams]="{ local: match.local, visita: match.visita }">
 
 
             <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
 
                 <div fxFlex fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="8px">
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-                        
+
                         <app-team-image [src]="match.imageUrlLocal"></app-team-image>
                         <p fxFill>{{ match.local }}</p>
                         <p *ngIf="match.marcadorLocal >= 0">{{match.marcadorLocal}}</p>
@@ -15,7 +16,7 @@
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-                        
+
                         <app-team-image [src]="match.imageUrlVisita"></app-team-image>
                         <p fxFill>{{ match.visita }}</p>
                         <p *ngIf="match.marcadorVisita >= 0">{{match.marcadorVisita}}</p>
@@ -28,13 +29,8 @@
 
                 <div class="match-info" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
                     <p>{{ match.date | date }}</p>
-                    <div *ngIf="match.hora; else noHour">
-                        <p>{{ match.hour }}</p>
-                    </div>
-                    <ng-template #noHour>
-                        <p>Por confirmar</p>
-                    </ng-template>
-                    <p>{{match.campo}}</p>
+                    <app-match-hour [match]="match"></app-match-hour>
+                    <span>{{match.campo}}</span>                                            
                 </div>
             </div>
         </div>

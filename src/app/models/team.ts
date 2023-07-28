@@ -1,4 +1,4 @@
-export interface Team {
+export interface ITeam {
     nombre: string;
     PJ: number;
     G: number;
@@ -8,4 +8,10 @@ export interface Team {
     GC: number;
     DG: number;
     Pts: number;
+}
+
+export class Team {
+    static createImageUrl(teamName: string){
+        return `assets/${teamName}.png`; 
+    }
 }

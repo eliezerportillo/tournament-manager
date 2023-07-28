@@ -8,6 +8,7 @@ export interface Match {
     visita: string;
     fecha: number;
     date: Date;
+    dateTime: Date;
     hour: string;
     hora: number;
     campo: string;
