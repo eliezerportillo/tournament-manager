@@ -1,6 +1,13 @@
-img {
-    width: 32px;    
+.default-team {
+    width: 32px;
     height: 32px;
-    border-radius: 50%;    
+    border-radius: 50%;
     border: 2px solid #ccc;
+    padding: 5px;
 }
+
+img {
+    width: 100%;
+}
+
+

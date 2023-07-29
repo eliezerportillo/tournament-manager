@@ -9,4 +9,5 @@ export class TeamImageComponent {
 
   @Input()
   src?: string;
+
 }

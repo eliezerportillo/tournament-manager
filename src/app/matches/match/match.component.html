@@ -6,21 +6,24 @@
 
             <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
 
-                <div fxFlex fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="8px">
-                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+                <div fxFlex fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="8px">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
 
                         <app-team-image [src]="match.imageUrlLocal"></app-team-image>
-                        <p fxFill>{{ match.local }}</p>
-                        <p *ngIf="match.marcadorLocal >= 0">{{match.marcadorLocal}}</p>
+                        <p>{{ match.local }}</p>
 
+                        <span class="spacer"></span>
+                        <span *ngIf="match.marcadorLocal >= 0" [class.winner]="match.marcadorLocal > match.marcadorVisita">{{match.marcadorLocal}}</span>
                     </div>
 
-                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
 
                         <app-team-image [src]="match.imageUrlVisita"></app-team-image>
-                        <p fxFill>{{ match.visita }}</p>
-                        <p *ngIf="match.marcadorVisita >= 0">{{match.marcadorVisita}}</p>
+                        <p>{{ match.visita }}</p>
 
+                        <span class="spacer"></span>
+                        
+                        <span *ngIf="match.marcadorVisita >= 0" [class.winner]="match.marcadorVisita > match.marcadorLocal">{{match.marcadorVisita}}</span>                        
                     </div>
 
                 </div>
@@ -30,8 +33,9 @@
                 <div class="match-info" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
                     <p>{{ match.date | date }}</p>
                     <app-match-hour [match]="match"></app-match-hour>
-                    <span>{{match.campo}}</span>                                            
+                    <span>{{match.campo}}</span>
                 </div>
+
             </div>
         </div>
     </ng-container>

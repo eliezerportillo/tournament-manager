@@ -1,18 +1,19 @@
 .vertical-divider {
     width: 1px;
-    height: 100%;
     background-color: #ccc;
     margin: 0 10px;
-    /* Adjust the margin as needed */
+    height: 80px;
 }
 
 p {
     margin: 0;
     line-height: normal;
 }
-.match-info{
+
+.match-info {
     font-size: 12px;
 }
+
 .match-box {
     padding: 16px;
     border: 1px #ccc solid;
@@ -21,11 +22,8 @@ p {
     cursor: pointer;
 }
 
-.vertical-divider {
-    width: 1px;
-    height: 80px;
-    background-color: #ccc;
-    
-  
+.winner::after {
+    content: '\2190';    
+    position: absolute;  
+    font-size: 14px;
 }
-
