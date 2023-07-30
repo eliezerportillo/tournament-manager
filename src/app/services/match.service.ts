@@ -67,7 +67,7 @@ export class MatchService {
   async getLineup(teamName: string) {
     const snapshot = await this.standingsCollection.ref.where('equipo', '==', teamName).orderBy('jugador').get();
     const players = snapshot.docs.map(doc => doc.data());
-    return this.moveItemToFirstPosition(players, (p) => p.portero);
+    return players;
   }
 
   private moveItemToFirstPosition(arr: any[], criteria: (item: any) => boolean): any[] {
