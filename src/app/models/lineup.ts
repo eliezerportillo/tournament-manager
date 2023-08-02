@@ -1,8 +1,6 @@
-export interface LineUp {
+import { Player } from "./player";
 
-    equipo: string;
-    jugador: string;
-    portero: boolean;
+export interface LineUp extends Player {
     titular: boolean;
 
 }

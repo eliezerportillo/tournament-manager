@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LineUp } from 'src/app/models/lineup';
+import { Player } from 'src/app/models/player';
 
 @Component({
   selector: 'app-player-name',
@@ -8,5 +8,9 @@ import { LineUp } from 'src/app/models/lineup';
 })
 export class PlayerNameComponent {
   @Input()
-  player?: LineUp;
+  player?: Player;
+
+  @Input()
+  shortName?: boolean;
+
 }

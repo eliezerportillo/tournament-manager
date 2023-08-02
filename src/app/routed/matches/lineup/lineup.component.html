@@ -52,7 +52,7 @@
                         <div *ngIf="localStarting && localStarting.length > 0; else noStanding">
                             <mat-list role="list">
                                 <mat-list-item role="listitem" *ngFor="let p of localStarting">
-                                    <app-player-name [player]="p"></app-player-name>
+                                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
                                 </mat-list-item>
 
                             </mat-list>
@@ -68,7 +68,7 @@
                         <div *ngIf="visitaStarting && visitaStarting.length > 0; else noStanding">
                             <mat-list role="list">
                                 <mat-list-item role="listitem" *ngFor="let p of visitaStarting">
-                                    <app-player-name [player]="p"></app-player-name>
+                                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
                                 </mat-list-item>
 
                             </mat-list>
@@ -89,7 +89,7 @@
                         <div *ngIf="localSubstitutes && localSubstitutes.length > 0; else noStanding">
                             <mat-list role="list">
                                 <mat-list-item role="listitem" *ngFor="let p of localSubstitutes">
-                                    <app-player-name [player]="p"></app-player-name>
+                                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
                                 </mat-list-item>
                             </mat-list>
                         </div>
@@ -100,7 +100,7 @@
                         <div *ngIf="visitaSubstitutes && visitaSubstitutes.length > 0; else noStanding">
                             <mat-list role="list">
                                 <mat-list-item role="listitem" *ngFor="let p of visitaSubstitutes ">
-                                    <app-player-name [player]="p"></app-player-name>
+                                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
                                 </mat-list-item>
 
                             </mat-list>

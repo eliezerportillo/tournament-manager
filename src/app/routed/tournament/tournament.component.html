@@ -1,12 +1,5 @@
 <div class="tab-header">
-    <mat-tab-group color="accent">
-        <mat-tab label="POSICIONES">
-            <ng-template matTabContent>
-                <div class="tab-content">
-                    <app-ranking></app-ranking>
-                </div>
-            </ng-template>
-        </mat-tab>
+    <mat-tab-group color="accent" #tabGroup>       
         <mat-tab label="PARTIDOS">
             <ng-template matTabContent>
                 <div class="tab-content">
@@ -14,8 +7,18 @@
                 </div>
             </ng-template>
         </mat-tab>
-        
-        <mat-tab label="ESTADISTICAS" [disabled]="true"> ESTADISTICAS </mat-tab>
+        <mat-tab label="POSICIONES">
+            <ng-template matTabContent>
+                <div class="tab-content">
+                    <app-ranking></app-ranking>
+                </div>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="ESTADÍSTICAS">
+            <div class="tab-content">
+                <app-stats></app-stats>                
+            </div>
+        </mat-tab>        
         <mat-tab label="JUGADORES" [disabled]="true"> JUGADORES </mat-tab>
     </mat-tab-group>
 </div>

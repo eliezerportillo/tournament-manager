@@ -41,6 +41,8 @@ import { ShortNamePipe } from './pipes/short-name.pipe';
 import { PlayerNameComponent } from './players/player-name/player-name.component';
 import { LastMatchesComponent } from './matches/last-matches/last-matches.component';
 import { MatchResultIconComponent } from './matches/match-result-icon/match-result-icon.component';
+import { StatsComponent } from './players/stats/stats.component';
+import { StatsListComponent } from './players/stats-list/stats-list.component';
 
 registerLocaleData(localeEsMx, 'es-MX');
 
@@ -60,6 +62,8 @@ registerLocaleData(localeEsMx, 'es-MX');
     PlayerNameComponent,
     LastMatchesComponent,
     MatchResultIconComponent,
+    StatsComponent,    
+    StatsListComponent,
   ],
   imports: [
     CommonModule,

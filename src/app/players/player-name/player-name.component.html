@@ -1,7 +1,18 @@
 <ng-container *ngIf="player">
     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
 
-        <span>{{ player.jugador | shortName }}</span>
+        <!-- Use ng-container with *ngIf to conditionally apply the pipe -->
+        <ng-container *ngIf="shortName; else fullName">
+            <!-- Apply the pipe to the data -->
+            <span>{{ player.jugador | shortName }}</span>
+        </ng-container>
+
+        <ng-template #fullName>
+            <!-- Data without the pipe -->
+            {{ player.jugador | titlecase }}
+        </ng-template>
+
         <img src="assets/gloves.png" alt="Portero" *ngIf="player.portero" title="Portero">
     </div>
 </ng-container>
+

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Team } from 'src/app/models/team';
 
 @Component({
   selector: 'app-team-image',
@@ -9,5 +10,11 @@ export class TeamImageComponent {
 
   @Input()
   src?: string;
+
+
+  @Input()
+  set team(value: string) {
+    this.src = Team.createImageUrl(value);
+  }
 
 }
