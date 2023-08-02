@@ -39,6 +39,8 @@ import { LineupComponent } from './routed/matches/lineup/lineup.component';
 import { MatchHourComponent } from './matches/match-hour/match-hour.component';
 import { ShortNamePipe } from './pipes/short-name.pipe';
 import { PlayerNameComponent } from './players/player-name/player-name.component';
+import { LastMatchesComponent } from './matches/last-matches/last-matches.component';
+import { MatchResultIconComponent } from './matches/match-result-icon/match-result-icon.component';
 
 registerLocaleData(localeEsMx, 'es-MX');
 
@@ -56,6 +58,8 @@ registerLocaleData(localeEsMx, 'es-MX');
     MatchHourComponent,
     ShortNamePipe,
     PlayerNameComponent,
+    LastMatchesComponent,
+    MatchResultIconComponent,
   ],
   imports: [
     CommonModule,

@@ -10,9 +10,11 @@ import { TeamService } from 'src/app/services/team.service';
 })
 export class RankingComponent {
   teams$: Observable<ITeam[]>;
+  lastMatches: number;
 
   constructor(private teamService: TeamService) {
     this.teams$ = this.teamService.getTeams();
+    this.lastMatches = 5;
   }
 
   getImage(team: ITeam) {

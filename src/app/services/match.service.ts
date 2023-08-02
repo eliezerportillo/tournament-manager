@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs/operators';
 import { Match } from 'src/app/models/match';
 import { Observable } from 'rxjs';
@@ -37,6 +37,26 @@ export class MatchService {
   }
 
 
+  async getMatchesByTeam(team: string) {
+    const promises = [
+      this.getFiltered('local', team),
+      this.getFiltered('visita', team)
+    ];
+    const responses = await Promise.all(promises);
+    const teamMatches = responses[0].concat(responses[1]);
+
+    return teamMatches
+      .map(match => ({
+        ...match,
+        date: this.parseDate(match.fecha),
+        dateTime: this.parseDateTime(match.fecha, match.hora),
+        hour: this.parseHour(match.hora),
+        imageUrlLocal: Team.createImageUrl(match.local),
+        imageUrlVisita: Team.createImageUrl(match.visita),
+      })) as Match[];
+  }
+
+
 
   async getMatch(local: string, visita: string) {
     const snapshot = await this.matchesCollection.ref.where('local', '==', local).where('visita', '==', visita).get();
@@ -49,6 +69,11 @@ export class MatchService {
         imageUrlLocal: Team.createImageUrl(match.local),
         imageUrlVisita: Team.createImageUrl(match.visita),
       }))[0] as Match;
+  }
+
+  private async getFiltered(filterBy: string, value: string) {
+    const snapshot = await this.matchesCollection.ref.where(filterBy, '==', value).get();
+    return snapshot.docs.map(doc => doc.data());
   }
 
   private parseDateTime(fecha: number, hora: number) {

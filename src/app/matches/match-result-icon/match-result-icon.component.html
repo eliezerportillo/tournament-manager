@@ -1,0 +1,25 @@
+<div [ngSwitch]="matchResult">
+    <!-- Case: Win -->
+    <div *ngSwitchCase="'win'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <mat-icon color="accent">check_circle</mat-icon>
+        <span *ngIf="showText">Ganó</span>
+    </div>
+
+    <!-- Case: Draw -->
+    <div *ngSwitchCase="'draw'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <mat-icon color="primary">remove_circle_outline</mat-icon>
+        <span *ngIf="showText">Empate</span>
+    </div>
+
+    <!-- Case: Loss -->
+    <div *ngSwitchCase="'loss'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <mat-icon color="warn">cancel</mat-icon>
+        <span *ngIf="showText">Perdió</span>
+    </div>
+
+    <!-- Case: Match not played -->
+    <div *ngSwitchDefault fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <mat-icon color="primary">trip_origin</mat-icon>
+        <span *ngIf="showText">No jugó</span>
+    </div>
+</div>

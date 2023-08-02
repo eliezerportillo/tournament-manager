@@ -29,7 +29,7 @@ export class TeamService {
 
 
   private getOrdered(ref: CollectionReference<DocumentData>): Query<DocumentData> {
-    return ref.orderBy('Pts', 'desc').orderBy('DG', 'desc').orderBy('GF', 'desc').orderBy('nombre');
+    return ref.orderBy('Pts', 'desc').orderBy('DG', 'desc').orderBy('GF', 'desc').orderBy('GC').orderBy('nombre');
   }
 
 }
