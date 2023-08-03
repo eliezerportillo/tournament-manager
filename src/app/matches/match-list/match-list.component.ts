@@ -13,7 +13,7 @@ interface DayMatches {
 })
 export class MatchListComponent {
   matches$: Observable<DayMatches[]>;
-  
+
 
 
   constructor(private matchService: MatchService) {
@@ -31,6 +31,10 @@ export class MatchListComponent {
       groupedData[groupKey].push(data);
       return groupedData;
     }, {});
-    return Object.entries(grouped).map(([key, value]) => ({ key, matches: value }));
+    return Object.entries(grouped).map(([key, value]) =>       
+      (
+        { key, matches: value.sort((a, b) => a.fecha - b.fecha) }
+      )
+    );
   }
 }
