@@ -1,0 +1,163 @@
+<div class="lr-imso-lineups-container">
+    <!-- local -->
+    <div class="lrvl-tlt lrvl-tl lrvl-btrc">
+        <!-- Header -->
+        <div class="lr-vl-hf lrvl-btrc" aria-level="2" role="heading" tabindex="0">
+            <img class="lrvl-nal lrvl-l" id="smlv_BZfMZIynGNahqtsP-IOwyAk_1" [src]="localImageUrl" alt="">
+            <!-- Team name -->
+            <span class="lrvl-tvc lrvl-nal" id="lrvl_ht">{{local}}</span>
+            <!-- lineup -->
+            <!-- <span class="lrvl-tvc lrvl-f">3-1-2</span> -->
+        </div>
+        <!-- Players -->
+        <div class="lr-vl-ls" *ngIf="localStarting && localStarting.length > 0; else noStanding">
+            <!-- Drawing items -->
+            <div class="lrvl-fl lr-vl-tgc lr-vl-gc"></div>
+            <div class="lrvl-fl lrvl-tg lr-vl-gll"></div>
+            <div class="lrvl-fl lrvl-tg lr-vl-gls"></div>
+            <div class="lrvl-fl lrvl-mfc lrvl-tmfc"></div>
+            <!-- Players list -->
+            <span>
+                <!-- Portero -->
+                <div class="lrvl-fr" style="height:25%">
+                    <div class="lrvl-pr">
+                        <span class="lrvl-pd" style="width:100%">
+                            <app-starting-player [player]="getPortero(localLineup)"></app-starting-player>
+                        </span>
+                    </div>
+                </div>
+                <!-- Defensas -->
+                <div class="lrvl-fr" style="height:25%">
+                    <div class="lrvl-pr">
+                        <ng-container *ngFor="let p of getDefenses(localLineup) as players">
+                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
+                                <app-starting-player [player]="p"></app-starting-player>
+                            </span>
+                        </ng-container>
+                    </div>
+                </div>
+                <!-- Medios -->
+                <div class="lrvl-fr" style="height:25%">
+                    <div class="lrvl-pr">
+
+                        <ng-container *ngFor="let p of getMidfielder(localLineup) as players">
+                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
+                                <app-starting-player [player]="p"></app-starting-player>
+                            </span>
+                        </ng-container>
+                    </div>
+                </div>
+                <!-- Delanteros -->
+                <div class="lrvl-fr" style="height:25%">
+                    <div class="lrvl-pr">
+                        <ng-container *ngFor="let p of getStriker(localLineup) as players">
+                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
+                                <app-starting-player [player]="p"></app-starting-player>
+                            </span>
+                        </ng-container>
+                    </div>
+                </div>
+            </span>
+        </div>
+    </div>
+    <!-- campo -->
+    <div class="lrvl-mfl lrvl-vac"></div>
+    <!-- visita -->
+    <div class="lrvl-tlt lrvl-tl lrvl-bbrc">
+        <!-- Players -->
+        <div class="lr-vl-ls" *ngIf="visitaStarting && visitaStarting.length > 0; else noStanding">
+            <div class="lrvl-fl lrvl-mfc lrvl-lmfc"></div>
+            <div class="lrvl-fl lrvl-lgc lr-vl-gc"></div>
+            <div class="lrvl-fl lr-vl-lgl lr-vl-gll"></div>
+            <div class="lrvl-fl lr-vl-lgs lr-vl-gls"></div>
+            <span *ngIf="!editable">
+                <div class="lrvl-fr" style="height:25%">
+                    <div class="lrvl-pr">
+                        <ng-container *ngFor="let p of getStriker(visitaLineup) as players">
+                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
+                                <app-starting-player [home]="false" [player]="p"></app-starting-player>
+                            </span>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="lrvl-fr" style="height:25%">
+                    <div class="lrvl-pr">
+                        <ng-container *ngFor="let p of getMidfielder(visitaLineup) as players">
+                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
+                                <app-starting-player [home]="false" [player]="p"></app-starting-player>
+                            </span>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="lrvl-fr" style="height:25%">
+                    <div class="lrvl-pr">
+
+                        <ng-container *ngFor="let p of getDefenses(visitaLineup) as players">
+                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
+                                <app-starting-player [home]="false" [player]="p"></app-starting-player>
+                            </span>
+                        </ng-container>
+
+                    </div>
+                </div>
+                <div class="lrvl-fr" style="height:20%">
+                    <div class="lrvl-pr">
+                        <span class="lrvl-pd" style="width:100%">
+                            <app-starting-player [home]="false"
+                                [player]="getPortero(visitaLineup)"></app-starting-player>
+                        </span>
+                    </div>
+                </div>
+            </span>
+        </div>
+
+        <!-- Header -->
+        <div *ngIf="!editable" class="lr-vl-hf lrvl-bbrc" tabindex="0">
+            <img class="lrvl-nal lrvl-l" id="smlv_BZfMZIynGNahqtsP-IOwyAk_3" [src]="visitaImageUrl" alt="">
+            <span class="lrvl-tvc lrvl-nal" id="lrvl_at">{{visita}}</span>
+            <!-- <span class="lrvl-tvc lrvl-f">4-2-3-1</span> -->
+        </div>
+    </div>
+</div>
+
+<!-- Substitutes -->
+<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+    <app-team-image [src]="localImageUrl"></app-team-image>
+    <span>SUPLENTES</span>
+    <app-team-image [src]="visitaImageUrl"></app-team-image>
+</mat-toolbar>
+<div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <!-- home -->
+    <div fxFlex>
+        <div *ngIf="localSubstitutes && localSubstitutes.length > 0; else noStanding">
+            <mat-list role="list">
+                <mat-list-item role="listitem" *ngFor="let p of localSubstitutes">
+                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+    <!-- a way -->
+    <div fxFlex class="visita">
+
+        <div *ngIf="visitaSubstitutes && visitaSubstitutes.length > 0; else noStanding">
+            <mat-list role="list">
+                <mat-list-item role="listitem" *ngFor="let p of visitaSubstitutes ">
+                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
+                </mat-list-item>
+
+            </mat-list>
+
+        </div>
+    </div>
+</div>
+
+
+<ng-template #noStanding>
+    <div fxLayout="column" fxLayoutAlign="center center" class="no-lineup">
+        <mat-icon>groups</mat-icon>
+        <p>Las alineaciones se subirán un día antes del partido.</p>
+    </div>
+</ng-template>

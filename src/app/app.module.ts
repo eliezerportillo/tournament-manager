@@ -43,6 +43,8 @@ import { LastMatchesComponent } from './matches/last-matches/last-matches.compon
 import { MatchResultIconComponent } from './matches/match-result-icon/match-result-icon.component';
 import { StatsComponent } from './players/stats/stats.component';
 import { StatsListComponent } from './players/stats-list/stats-list.component';
+import { UploadLineupComponent } from './teams/upload-lineup/upload-lineup.component';
+import { StartingPlayerComponent } from './players/starting-player/starting-player.component';
 
 registerLocaleData(localeEsMx, 'es-MX');
 
@@ -63,7 +65,7 @@ registerLocaleData(localeEsMx, 'es-MX');
     LastMatchesComponent,
     MatchResultIconComponent,
     StatsComponent,    
-    StatsListComponent,
+    StatsListComponent, UploadLineupComponent, StartingPlayerComponent,
   ],
   imports: [
     CommonModule,
