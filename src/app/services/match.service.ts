@@ -90,9 +90,12 @@ export class MatchService {
   }
 
   async getLineup(teamName: string) {
-    const snapshot = await this.standingsCollection.ref.where('equipo', '==', teamName).orderBy('jugador').get();
-    const players = snapshot.docs.map(doc => doc.data());
-    return players;
+    const snapshot = await this.standingsCollection.ref.where('equipo', '==', teamName).get();
+    const players = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return { ...data, startging: data.titular > 0 }
+    });
+    return players.sort((a, b) => a.titular - b.titular);
   }
 
   private moveItemToFirstPosition(arr: any[], criteria: (item: any) => boolean): any[] {

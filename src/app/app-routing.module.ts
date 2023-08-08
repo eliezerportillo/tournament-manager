@@ -4,6 +4,7 @@ import { ImportExcelComponent } from './import-excel/import-excel.component';
 import { ShellComponent } from './shell/shell.component';
 import { TournamentComponent } from './routed/tournament/tournament.component';
 import { LineupComponent } from './routed/matches/lineup/lineup.component';
+import { UploadLineupComponent } from './teams/upload-lineup/upload-lineup.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'lineup',
         component: LineupComponent
+      },
+      {
+        path: 'upload-lineup',
+        component: UploadLineupComponent
       },
       
     ]

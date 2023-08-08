@@ -12,16 +12,16 @@ import { TeamService } from 'src/app/services/team.service';
   styleUrls: ['./lineup.component.scss']
 })
 export class LineupComponent implements OnInit {
-  localLineup: LineUp[];
-  visitaLineup: LineUp[];
-  local: any;
-  visita: any;
+
+  local: string;
+  visita: string;
+
   match?: Match;
 
+  constructor(private route: ActivatedRoute, private matchService: MatchService) {
 
-  constructor(private route: ActivatedRoute, private teamService: TeamService, private matchService: MatchService) {
-    this.localLineup = [];
-    this.visitaLineup = [];
+    this.local = '';
+    this.visita = '';
   }
 
   ngOnInit(): void {
@@ -31,50 +31,13 @@ export class LineupComponent implements OnInit {
       // Get the value of a specific parameter by its name
       this.local = params['local'] ?? '';
       this.visita = params['visita'] ?? '';
-
-      this.getLineups(this.local, this.visita);
+      this.loadMatch();
     });
 
 
   }
 
-  get localStarting () {
-    return this.localLineup.filter(x => x.titular ? true : false);
-  }
-
-  get localSubstitutes() {
-    return this.localLineup.filter(x => x.titular == undefined || x.titular == false);
-  }
-
-  get visitaStarting () {
-    return this.visitaLineup.filter(x => x.titular ? true : false);
-  }
-
-  get visitaSubstitutes() {
-    return this.visitaLineup.filter(x => x.titular == undefined || x.titular == false);
-  }
-
-  get localImageUrl(): string {
-    return this.match?.imageUrlLocal ?? '';
-  }
-
-  get visitaImageUrl(): string {
-    return this.match?.imageUrlVisita ?? '';
-  }
-
-  async getLineups(local: string, visita: string) {
-
-    const promises = [
-      this.matchService.getMatch(local, visita),
-      this.matchService.getLineup(local),
-      this.matchService.getLineup(visita)
-    ];
-
-    const responses = await Promise.all(promises);
-
-    this.match = responses[0] as Match;
-    this.localLineup = responses[1] as LineUp[];
-    this.visitaLineup = responses[2] as LineUp[];
-
+  private async loadMatch() {
+    this.match = await this.matchService.getMatch(this.local, this.visita);
   }
 }

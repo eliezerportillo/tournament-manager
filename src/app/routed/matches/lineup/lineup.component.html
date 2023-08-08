@@ -18,14 +18,14 @@
     <mat-card-content>
         <div fxLayout="row" fxLayoutAlign="space-between center">
             <div fxLayout="column" fxLayoutAlign="space-between center">
-                <app-team-image [src]="localImageUrl"></app-team-image>
+                <app-team-image [src]="match?.imageUrlLocal"></app-team-image>
                 <span>{{local}}</span>
             </div>
 
             <p>vs.</p>
             <div fxLayout="column" fxLayoutAlign="space-between center">
 
-                <app-team-image [src]="visitaImageUrl"></app-team-image>
+                <app-team-image [src]="match?.imageUrlVisita"></app-team-image>
                 <span>{{visita}}</span>
             </div>
         </div>
@@ -41,73 +41,9 @@
         <mat-tab-group>
             <mat-tab label="ALINEACIONES">
 
-                <!-- Startings -->
-                <div fxLayout="row" fxLayoutAlign="space-between stretch">
-                    <!-- home -->
-                    <div fxFlex>
-                        <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
-                            <app-team-image [src]="match.imageUrlLocal"></app-team-image>
-                            <p style=" position: relative;left: 50px;">TITULARES</p>
-                        </mat-toolbar>
-                        <div *ngIf="localStarting && localStarting.length > 0; else noStanding">
-                            <mat-list role="list">
-                                <mat-list-item role="listitem" *ngFor="let p of localStarting">
-                                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
-                                </mat-list-item>
+              <app-upload-lineup [local]="local" [visita]="visita"></app-upload-lineup>
 
-                            </mat-list>
-                        </div>
-                    </div>
-                    <!-- a way -->
-                    <div fxFlex class="visita">
-                        <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
-                            <span class="spacer"></span>
-                            <app-team-image [src]="match.imageUrlVisita"></app-team-image>
-                        </mat-toolbar>
-
-                        <div *ngIf="visitaStarting && visitaStarting.length > 0; else noStanding">
-                            <mat-list role="list">
-                                <mat-list-item role="listitem" *ngFor="let p of visitaStarting">
-                                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
-                                </mat-list-item>
-
-                            </mat-list>
-
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Substitutes -->
-                <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
-                    <app-team-image [src]="match.imageUrlLocal"></app-team-image>
-                    <span>SUPLENTES</span>
-                    <app-team-image [src]="match.imageUrlVisita"></app-team-image>
-                </mat-toolbar>
-                <div fxLayout="row" fxLayoutAlign="space-between stretch">
-                    <!-- home -->
-                    <div fxFlex>
-                        <div *ngIf="localSubstitutes && localSubstitutes.length > 0; else noStanding">
-                            <mat-list role="list">
-                                <mat-list-item role="listitem" *ngFor="let p of localSubstitutes">
-                                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
-                                </mat-list-item>
-                            </mat-list>
-                        </div>
-                    </div>
-                    <!-- a way -->
-                    <div fxFlex class="visita">
-
-                        <div *ngIf="visitaSubstitutes && visitaSubstitutes.length > 0; else noStanding">
-                            <mat-list role="list">
-                                <mat-list-item role="listitem" *ngFor="let p of visitaSubstitutes ">
-                                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
-                                </mat-list-item>
-
-                            </mat-list>
-
-                        </div>
-                    </div>
-                </div>
+                
 
             </mat-tab>
         </mat-tab-group>
@@ -115,9 +51,3 @@
 
 </ng-container>
 
-<ng-template #noStanding>
-    <div fxLayout="column" fxLayoutAlign="center center" class="no-lineup">
-        <mat-icon>groups</mat-icon>
-        <p>Alineaciones aún no publicadas.</p>
-    </div>
-</ng-template>
