@@ -1,7 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
 import { LineUp } from 'src/app/models/lineup';
-import { Match } from 'src/app/models/match';
-import { Team } from 'src/app/models/team';
 import { MatchService } from 'src/app/services/match.service';
 
 
@@ -24,7 +21,7 @@ export class LineupBase  {
     }
 
     get localSubstitutes() {
-        return this.localLineup.filter(x => x.titular == undefined || x.titular == false);
+        return this.localLineup.filter(x => x.startging == undefined || x.startging == false);
     }
 
     get visitaStarting() {
@@ -32,7 +29,7 @@ export class LineupBase  {
     }
 
     get visitaSubstitutes() {
-        return this.visitaLineup.filter(x => x.titular == undefined || x.titular == false);
+        return this.visitaLineup.filter(x => x.startging == undefined || x.startging == false);
     }
    
 
