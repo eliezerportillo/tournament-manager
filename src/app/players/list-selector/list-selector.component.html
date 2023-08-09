@@ -1,0 +1,12 @@
+
+
+<ng-container *ngIf="players">
+    <mat-toolbar>{{message}}</mat-toolbar>
+    <mat-nav-list>
+        <ng-container *ngFor="let p of players">
+            <a mat-list-item (click)="openLink(p); $event.preventDefault();">
+                <app-player-name [player]="p"></app-player-name>                
+            </a>
+        </ng-container>
+    </mat-nav-list>
+</ng-container>

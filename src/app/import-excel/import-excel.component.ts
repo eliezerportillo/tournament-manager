@@ -58,6 +58,7 @@ export class ImportExcelComponent {
 
     reader.readAsArrayBuffer(file);
   }
+  
   async saveDataToFirestore(sheetName: string, data: any[]) {
     try {
       const collectionRef = this.db.firestore.collection(sheetName);

@@ -1,0 +1,103 @@
+<div *ngIf="captain" fxLayout="column" fxLayoutAlign="start stretch" class="container">
+    <mat-toolbar>
+        <span>Subir alineación</span>
+        <span class="spacer"></span>
+        <button mat-flat-button color="accent" [disabled]="!lineupCompleted || loading" (click)="handleUpload()">Enviar</button>
+    </mat-toolbar>
+    <!-- game field -->
+    <div class="lr-imso-lineups-container">
+        <!-- local -->
+        <div class="lrvl-tlt lrvl-tl lrvl-btrc">
+            <!-- Header -->
+            <div class="lr-vl-hf lrvl-btrc" aria-level="2" role="heading" tabindex="0">
+                <img class="lrvl-nal lrvl-l" id="smlv_BZfMZIynGNahqtsP-IOwyAk_1" [src]="localImageUrl" alt="">
+                <!-- Team name -->
+                <span class="lrvl-tvc lrvl-nal" id="lrvl_ht">{{captain.equipo}}</span>
+                <!-- lineup -->
+                <!-- <span class="lrvl-tvc lrvl-f">3-1-2</span> -->
+            </div>
+            <!-- Players -->
+            <div class="lr-vl-ls">
+                <!-- Drawing items -->
+                <div class="lrvl-fl lr-vl-tgc lr-vl-gc"></div>
+                <div class="lrvl-fl lrvl-tg lr-vl-gll"></div>
+                <div class="lrvl-fl lrvl-tg lr-vl-gls"></div>
+                <div class="lrvl-fl lrvl-mfc lrvl-tmfc"></div>
+                <!-- Players list -->
+                <span>
+                    <!-- Portero -->
+                    <div class="lrvl-fr" style="height:25%">
+                        <div class="lrvl-pr">
+                            <span class="lrvl-pd" style="width:100%">
+                                <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                                    <button mat-mini-fab [color]="getPortero()?.jugador == PLACEHOLDER ? 'primary' : 'accent'" (click)="openBottomSheet(getPortero())">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <app-player-name [player]="getPortero()" [shortName]="true"></app-player-name>
+
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Defensas -->
+                    <div class="lrvl-fr" style="height:25%">
+                        <div class="lrvl-pr">
+                            <ng-container *ngFor="let p of getDefenses() as players">
+                                <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
+                                    <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                                        <button mat-mini-fab [color]="p.jugador == PLACEHOLDER ? 'primary': 'accent'" (click)="openBottomSheet(p)">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                        <app-player-name [player]="p" [shortName]="true"></app-player-name>
+
+                                    </div>
+                                </span>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <!-- Medios -->
+                    <div class="lrvl-fr" style="height:25%">
+                        <div class="lrvl-pr">
+
+                            <ng-container *ngFor="let p of getMidfielder() as players">
+                                <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} " fxLayout="column"
+                                    fxLayoutAlign="space-between center">
+                                    <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                                        <button mat-mini-fab [color]="p.jugador == PLACEHOLDER ? 'primary': 'accent'" (click)="openBottomSheet(p)">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                        <app-player-name [player]="p" [shortName]="true"></app-player-name>
+
+                                    </div>
+                                </span>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <!-- Delanteros -->
+                    <div class="lrvl-fr" style="height:25%">
+                        <div class="lrvl-pr">
+                            <ng-container *ngFor="let p of getStriker() as players">
+                                <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
+                                    <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                                        <button mat-mini-fab [color]="p.jugador == PLACEHOLDER ? 'primary': 'accent'" (click)="openBottomSheet(p)">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                        <app-player-name [player]="p" [shortName]="true"></app-player-name>
+
+                                    </div>
+                                </span>
+                            </ng-container>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- substitutes -->
+    <div fxFlex class="substitutes">
+        <mat-toolbar>
+            Jugadores
+        </mat-toolbar>
+        <app-player-list [players]="substitutes"></app-player-list>
+    </div>
+</div>

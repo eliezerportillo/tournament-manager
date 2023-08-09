@@ -11,6 +11,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+
 
 
 
@@ -19,6 +22,7 @@ import { AngularFireModule, FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -43,8 +47,14 @@ import { LastMatchesComponent } from './matches/last-matches/last-matches.compon
 import { MatchResultIconComponent } from './matches/match-result-icon/match-result-icon.component';
 import { StatsComponent } from './players/stats/stats.component';
 import { StatsListComponent } from './players/stats-list/stats-list.component';
-import { UploadLineupComponent } from './teams/upload-lineup/upload-lineup.component';
 import { StartingPlayerComponent } from './players/starting-player/starting-player.component';
+import { LineupViewerComponent } from './matches/lineup/lineup-viewer/lineup-viewer.component';
+import { LogoComponent } from './logo/logo.component';
+import { UploadLineupComponent } from './routed/matches/upload-lineup/upload-lineup.component';
+import { LoginComponent } from './login/login.component';
+import { PlayerPickerComponent } from './players/player-picker/player-picker.component';
+import { ListSelectorComponent } from './players/list-selector/list-selector.component';
+import { PlayerListComponent } from './players/player-list/player-list.component';
 
 registerLocaleData(localeEsMx, 'es-MX');
 
@@ -64,8 +74,16 @@ registerLocaleData(localeEsMx, 'es-MX');
     PlayerNameComponent,
     LastMatchesComponent,
     MatchResultIconComponent,
-    StatsComponent,    
-    StatsListComponent, UploadLineupComponent, StartingPlayerComponent,
+    StatsComponent,
+    StatsListComponent,
+    LineupViewerComponent,
+    StartingPlayerComponent,
+    LogoComponent,
+    UploadLineupComponent,
+    LoginComponent,
+    PlayerPickerComponent,
+    ListSelectorComponent,
+    PlayerListComponent
   ],
   imports: [
     CommonModule,
@@ -75,6 +93,7 @@ registerLocaleData(localeEsMx, 'es-MX');
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    AngularFireAuthModule,
     MatToolbarModule,
     MatIconModule,
     MatProgressBarModule,
@@ -86,7 +105,9 @@ registerLocaleData(localeEsMx, 'es-MX');
     MatCardModule,
     MatRippleModule,
     MatButtonModule,
-    MatListModule
+    MatListModule,
+    MatMenuModule,
+    MatBottomSheetModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-MX' }],
   bootstrap: [AppComponent]

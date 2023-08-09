@@ -1,0 +1,7 @@
+<ng-container *ngIf="players">
+    <mat-list role="list">
+        <mat-list-item role="listitem" *ngFor="let p of players">
+            <app-player-name [player]="p"></app-player-name>
+        </mat-list-item>
+    </mat-list>
+</ng-container>

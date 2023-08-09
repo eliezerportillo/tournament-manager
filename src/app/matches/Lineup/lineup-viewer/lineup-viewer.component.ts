@@ -1,16 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LineupBase } from 'src/app/matches/Lineup/LineupBase';
+import { LineupBase } from 'src/app/matches/lineup/LineupBase';
 import { LineUp } from 'src/app/models/lineup';
 import { Team } from 'src/app/models/team';
 import { MatchService } from 'src/app/services/match.service';
 
 @Component({
-  selector: 'app-upload-lineup',
-  templateUrl: './upload-lineup.component.html',
-  styleUrls: ['./upload-lineup.component.scss']
+  selector: 'app-lineup-viewer',
+  templateUrl: './lineup-viewer.component.html',
+  styleUrls: ['./lineup-viewer.component.scss']
 })
-export class UploadLineupComponent extends LineupBase implements OnInit {
+export class LineupViewerComponent extends LineupBase implements OnInit {
 
   constructor(matchService: MatchService) {
     super(matchService);
@@ -35,20 +35,21 @@ export class UploadLineupComponent extends LineupBase implements OnInit {
   }
 
   getPortero(lineup: LineUp[]) {
-    return lineup.find(x => x.portero);
+    return lineup.find(x => x.playerType == 'portero');
   }
 
   getDefenses(lineup: LineUp[]) {
-    return lineup.filter(x => !x.portero && x.titular).slice(0, 3);
+    return lineup.filter(x => x.playerType == 'defensa')
   }
 
   getMidfielder(lineup: LineUp[]) {
-    return lineup.filter(x => !x.portero && x.titular).slice(3, 4);
+    return lineup.filter(x => x.playerType == 'medio')
   }
 
   getStriker(lineup: LineUp[]) {
-    return lineup.filter(x => !x.portero && x.titular).slice(4);
+    return lineup.filter(x => x.playerType == 'delantero')
   }
+  
 
 
   ngOnInit(): void {
