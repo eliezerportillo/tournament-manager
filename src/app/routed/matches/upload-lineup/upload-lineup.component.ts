@@ -1,14 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Team } from 'src/app/models/team';
 import { firstValueFrom } from 'rxjs';
 import { PlayerService } from 'src/app/services/player.service';
 import { Player, PlayerType } from 'src/app/models/player';
-import { LineUp } from 'src/app/models/lineup';
+import { LineUp, Markable } from 'src/app/models/lineup';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ListSelectorComponent } from 'src/app/players/list-selector/list-selector.component';
 import { UploadLineupCommand } from 'src/app/services/upload-lineup.command';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Formation } from 'src/app/models/formation';
+import { FormControl } from '@angular/forms';
+import { FormationPickerComponent } from 'src/app/matches/formation-picker/formation-picker.component';
 
 @Component({
   selector: 'app-upload-lineup',
@@ -25,68 +28,77 @@ export class UploadLineupComponent {
   snackBar: MatSnackBar = inject(MatSnackBar);
 
   captain?: Player;
-  lineupPlaceholder: LineUp[] = [];
+
   team: Player[] = [];
-  PLACEHOLDER = 'Seleccionar';
   loading: boolean = false;
+  formationCompleted: boolean = false;
+  futSystems: Formation[];
 
 
+  selectedFormationControl: FormControl;
+
+  @ViewChild(FormationPickerComponent) formationPicker?: FormationPickerComponent;
+
+
+
+  constructor() {
+    const systems = [
+      [1, 3, 3],
+      [1, 3, 1, 2],
+      [1, 3, 2, 1],
+      [1, 4, 2],
+      [1, 2, 2, 2],
+      [1, 2, 3, 1],
+    ];
+    this.futSystems = systems.map(s => new Formation(...s));
+    this.selectedFormationControl = new FormControl(this.futSystems[0]);
+  }
+
+  get selectedFormation() {
+    return this.selectedFormationControl.value as Formation;
+  }
   get localImageUrl(): string {
     return Team.createImageUrl(this.captain?.equipo ?? '');
   }
 
+  get startings() {
+    return this.formationPicker?.builder?.players ?? [];
+  }
+
   get substitutes() {
-    return this.team.filter(p => !this.lineupPlaceholder.map(x => x.jugador).includes(p.jugador))
-  }
-
-  get lineupCompleted() {
-    return this.lineupPlaceholder.filter(p => p.jugador != this.PLACEHOLDER).length == 7;
-  }
-
-  getPortero() {
-    return this.lineupPlaceholder.find(x => x.playerType == 'portero');
-  }
-
-  getDefenses() {
-    return this.lineupPlaceholder.filter(x => x.playerType == 'defensa')
-  }
-
-  getMidfielder() {
-    return this.lineupPlaceholder.filter(x => x.playerType == 'medio')
-  }
-
-  getStriker() {
-    return this.lineupPlaceholder.filter(x => x.playerType == 'delantero')
+    return this.team.filter(p => !this.startings.map(x => x.jugador).includes(p.jugador))
   }
 
 
   async handleUpload() {
     this.loading = true;
-    await this.uploadCommand.execute(this.lineupPlaceholder, this.substitutes);
+    await this.uploadCommand.execute(this.startings, this.substitutes);
     this.snackBar.open('Alineación enviada con éxito');
     this.loading = false;
   }
 
+
   private async loadPlayers(teamName: string) {
     this.team = await this.playerService.getPlayersByTeam(teamName);
-
   }
 
-  async openBottomSheet(position?: LineUp) {
+  async openBottomSheet(position?: Markable) {
 
     if (!position) return;
 
     let players;
-    if (position.playerType == 'portero') {
+    if (position.playerType == PlayerType.portero) {
       players = this.substitutes.filter(p => p.portero);
     } else {
-      players = this.substitutes.filter(p => !p.portero);
+      players = this.substitutes;
     }
     const ref = this.bottomSheet.open(ListSelectorComponent, { data: { players } });
     const selectedPlayer: LineUp | undefined = await firstValueFrom(ref.afterDismissed());
     if (selectedPlayer) {
       position.equipo = selectedPlayer.equipo;
       position.jugador = selectedPlayer.jugador;
+      position.marked = true;
+      this.formationCompleted = this.formationPicker?.builder?.isCompleted() ?? false;
     }
 
 
@@ -94,6 +106,8 @@ export class UploadLineupComponent {
 
 
   ngOnInit(): void {
+
+
 
     firstValueFrom(this.auth.authState).then(async (user) => {
       if (user && user.email) {
@@ -103,58 +117,38 @@ export class UploadLineupComponent {
           return;
         }
 
-        this.initLineupPlaceholder(this.captain);
         this.loadPlayers(this.captain.equipo);
 
       }
     });
+
+    this.selectedFormationControl.valueChanges.subscribe(value => this.formationCompleted = false)
   }
 
-  private initLineupPlaceholder(captain: Player) {
 
-    this.lineupPlaceholder = [
-      {
-        equipo: captain.equipo,
-        jugador: this.PLACEHOLDER,
-        playerType: 'portero',
-        order: 1
-      },
-      {
-        equipo: captain.equipo,
-        jugador: this.PLACEHOLDER,
-        playerType: 'defensa',
-        order: 2
-      },
-      {
-        equipo: captain.equipo,
-        jugador: this.PLACEHOLDER,
-        playerType: 'defensa',
-        order: 3
-      },
-      {
-        equipo: captain.equipo,
-        jugador: this.PLACEHOLDER,
-        playerType: 'defensa',
-        order: 4
-      },
-      {
-        equipo: captain.equipo,
-        jugador: this.PLACEHOLDER,
-        playerType: 'medio',
-        order: 5
-      },
-      {
-        equipo: captain.equipo,
-        jugador: this.PLACEHOLDER,
-        playerType: 'delantero',
-        order: 6
-      },
-      {
-        equipo: captain.equipo,
-        jugador: this.PLACEHOLDER,
-        playerType: 'delantero',
-        order: 7
-      }
-    ];;
-  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,7 @@
     <ng-container *ngFor="let group of matches">
         <mat-toolbar>Jornada {{ group.key }} de {{matches.length}}</mat-toolbar>
 
-        <ng-container *ngFor="let match of group.matches">
+        <ng-container *ngFor="let match of group.values">
 
             <app-match [match]="match"></app-match>
         </ng-container>

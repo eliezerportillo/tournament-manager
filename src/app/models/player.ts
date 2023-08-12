@@ -11,8 +11,17 @@ export interface Player {
     correo?: string;
 }
 
-export type PlayerType =
-| 'portero'
-| 'defensa'
-| 'medio'
-| 'delantero';
+// export type PlayerType =
+// | 'portero'
+// | 'defensa'
+// | 'medio'
+// | 'delantero';
+
+
+export enum PlayerType {
+    portero = 'portero',
+    defensa = 'defensa',
+    medio = 'medio',
+    delantero = 'delantero'
+  }
+  

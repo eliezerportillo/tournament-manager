@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 
 
@@ -55,6 +56,8 @@ import { LoginComponent } from './login/login.component';
 import { PlayerPickerComponent } from './players/player-picker/player-picker.component';
 import { ListSelectorComponent } from './players/list-selector/list-selector.component';
 import { PlayerListComponent } from './players/player-list/player-list.component';
+import { FormationPickerComponent } from './matches/formation-picker/formation-picker.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 registerLocaleData(localeEsMx, 'es-MX');
 
@@ -83,7 +86,8 @@ registerLocaleData(localeEsMx, 'es-MX');
     LoginComponent,
     PlayerPickerComponent,
     ListSelectorComponent,
-    PlayerListComponent
+    PlayerListComponent,
+    FormationPickerComponent
   ],
   imports: [
     CommonModule,
@@ -107,7 +111,10 @@ registerLocaleData(localeEsMx, 'es-MX');
     MatButtonModule,
     MatListModule,
     MatMenuModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatButtonToggleModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-MX' }],
   bootstrap: [AppComponent]

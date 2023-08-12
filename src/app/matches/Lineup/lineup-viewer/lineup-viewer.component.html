@@ -18,45 +18,26 @@
             <div class="lrvl-fl lrvl-mfc lrvl-tmfc"></div>
             <!-- Players list -->
             <span *ngIf="localStarting && localStarting.length > 0; else noStanding">
-                <!-- Portero -->
-                <div class="lrvl-fr" style="height:25%">
-                    <div class="lrvl-pr">
-                        <span class="lrvl-pd" style="width:100%">
-                            <app-starting-player [player]="getPortero(localLineup)"></app-starting-player>
-                        </span>
-                    </div>
-                </div>
-                <!-- Defensas -->
-                <div class="lrvl-fr" style="height:25%">
-                    <div class="lrvl-pr">
-                        <ng-container *ngFor="let p of getDefenses(localLineup) as players">
-                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
-                                <app-starting-player [player]="p"></app-starting-player>
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
-                <!-- Medios -->
-                <div class="lrvl-fr" style="height:25%">
-                    <div class="lrvl-pr">
 
-                        <ng-container *ngFor="let p of getMidfielder(localLineup) as players">
-                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
-                                <app-starting-player [player]="p"></app-starting-player>
-                            </span>
-                        </ng-container>
+                <!-- Formation -->
+                <ng-container *ngFor="let item of getFormation(localLineup, true) as futSystem">
+
+                    <div class="lrvl-fr" [ngStyle]="{height: 100 / futSystem.length +'%'}">
+                        <div class="lrvl-pr">
+                            
+                            <ng-container *ngFor="let p of item.values">
+                                <span class="lrvl-pd" [ngStyle]="{width: 100 / item.values.length +'%'} ">
+                                    <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                                        <app-starting-player [player]="p"></app-starting-player>
+                                    </div>
+                                </span>
+                            </ng-container>
+
+                        </div>
                     </div>
-                </div>
-                <!-- Delanteros -->
-                <div class="lrvl-fr" style="height:25%">
-                    <div class="lrvl-pr">
-                        <ng-container *ngFor="let p of getStriker(localLineup) as players">
-                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
-                                <app-starting-player [player]="p"></app-starting-player>
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
+
+                </ng-container>
+             
             </span>
         </div>
     </div>
@@ -73,45 +54,25 @@
             <div class="lrvl-fl lr-vl-lgs lr-vl-gls"></div>
             <!-- Players list -->
             <span *ngIf="visitaStarting && visitaStarting.length > 0; else noStanding">
-                <div class="lrvl-fr" style="height:25%">
-                    <div class="lrvl-pr">
-                        <ng-container *ngFor="let p of getStriker(visitaLineup) as players">
-                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
-                                <app-starting-player [home]="false" [player]="p"></app-starting-player>
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
 
-                <div class="lrvl-fr" style="height:25%">
-                    <div class="lrvl-pr">
-                        <ng-container *ngFor="let p of getMidfielder(visitaLineup) as players">
-                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
-                                <app-starting-player [home]="false" [player]="p"></app-starting-player>
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
+                 <!-- Formation -->
+                 <ng-container *ngFor="let item of getFormation(visitaLineup, false) as futSystem">
 
-                <div class="lrvl-fr" style="height:25%">
-                    <div class="lrvl-pr">
+                    <div class="lrvl-fr" [ngStyle]="{height: 100 / futSystem.length +'%'}">
+                        <div class="lrvl-pr">
+                            
+                            <ng-container *ngFor="let p of item.values">
+                                <span class="lrvl-pd" [ngStyle]="{width: 100 / item.values.length +'%'} ">
+                                    <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                                        <app-starting-player [home]="false" [player]="p"></app-starting-player>
+                                    </div>
+                                </span>
+                            </ng-container>
 
-                        <ng-container *ngFor="let p of getDefenses(visitaLineup) as players">
-                            <span class="lrvl-pd" [ngStyle]="{width: 100 / players.length +'%'} ">
-                                <app-starting-player [home]="false" [player]="p"></app-starting-player>
-                            </span>
-                        </ng-container>
+                        </div>
+                    </div>
 
-                    </div>
-                </div>
-                <div class="lrvl-fr" style="height:20%">
-                    <div class="lrvl-pr">
-                        <span class="lrvl-pd" style="width:100%">
-                            <app-starting-player [home]="false"
-                                [player]="getPortero(visitaLineup)"></app-starting-player>
-                        </span>
-                    </div>
-                </div>
+                </ng-container>
             </span>
         </div>
 

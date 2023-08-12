@@ -17,7 +17,7 @@ export class PlayerPickerComponent {
   player?: LineUp;
 
   @Input()
-  playerType?: PlayerType = 'defensa';
+  playerType?: PlayerType = PlayerType.defensa;
 
   @Input()
   selectedPlayers?: Player[] = [];

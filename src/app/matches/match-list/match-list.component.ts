@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { Group } from 'src/app/models/group';
 import { Match } from 'src/app/models/match';
 import { MatchService } from 'src/app/services/match.service';
-interface DayMatches {
-  key: string;
-  matches: Match[];
-}
+
 @Component({
   selector: 'app-match-list',
   templateUrl: './match-list.component.html',
   styleUrls: ['./match-list.component.scss']
 })
 export class MatchListComponent {
-  matches$: Observable<DayMatches[]>;
+  matches$: Observable<Group<Match>[]>;
 
 
 
@@ -22,7 +20,7 @@ export class MatchListComponent {
     );
   }
 
-  groupByDate(dataArray: Match[]): DayMatches[] {
+  groupByDate(dataArray: Match[]): Group<Match>[] {
     const grouped = dataArray.reduce((groupedData: { [key: string]: Match[] }, data: Match) => {
       const groupKey = data.jornada;
       if (!groupedData[groupKey]) {
@@ -31,9 +29,10 @@ export class MatchListComponent {
       groupedData[groupKey].push(data);
       return groupedData;
     }, {});
+
     return Object.entries(grouped).map(([key, value]) =>       
       (
-        { key, matches: value.sort((a, b) => a.fecha - b.fecha) }
+        { key, values: value.sort((a, b) => a.fecha - b.fecha) }
       )
     );
   }
