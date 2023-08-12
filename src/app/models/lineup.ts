@@ -1,6 +1,14 @@
-import { Player } from "./player";
+import { Formation } from "./formation";
+import { PlayerType } from "./player";
 
-export interface LineUp extends Player {
-    titular: number;
-    startging: boolean;
+export interface LineUp {
+    equipo: string;
+    jugador: string;
+    order: number;
+    startging?: boolean;
+    playerType?: PlayerType;    
+}
+
+export interface Markable extends LineUp {
+    marked: boolean;
 }

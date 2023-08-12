@@ -1,0 +1,31 @@
+<mat-toolbar>
+    <button mat-icon-button routerLink="..">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>Subir alineación</span>
+    <span class="spacer"></span>
+    <button mat-flat-button color="accent" [disabled]="!formationCompleted || loading"
+        (click)="handleUpload()">Enviar</button>
+</mat-toolbar>
+<div *ngIf="captain" fxLayout="column" fxLayoutAlign="start stretch" class="container">
+
+    <!-- Formation picker -->
+    <mat-toolbar class="formations">
+        
+        <mat-button-toggle-group [formControl]="selectedFormationControl">
+            <ng-container *ngFor="let formation of futSystems">
+                <mat-button-toggle [value]="formation">{{formation.name}}</mat-button-toggle>
+            </ng-container>
+        </mat-button-toggle-group>
+    </mat-toolbar>
+    <!-- Formation -->
+    <app-formation-picker [teamName]="captain.equipo" [teamImage]="localImageUrl" [formation]="selectedFormationControl.value"
+        (onClick)="openBottomSheet($event)"></app-formation-picker>
+    <!-- substitutes -->
+    <div fxFlex class="substitutes">
+        <mat-toolbar>
+            Jugadores
+        </mat-toolbar>
+        <app-player-list [players]="substitutes"></app-player-list>
+    </div>
+</div>

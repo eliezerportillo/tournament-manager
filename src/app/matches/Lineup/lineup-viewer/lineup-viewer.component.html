@@ -1,0 +1,126 @@
+<div class="lr-imso-lineups-container">
+    <!-- local -->
+    <div class="lrvl-tlt lrvl-tl lrvl-btrc">
+        <!-- Header -->
+        <div class="lr-vl-hf lrvl-btrc" aria-level="2" role="heading" tabindex="0">
+            <img class="lrvl-nal lrvl-l" id="smlv_BZfMZIynGNahqtsP-IOwyAk_1" [src]="localImageUrl" alt="">
+            <!-- Team name -->
+            <span class="lrvl-tvc lrvl-nal" id="lrvl_ht">{{local}}</span>
+            <!-- lineup -->
+            <!-- <span class="lrvl-tvc lrvl-f">3-1-2</span> -->
+        </div>
+        <!-- Players -->
+        <div class="lr-vl-ls" >
+            <!-- Drawing items -->
+            <div class="lrvl-fl lr-vl-tgc lr-vl-gc"></div>
+            <div class="lrvl-fl lrvl-tg lr-vl-gll"></div>
+            <div class="lrvl-fl lrvl-tg lr-vl-gls"></div>
+            <div class="lrvl-fl lrvl-mfc lrvl-tmfc"></div>
+            <!-- Players list -->
+            <span *ngIf="localStarting && localStarting.length > 0; else noStanding">
+
+                <!-- Formation -->
+                <ng-container *ngFor="let item of getFormation(localLineup, true) as futSystem">
+
+                    <div class="lrvl-fr" [ngStyle]="{height: 100 / futSystem.length +'%'}">
+                        <div class="lrvl-pr">
+                            
+                            <ng-container *ngFor="let p of item.values">
+                                <span class="lrvl-pd" [ngStyle]="{width: 100 / item.values.length +'%'} ">
+                                    <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                                        <app-starting-player [player]="p"></app-starting-player>
+                                    </div>
+                                </span>
+                            </ng-container>
+
+                        </div>
+                    </div>
+
+                </ng-container>
+             
+            </span>
+        </div>
+    </div>
+    <!-- campo -->
+    <div class="lrvl-mfl lrvl-vac"></div>
+    <!-- visita -->
+    <div class="lrvl-tlt lrvl-tl lrvl-bbrc">
+        <!-- Players -->
+        <div class="lr-vl-ls" >
+            <!-- Drawing items -->
+            <div class="lrvl-fl lrvl-mfc lrvl-lmfc"></div>
+            <div class="lrvl-fl lrvl-lgc lr-vl-gc"></div>
+            <div class="lrvl-fl lr-vl-lgl lr-vl-gll"></div>
+            <div class="lrvl-fl lr-vl-lgs lr-vl-gls"></div>
+            <!-- Players list -->
+            <span *ngIf="visitaStarting && visitaStarting.length > 0; else noStanding">
+
+                 <!-- Formation -->
+                 <ng-container *ngFor="let item of getFormation(visitaLineup, false) as futSystem">
+
+                    <div class="lrvl-fr" [ngStyle]="{height: 100 / futSystem.length +'%'}">
+                        <div class="lrvl-pr">
+                            
+                            <ng-container *ngFor="let p of item.values">
+                                <span class="lrvl-pd" [ngStyle]="{width: 100 / item.values.length +'%'} ">
+                                    <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                                        <app-starting-player [home]="false" [player]="p"></app-starting-player>
+                                    </div>
+                                </span>
+                            </ng-container>
+
+                        </div>
+                    </div>
+
+                </ng-container>
+            </span>
+        </div>
+
+        <!-- Header -->
+        <div class="lr-vl-hf lrvl-bbrc" tabindex="0">
+            <img class="lrvl-nal lrvl-l" id="smlv_BZfMZIynGNahqtsP-IOwyAk_3" [src]="visitaImageUrl" alt="">
+            <span class="lrvl-tvc lrvl-nal" id="lrvl_at">{{visita}}</span>
+            <!-- <span class="lrvl-tvc lrvl-f">4-2-3-1</span> -->
+        </div>
+    </div>
+</div>
+
+<!-- Substitutes -->
+<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+    <app-team-image [src]="localImageUrl"></app-team-image>
+    <span>SUPLENTES</span>
+    <app-team-image [src]="visitaImageUrl"></app-team-image>
+</mat-toolbar>
+<div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <!-- home -->
+    <div fxFlex>
+        <div *ngIf="localSubstitutes && localSubstitutes.length > 0; else noStanding">
+            <mat-list role="list">
+                <mat-list-item role="listitem" *ngFor="let p of localSubstitutes">
+                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+    <!-- a way -->
+    <div fxFlex class="visita">
+
+        <div *ngIf="visitaSubstitutes && visitaSubstitutes.length > 0; else noStanding">
+            <mat-list role="list">
+                <mat-list-item role="listitem" *ngFor="let p of visitaSubstitutes ">
+                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
+                </mat-list-item>
+
+            </mat-list>
+
+        </div>
+    </div>
+</div>
+
+
+<ng-template #noStanding>
+    <div fxLayout="column" fxLayoutAlign="center center" class="no-lineup" style="height: 100%;">
+        <mat-icon>groups</mat-icon>
+        <p>Las alineaciones se subirán un día antes del partido.</p>
+    </div>
+</ng-template>

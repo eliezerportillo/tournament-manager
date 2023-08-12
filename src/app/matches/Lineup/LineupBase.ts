@@ -9,7 +9,7 @@ export class LineupBase  {
     
 
 
-    constructor(private matchService: MatchService) {
+    constructor(protected matchService: MatchService) {
         this.localLineup = [];
         this.visitaLineup = [];
     }
@@ -17,7 +17,7 @@ export class LineupBase  {
   
 
     get localStarting() {
-        return this.localLineup.filter(x => x.titular ? true : false);
+        return this.localLineup.filter(x => x.startging);
     }
 
     get localSubstitutes() {
@@ -25,7 +25,7 @@ export class LineupBase  {
     }
 
     get visitaStarting() {
-        return this.visitaLineup.filter(x => x.titular ? true : false);
+        return this.visitaLineup.filter(x => x.startging);
     }
 
     get visitaSubstitutes() {

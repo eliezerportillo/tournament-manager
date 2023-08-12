@@ -1,15 +1,26 @@
 <div class="content" fxLayout="column" fxLayoutAlign="space-between stretch">
-    
+
     <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center" color="accent">
-        
-        <span class="text-white">{{titulo}}</span>
-        <img src="assets/Logo_AFC_1024px.png" alt="afc logo" style="width: 40px;">
+
+        <div fxLayout="row" fxLayoutAlign="space-around center" >
+
+            <app-logo></app-logo>
+            <span class="text-white">{{titulo}}</span>
+            
+        </div>
+        <button mat-button [matMenuTriggerFor]="menu">
+            Menú            
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="upload-lineup">Subir alineación</button>            
+        </mat-menu>
+
     </mat-toolbar>
     <mat-progress-bar *ngIf="cargando" color="accent" mode="query">
     </mat-progress-bar>
     <div fxFlex class="router-content">
         <router-outlet></router-outlet>
     </div>
-    
+
 
 </div>

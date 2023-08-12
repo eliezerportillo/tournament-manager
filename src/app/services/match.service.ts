@@ -90,29 +90,12 @@ export class MatchService {
   }
 
   async getLineup(teamName: string) {
-    const snapshot = await this.standingsCollection.ref.where('equipo', '==', teamName).get();
-    const players = snapshot.docs.map(doc => {
-      const data = doc.data();
-      return { ...data, startging: data.titular > 0 }
-    });
-    return players.sort((a, b) => a.titular - b.titular);
+    const snapshot = await this.standingsCollection.ref.where('equipo', '==', teamName).orderBy('order').get();
+    const players = snapshot.docs.map(doc => doc.data());
+    return players;
   }
 
-  private moveItemToFirstPosition(arr: any[], criteria: (item: any) => boolean): any[] {
-    // Find the index of the item that satisfies the criteria
-    const index = arr.findIndex(criteria);
 
-    if (index !== -1) {
-
-      // Add the item to the first position using unshift
-      arr.unshift(arr[index]);
-
-      // Remove the item from its current position using splice
-      arr.splice(index, 1);
-    }
-
-    return arr;
-  }
 
   private parseDate(excelDate: number): Date | null {
 

@@ -1,0 +1,25 @@
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+
+    img {
+        width: 16px;
+        margin-right: 8px;
+    }
+
+    .login-wrapper {
+        margin: 16px 0;
+        text-align: center;
+        min-height: 200px;
+        width: 200px;
+        background-color: white;
+        padding: 32px;
+        border: 1px solid var(--primary-color);
+        border-radius: 8px;
+    }
+}

@@ -1,0 +1,13 @@
+.container {
+    height: calc(100vh - (64px + 64px));
+}
+
+.substitutes {
+    overflow: auto;
+}
+
+.formations {
+    display: grid;
+    justify-content: center;
+
+}

@@ -4,9 +4,16 @@ import { ImportExcelComponent } from './import-excel/import-excel.component';
 import { ShellComponent } from './shell/shell.component';
 import { TournamentComponent } from './routed/tournament/tournament.component';
 import { LineupComponent } from './routed/matches/lineup/lineup.component';
-import { UploadLineupComponent } from './teams/upload-lineup/upload-lineup.component';
+import { UploadLineupComponent } from './routed/matches/upload-lineup/upload-lineup.component';
+import { authGuard } from './guards/auth.guard';
+import { LoginComponent } from './login/login.component';
+
 
 const routes: Routes = [
+  {
+    path: 'login',
+    component: LoginComponent
+  },
   {
     path: '',
     component: ShellComponent,
@@ -25,9 +32,11 @@ const routes: Routes = [
       },
       {
         path: 'upload-lineup',
-        component: UploadLineupComponent
+        component: UploadLineupComponent,
+        canActivate: [authGuard]
+
       },
-      
+
     ]
   }
 
