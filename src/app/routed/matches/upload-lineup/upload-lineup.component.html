@@ -10,14 +10,14 @@
 <div *ngIf="captain" fxLayout="column" fxLayoutAlign="start stretch" class="container">
 
     <!-- Formation picker -->
-    <mat-toolbar class="formations">
+    <div class="formations" fxLayout="row" fxLayoutAlign="center center" >
         
         <mat-button-toggle-group [formControl]="selectedFormationControl">
             <ng-container *ngFor="let formation of futSystems">
                 <mat-button-toggle [value]="formation">{{formation.name}}</mat-button-toggle>
             </ng-container>
         </mat-button-toggle-group>
-    </mat-toolbar>
+    </div>
     <!-- Formation -->
     <app-formation-picker [teamName]="captain.equipo" [teamImage]="localImageUrl" [formation]="selectedFormationControl.value"
         (onClick)="openBottomSheet($event)"></app-formation-picker>
