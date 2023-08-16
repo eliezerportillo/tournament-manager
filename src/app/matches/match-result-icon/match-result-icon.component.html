@@ -22,4 +22,22 @@
         <mat-icon color="primary">trip_origin</mat-icon>
         <span *ngIf="showText">No jugó</span>
     </div>
+
+     <!-- Case: Move up -->
+     <div *ngSwitchCase="'up'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <mat-icon class="trending-up">trending_up</mat-icon>
+        <span *ngIf="showText">Subió en la tabla</span>
+    </div>
+
+     <!-- Case: Move down -->
+     <div *ngSwitchCase="'down'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <mat-icon color="warn">trending_down</mat-icon>
+        <span *ngIf="showText">Bajó en la tabla</span>
+    </div>
+
+     <!-- Case: keeep position -->
+     <div *ngSwitchCase="'equals'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <mat-icon>horizontal_rule</mat-icon>
+        <span *ngIf="showText">No se movió en la tabla</span>
+    </div>
 </div>
