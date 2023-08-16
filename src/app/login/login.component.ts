@@ -31,8 +31,9 @@ export class LoginComponent implements OnInit {
     if (r.user && r.user.email && this.captains) {
       if (this.captains.includes(r.user.email)) {
         this.router.navigate([this.redirectTo ? this.redirectTo : '/']);
-      }else {
-        this.snackBar.open('Solo los capitanes pueden acceder a esta sección. Revisar con organizadores.')
+      } else {
+        this.snackBar.open('Solo los capitanes pueden acceder a esta sección. Revisar con organizadores.');
+        await this.auth.signOut();
       }
     }
 
@@ -45,6 +46,6 @@ export class LoginComponent implements OnInit {
 
   async loadCaptains() {
 
-     this.captains = (await this.playerService.getCaptains()).filter(p => p.correo).map(p => p.correo ?? '');
+    this.captains = (await this.playerService.getCaptains()).filter(p => p.correo).map(p => p.correo ?? '');
   }
 }
