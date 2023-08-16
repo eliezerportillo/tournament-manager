@@ -58,6 +58,8 @@ import { ListSelectorComponent } from './players/list-selector/list-selector.com
 import { PlayerListComponent } from './players/player-list/player-list.component';
 import { FormationPickerComponent } from './matches/formation-picker/formation-picker.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DateStatusPipe } from './pipes/date-status.pipe';
+
 
 registerLocaleData(localeEsMx, 'es-MX');
 
@@ -87,7 +89,8 @@ registerLocaleData(localeEsMx, 'es-MX');
     PlayerPickerComponent,
     ListSelectorComponent,
     PlayerListComponent,
-    FormationPickerComponent
+    FormationPickerComponent,
+    DateStatusPipe
   ],
   imports: [
     CommonModule,

@@ -31,7 +31,7 @@
                 <div class="vertical-divider"></div>
 
                 <div class="match-info" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                    <p>{{ match.date | date }}</p>
+                    <p>{{ match.date | dateStatus }}</p>
                     <app-match-hour [match]="match"></app-match-hour>
                     <span>{{match.campo}}</span>
                 </div>

@@ -9,7 +9,7 @@
 <mat-card>
     <mat-card-header *ngIf="match">
         <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{match.date | date:'EEEE, MMMM d, y'}}</mat-card-title>
+        <mat-card-title>{{match.date | dateStatus}}</mat-card-title>
         <mat-card-subtitle>
             <app-match-hour [match]="match"></app-match-hour>
         </mat-card-subtitle>
