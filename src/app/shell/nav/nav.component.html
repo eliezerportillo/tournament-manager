@@ -1,0 +1,16 @@
+<mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center" color="accent">
+
+    <div fxLayout="row" fxLayoutAlign="space-around center" >
+
+        <app-logo></app-logo>
+        <span class="text-white">{{titulo}}</span>
+        
+    </div>
+    <button mat-button [matMenuTriggerFor]="menu">
+        Menú            
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="upload-lineup">Subir alineación</button>            
+    </mat-menu>
+
+</mat-toolbar>

@@ -1,11 +1,14 @@
 .tab-header {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background-color: #fff; /* Optionally, set a background color for the sticky header */
-  }
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fff;
+  /* Optionally, set a background color for the sticky header */
+}
 
-  .tab-content{
-    height: calc(100vh - 112px); /* Set the desired fixed height for the tab content */
-    overflow-y: auto;
-  }
+.tab-content {
+  height: calc(100vh - 112px);
+  /* Set the desired fixed height for the tab content */
+  overflow-y: auto;
+}
+

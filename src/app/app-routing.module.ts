@@ -7,9 +7,14 @@ import { LineupComponent } from './routed/matches/lineup/lineup.component';
 import { UploadLineupComponent } from './routed/matches/upload-lineup/upload-lineup.component';
 import { authGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';
+import { MatchListComponent } from './matches/match-list/match-list.component';
+import { RankingComponent } from './standings/ranking/ranking.component';
+import { StatsComponent } from './players/stats/stats.component';
 
 
 const routes: Routes = [
+  { path: '', redirectTo: '/matches', pathMatch: 'full' },
+
   {
     path: 'login',
     component: LoginComponent
@@ -20,7 +25,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: TournamentComponent
+        component: TournamentComponent,        
+        children: [
+          {  path: 'matches', component: MatchListComponent },
+          {  path: 'ranking', component: RankingComponent },
+          {  path: 'stats', component: StatsComponent },      
+        ]
       },
       {
         path: 'import',

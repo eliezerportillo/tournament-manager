@@ -5,11 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss']
 })
-export class ShellComponent {
-  titulo: string;
+export class ShellComponent {  
   cargando: boolean;
   constructor(){
-    this.titulo = "AFC | Asociación de Futbol Cristiana";
+    
     this.cargando = false;
   }
 }

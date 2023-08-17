@@ -52,9 +52,7 @@ export class MatchListComponent implements AfterViewInit , OnDestroy{
     );
   }
 
-  private scrollToCurrentDayElement() {
-    
-    console.log(this.matchElements);
+  private scrollToCurrentDayElement() {    
 
     const currentDate = new Date();
     let closest = this.matchElements?.first; // Initialize with the first date
