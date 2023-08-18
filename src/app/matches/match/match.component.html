@@ -1,6 +1,6 @@
 <div *ngIf="match && noPlay(match)">
     <ng-container>
-        <div class="match-box" matRipple routerLink="lineup"
+        <div class="match-box" matRipple routerLink="view"
             [queryParams]="{ local: match.local, visita: match.visita }">
 
 
@@ -13,7 +13,8 @@
                         <p>{{ match.local }}</p>
 
                         <span class="spacer"></span>
-                        <span *ngIf="match.marcadorLocal >= 0" [class.winner]="match.marcadorLocal > match.marcadorVisita">{{match.marcadorLocal}}</span>
+                        <span *ngIf="match.marcadorLocal >= 0"
+                            [class.winner]="match.marcadorLocal > match.marcadorVisita">{{match.marcadorLocal}}</span>
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
@@ -22,8 +23,9 @@
                         <p>{{ match.visita }}</p>
 
                         <span class="spacer"></span>
-                        
-                        <span *ngIf="match.marcadorVisita >= 0" [class.winner]="match.marcadorVisita > match.marcadorLocal">{{match.marcadorVisita}}</span>                        
+
+                        <span *ngIf="match.marcadorVisita >= 0"
+                            [class.winner]="match.marcadorVisita > match.marcadorLocal">{{match.marcadorVisita}}</span>
                     </div>
 
                 </div>

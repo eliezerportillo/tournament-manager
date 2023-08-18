@@ -6,7 +6,7 @@ import { PlayerService } from 'src/app/services/player.service';
 import { Player, PlayerType } from 'src/app/models/player';
 import { LineUp, Markable } from 'src/app/models/lineup';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { ListSelectorComponent } from 'src/app/players/list-selector/list-selector.component';
+import { ListSelectorComponent } from 'src/app/matches/players/list-selector/list-selector.component';
 import { UploadLineupCommand } from 'src/app/services/upload-lineup.command';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Formation } from 'src/app/models/formation';

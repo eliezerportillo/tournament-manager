@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LineUp } from 'src/app/models/lineup';
 import { Match } from 'src/app/models/match';
-import { Team } from 'src/app/models/team';
 import { MatchService } from 'src/app/services/match.service';
-import { TeamService } from 'src/app/services/team.service';
 
 @Component({
   selector: 'app-lineup',

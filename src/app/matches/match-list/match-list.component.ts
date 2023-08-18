@@ -10,10 +10,10 @@ import { MatchComponent } from '../match/match.component';
   templateUrl: './match-list.component.html',
   styleUrls: ['./match-list.component.scss']
 })
-export class MatchListComponent implements AfterViewInit , OnDestroy{
+export class MatchListComponent implements AfterViewInit, OnDestroy {
   matches$: Observable<Group<Match>[]>;
 
-  @ViewChildren(MatchComponent, {read: ElementRef}) matchElements?: QueryList<ElementRef>;
+  @ViewChildren(MatchComponent, { read: ElementRef }) matchElements?: QueryList<ElementRef>;
   dataSubscription?: Subscription;
 
 
@@ -24,7 +24,7 @@ export class MatchListComponent implements AfterViewInit , OnDestroy{
   }
 
   ngAfterViewInit(): void {
-    this.dataSubscription = this.matches$.subscribe(async dates => {      
+    this.dataSubscription = this.matches$.subscribe(async dates => {
       await firstValueFrom(of(this.scrollToCurrentDayElement()));
     });
   }
@@ -52,7 +52,7 @@ export class MatchListComponent implements AfterViewInit , OnDestroy{
     );
   }
 
-  private scrollToCurrentDayElement() {    
+  private scrollToCurrentDayElement() {
 
     const currentDate = new Date();
     let closest = this.matchElements?.first; // Initialize with the first date
@@ -68,7 +68,17 @@ export class MatchListComponent implements AfterViewInit , OnDestroy{
       }
     }
 
-    closest?.nativeElement.parentElement.scrollIntoView({ behavior: 'auto', block: 'start' });    
+    this.scrollToTargetAdjusted(closest?.nativeElement);
+  }
 
+  private scrollToTargetAdjusted(element: any) {
+    var headerOffset = 55;
+    var elementPosition = element.getBoundingClientRect().top;
+    var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "auto"
+    });
   }
 }
