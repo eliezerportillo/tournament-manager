@@ -66,14 +66,104 @@ $satin-sheen-gold-palette: (
   )
 );
 
+$aixcaquema-primary-palette: (
+  50: #e0f1ed,
+  100: #b2ddd0,
+  200: #82c7b3,
+  300: #53b196,
+  400: #33a082,
+  500: #1c8f6f,
+  600: #198263,
+  700: #147355,
+  800: #0d6348,
+  900: #04472e,
+
+  contrast: (50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
+
+$aixcaquema-accent-palette: (
+  50: #f1edd8,
+  100: #ddd19d,
+  200: #c6b35c,
+  300: #b09909,
+  400: #a38600,
+  500: #967400,
+  600: #996a00,
+  700: #9a5b00,
+  800: #9a4b00,
+  900: #992a00,
+
+  contrast: (50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
+
+$aixcaquema-warn-palette: (
+  50: #f8e1e4,
+  100: #eeb4bb,
+  200: #e08590,
+  300: #d25867,
+  400: #c53b4b,
+  500: #b92533,
+  600: #ab2032,
+  700: #981b30,
+  800: #85152e,
+  900: #630d28,
+
+  contrast: (50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$tournament-manager-primary: mat.define-palette($penn-blue-palette, 700, 900, 300, 500);
-$tournament-manager-accent: mat.define-palette($satin-sheen-gold-palette, 700);
+// $tournament-manager-primary: mat.define-palette($penn-blue-palette, 700, 900, 300, 500);
+// $tournament-manager-accent: mat.define-palette($satin-sheen-gold-palette, 700);
+// $tournament-manager-warn: mat.define-palette(mat.$red-palette);
 
-// The warn palette is optional (defaults to red).
-$tournament-manager-warn: mat.define-palette(mat.$red-palette);
+$tournament-manager-primary: mat.define-palette($aixcaquema-primary-palette, 900, 300, 500);
+$tournament-manager-accent: mat.define-palette($aixcaquema-accent-palette, 300);
+$tournament-manager-warn: mat.define-palette($aixcaquema-warn-palette, 900);
+
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
@@ -89,9 +179,10 @@ $tournament-manager-theme: mat.define-light-theme((color: (primary: $tournament-
 
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --primary-color: #000D3E;
-  --accent-color: #c6ad18;
-  --ok-color: green;
+  --primary-color: #0d6348;
+  --accent-color: #b09909;
+  --ok-color: #0d6348;
+  --nav-color: white;
 }
 
 html,

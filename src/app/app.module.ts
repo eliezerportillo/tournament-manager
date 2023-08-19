@@ -28,6 +28,7 @@ import { FirebaseModule } from './firebase/firebase.module';
 import { MaterialModule } from './material/material.module';
 import { SharedModule } from './shared/shared.module';
 import { MatchesModule } from './matches/matches.module';
+import { HomeComponent } from './home/home.component';
 
 
 
@@ -35,7 +36,8 @@ import { MatchesModule } from './matches/matches.module';
 @NgModule({
   declarations: [
     AppComponent,
-    ShellComponent,        
+    ShellComponent,
+    HomeComponent,        
   ],
   imports: [    
     BrowserModule,

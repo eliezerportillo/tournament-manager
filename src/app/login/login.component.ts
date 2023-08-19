@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { PlayerService } from '../services/player.service';
 import { Player } from '../models/player';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CompanyService } from '../services/company.service';
 
 @Component({
   selector: 'app-login',
@@ -20,9 +21,11 @@ export class LoginComponent implements OnInit {
   route: ActivatedRoute = inject(ActivatedRoute);
   playerService: PlayerService = inject(PlayerService);
   snackBar: MatSnackBar = inject(MatSnackBar);
+  companyService: CompanyService = inject(CompanyService);
 
   redirectTo?: string;
   captains?: string[];
+  company?: string;
 
 
 
@@ -41,6 +44,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.redirectTo = this.route.snapshot.queryParams['redirectTo'];
+    this.company = this.companyService.getCompanyName();
     this.loadCaptains();
   }
 

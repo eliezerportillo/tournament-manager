@@ -2,7 +2,7 @@
     <!-- <nav mat-tab-nav-bar color="accent">
         <mat-tab [label]="menu.text"   #rla="routerLinkActive"> </mat-tab>
     </nav> -->
-    <nav mat-tab-nav-bar color="accent" [tabPanel]="tabPanel">
+    <nav mat-tab-nav-bar color="warn" [tabPanel]="tabPanel">
         <ng-container *ngFor="let menu of menus">
             <a mat-tab-link [routerLink]="menu.path" routerLinkActive #rla="routerLinkActive"
                 [active]="rla.isActive">{{menu.text}}</a>

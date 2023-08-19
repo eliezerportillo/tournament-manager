@@ -10,6 +10,7 @@ import { LastMatchesComponent } from './components/last-matches/last-matches.com
 import { TeamImageComponent } from './components/team-image/team-image.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
+import { CompanyNameComponent } from './company-name/company-name.component';
 
 
 
@@ -22,6 +23,7 @@ import { RouterModule } from '@angular/router';
     MatchResultIconComponent,
     LastMatchesComponent,
     TeamImageComponent,
+    CompanyNameComponent,
     
   ],
   imports: [
@@ -39,7 +41,7 @@ import { RouterModule } from '@angular/router';
     MatchResultIconComponent,
     LastMatchesComponent,
     TeamImageComponent,
-
+    CompanyNameComponent
   ]
 })
 export class SharedModule { }

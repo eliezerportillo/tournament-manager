@@ -7,5 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class LogoComponent {
   @Input()
-  size: 'small' | 'medium' | 'large' = 'small';
+  size: 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' = 'small';
 }

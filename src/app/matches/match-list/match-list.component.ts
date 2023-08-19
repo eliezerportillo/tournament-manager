@@ -68,7 +68,9 @@ export class MatchListComponent implements AfterViewInit, OnDestroy {
       }
     }
 
-    this.scrollToTargetAdjusted(closest?.nativeElement);
+    if (closest) {
+      this.scrollToTargetAdjusted(closest?.nativeElement);
+    }
   }
 
   private scrollToTargetAdjusted(element: any) {

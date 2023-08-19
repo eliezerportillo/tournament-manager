@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "afc-torneo"
+    "default": "aixcaquema-sports"
   },
   "targets": {
-    "afc-torneo": {
+    "aixcaquema-sports": {
       "hosting": {
         "tournament-manager": [
-          "afc-torneo"
+          "aixcaquema-sports"
         ]
       }
     }
