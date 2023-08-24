@@ -1,41 +1,85 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firestore';
-import { map } from 'rxjs/operators';
-import { Match } from 'src/app/models/match';
+import { map, shareReplay, tap } from 'rxjs/operators';
+import { IMatch } from 'src/app/models/match';
 import { Observable } from 'rxjs';
 import { Team } from '../models/team';
 import { LineUp } from '../models/lineup';
+import { Group } from '../models/group';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchService {
-  private matchesCollection: AngularFirestoreCollection<Match>;
-  private matches$: Observable<Match[]>;
+  private matchesCollection: AngularFirestoreCollection<IMatch>;
+  private matches$: Observable<IMatch[]>;
   private standingsCollection: AngularFirestoreCollection<LineUp>;
 
   constructor(private db: AngularFirestore) {
-    this.matchesCollection = this.db.collection<Match>('Partidos');
+    this.matchesCollection = this.db.collection<IMatch>('Partidos');
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
     this.matches$ = this.matchesCollection.valueChanges();
   }
 
-  getMatches(): Observable<Match[]> {
+  getMatches(): Observable<IMatch[]> {
     return this.matches$.pipe(
-      map((matches: Match[]) => {
+      tap(matches => {        
+        console.log(`${matches.length} Matches read`);
+      }),
+      map((matches: IMatch[]) => {
         return matches.map(match => ({
           ...match,
           date: this.parseDate(match.fecha),
           dateTime: this.parseDateTime(match.fecha, match.hora),
           hour: this.parseHour(match.hora),
           imageUrlLocal: Team.createImageUrl(match.local),
-          imageUrlVisita: Team.createImageUrl(match.visita),
-        })) as Match[]
+          imageUrlVisita: Team.createImageUrl(match.visita)
+        })) as IMatch[]
       }),
-      map((matches: Match[]) => matches.slice().sort((a, b) => a.hour.localeCompare(b.hour)))
+      map((matches: IMatch[]) => matches.slice().sort((a, b) => a.hour.localeCompare(b.hour))),
+      shareReplay(1)
     );
   }
 
+  getMatchesGroupedByStage(){
+    return this.getMatchesGroupedBy('jornada');
+  }
+
+  getMatchesGroupedBy(groupKey: string): Observable<Group<IMatch>[]> {
+    return this.getMatches().pipe(
+      map((array => this.groupBy(array, groupKey)))
+    )
+  }
+  
+  groupBy(dataArray: IMatch[], groupBy: string): Group<IMatch>[] {
+    const grouped = dataArray.reduce((groupedData: { [key: string]: IMatch[] }, data: IMatch) => {
+      const groupKey: string = <string>data[groupBy];
+      if (!groupedData[groupKey]) {
+        groupedData[groupKey] = [];
+      }
+      groupedData[groupKey].push(data);
+      return groupedData;
+    }, {});
+
+    return Object.entries(grouped).map(([key, value]) =>
+    (
+      { key, values: value.sort((a, b) => a.fecha - b.fecha) }
+    )
+    );
+  }
+
+
+  async getLastMatchesByTeam(team: string, limit: number){
+    const firstLimitPart = Math.floor(limit/2);
+    const secondLimitPart = firstLimitPart + (limit % 2);
+    const promises = [      
+      this.matchesCollection.ref.where('local', '==', team).where('marcadorLocal', '>=', 0).orderBy('marcadorLocal').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(firstLimitPart).get(),
+      this.matchesCollection.ref.where('visita', '==', team).where('marcadorVisita', '>=', 0).orderBy('marcadorVisita').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(secondLimitPart).get()
+    ];
+    const responses = await Promise.all(promises);
+    const teamMatches = responses[0].docs.map(doc => doc.data()).concat(responses[1].docs.map(doc => doc.data()));
+    return teamMatches;
+  }
 
   async getMatchesByTeam(team: string) {
     const promises = [
@@ -53,7 +97,7 @@ export class MatchService {
         hour: this.parseHour(match.hora),
         imageUrlLocal: Team.createImageUrl(match.local),
         imageUrlVisita: Team.createImageUrl(match.visita),
-      })) as Match[];
+      })) as IMatch[];
   }
 
 
@@ -68,7 +112,7 @@ export class MatchService {
         hour: this.parseHour(match.hora),
         imageUrlLocal: Team.createImageUrl(match.local),
         imageUrlVisita: Team.createImageUrl(match.visita),
-      }))[0] as Match;
+      }))[0] as IMatch;
   }
 
   private async getFiltered(filterBy: string, value: string) {

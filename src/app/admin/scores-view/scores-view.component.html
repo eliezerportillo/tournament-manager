@@ -1,0 +1,16 @@
+<p>scores-view works!</p>
+
+<ng-container *ngIf="teams$ | async as teams">
+    <mat-form-field>
+        <mat-label>Equipos</mat-label>
+        <mat-select [formControl]="teamControl">
+            <mat-option *ngFor="let team of teams" [value]="team">
+                {{team.nombre}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</ng-container>
+
+<!-- <ng-container *ngIf="matches$ | async as matches">
+    <app-match-list [matches]="matches"></app-match-list>
+</ng-container> -->

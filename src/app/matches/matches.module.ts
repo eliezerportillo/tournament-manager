@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormationPickerComponent } from './formation-picker/formation-picker.component';
-import { MatchComponent } from './match/match.component';
-import { MatchHourComponent } from './match-hour/match-hour.component';
-import { MatchListComponent } from './match-list/match-list.component';
+import { MatchesViewComponent } from './matches-view/matches-view.component';
 import { SharedModule } from '../shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FirebaseModule } from '../firebase/firebase.module';
@@ -24,9 +22,7 @@ import { PlayerListComponent } from './players/player-list/player-list.component
   declarations: [
     FormationPickerComponent,    
     LineupViewerComponent,
-    MatchComponent,
-    MatchHourComponent,
-    MatchListComponent,    
+    MatchesViewComponent,    
     LineupComponent,
     LineupViewerComponent,
     UploadLineupComponent,

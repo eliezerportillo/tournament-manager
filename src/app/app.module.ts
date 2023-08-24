@@ -32,20 +32,21 @@ import { MatchesModule } from './matches/matches.module';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     ShellComponent,        
   ],
   imports: [    
+    SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FirebaseModule,
-    SharedModule,
     MaterialModule,
-    FlexLayoutModule,    
-    MatchesModule
+    FlexLayoutModule,
+    MatchesModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-MX' }],
   bootstrap: [AppComponent]

@@ -1,4 +1,5 @@
-export interface Match {
+export interface IMatch {
+    [key: string]: Object; 
     jornada: string;
     local: string;
     marcadorLocal: number;
@@ -14,10 +15,19 @@ export interface Match {
     campo: string;
 }
 
+export class Match {
+    static isFinished(matchDateTime: Date): boolean {
+        const today = new Date();
+        today.setHours(today.getHours() + 1);
+        return matchDateTime < today;
+    }
+
+}
+
 
 export class MatchResult {
     today: Date;
-    constructor(private match: Match) {
+    constructor(private match: IMatch) {
         this.today = new Date();
 
     }

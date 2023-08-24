@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Match, MatchResult } from 'src/app/models/match';
+import { IMatch, MatchResult } from 'src/app/models/match';
 import { MatchService } from 'src/app/services/match.service';
 
 
@@ -12,7 +12,7 @@ import { MatchService } from 'src/app/services/match.service';
 export class LastMatchesComponent implements OnInit {
 
   @Input()
-  lastMatches?: number;
+  lastMatches: number = 0;
 
   @Input()
   team: string;
@@ -33,10 +33,10 @@ export class LastMatchesComponent implements OnInit {
 
 
   private async loadLastMatches() {
-    const matches = await this.matchService.getMatchesByTeam(this.team);
+    const matches = await this.matchService.getLastMatchesByTeam(this.team, this.lastMatches);
 
     // Step 1: Sort the array by date in descending order (most recent first)
-    const matchResults = matches.map(m => new MatchResult(m)).filter(m => m.finished).sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 5);
+    const matchResults = matches.map(m => new MatchResult(m));
     const lastResults: string[] = matchResults.map(match => {
       return match.winner == this.team ? 'win' : match.draw ? 'draw' : match.played ? 'loss' : '';
     });

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Match } from 'src/app/models/match';
+import { IMatch } from 'src/app/models/match';
 
 @Component({
   selector: 'app-match',
@@ -9,9 +9,9 @@ import { Match } from 'src/app/models/match';
 export class MatchComponent {
 
   @Input()
-  match?: Match;
+  match?: IMatch;
 
-  noPlay(match: Match): boolean { 
+  noPlay(match: IMatch): boolean { 
     return ![match.local.toLocaleLowerCase(), match.visita.toLocaleLowerCase()].includes('descansa');
   }
 }

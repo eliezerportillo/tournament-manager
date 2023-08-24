@@ -13,7 +13,7 @@ export class RankingComponent {
   lastMatches: number;
 
   constructor(private teamService: TeamService) {
-    this.teams$ = this.teamService.getTeams();
+    this.teams$ = this.teamService.getRankedTeams();
     this.lastMatches = 5;
   }
 

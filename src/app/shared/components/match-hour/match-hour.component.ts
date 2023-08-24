@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Match } from 'src/app/models/match';
+import { IMatch, Match } from 'src/app/models/match';
 
 @Component({
   selector: 'app-match-hour',
@@ -10,15 +10,13 @@ export class MatchHourComponent implements OnInit {
 
 
   @Input()
-  match?: Match;
+  match?: IMatch;
   unfinished?: boolean;
 
 
   ngOnInit(): void {
-    if (this.match) {
-      const today = new Date();
-      today.setHours(today.getHours() + 1);
-      this.unfinished = today < this.match?.dateTime;
+    if (this.match) {      
+      this.unfinished = !Match.isFinished(this.match.dateTime)
     }
   }
 
