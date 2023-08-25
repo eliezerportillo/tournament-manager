@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IMatch } from 'src/app/models/match';
 
 @Component({
@@ -11,7 +11,14 @@ export class MatchComponent {
   @Input()
   match?: IMatch;
 
-  noPlay(match: IMatch): boolean { 
+  @Output()
+  selected: EventEmitter<IMatch> = new EventEmitter<IMatch>()
+
+  select(event: IMatch) {
+    this.selected.emit(event);
+  }
+
+  noPlay(match: IMatch): boolean {
     return ![match.local.toLocaleLowerCase(), match.visita.toLocaleLowerCase()].includes('descansa');
   }
 }

@@ -7,11 +7,11 @@ import { authGuard } from '../guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
+    canActivate: [authGuard],
     component: AdminShellComponent,
     children: [
       {
-        path: 'scores',
-        canActivate: [authGuard],
+        path: 'scores',        
         component: ScoresViewComponent
       }]
   }

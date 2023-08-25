@@ -1,0 +1,69 @@
+<mat-toolbar class="transparent">
+    <h4>{{title}}</h4>
+    <span class="spacer"></span>
+    <div fxLayoutGap="8px">
+        <button mat-flat-button (click)="delete()" color="warn" [disabled]="form.invalid">Limpiar marcador</button>
+        <button mat-flat-button (click)="save()" color="primary" [disabled]="form.invalid">Guardar</button>
+    </div>
+</mat-toolbar>
+<form [formGroup]="form" class="container" fxLayout="column" fxLayoutGap="8px">
+
+    <mat-form-field>
+        <mat-label>Dia del partido</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+
+    <mat-form-field>
+        <mat-label>Hora del partido</mat-label>
+        <input matInput name="selected_time_A" formControlName="time" [ngxMatTimepicker]="pickerA" readonly />
+        <mat-icon matSuffix (click)="pickerA.open()">
+            watch_later
+        </mat-icon>
+    </mat-form-field>
+    <ngx-mat-timepicker #pickerA></ngx-mat-timepicker>
+
+    <mat-form-field>
+        <mat-label>Campo</mat-label>
+        <input matInput placeholder="Nombre del campo" formControlName="field">        
+        <mat-icon matSuffix>
+            flag
+        </mat-icon>
+    </mat-form-field>
+
+    <app-match-header [match]="data.match">
+
+        <div local>
+            <button mat-icon-button color="accent" (click)="decrement('local')"><mat-icon>remove</mat-icon></button>
+            <mat-form-field appearance="fill">
+                <mat-label>{{data.match.local}}</mat-label>
+                <input matInput autocomplete="off" [placeholder]="data.match.local" type="number"
+                    formControlName="local">
+                <mat-icon matSuffix>sports_soccer</mat-icon>
+            </mat-form-field>
+            <button mat-icon-button color="accent" (click)="increment('local')"><mat-icon>add</mat-icon></button>
+        </div>
+
+        <div visita>
+            <button mat-icon-button color="accent" (click)="decrement('visita')"><mat-icon>remove</mat-icon></button>
+            <mat-form-field appearance="fill">
+                <mat-label>{{data.match.visita}}</mat-label>
+                <input matInput autocomplete="off" [placeholder]="data.match.visita" type="number"
+                    formControlName="visita">
+                <mat-icon matSuffix>sports_soccer</mat-icon>
+            </mat-form-field>
+            <button mat-icon-button color="accent" (click)="increment('visita')"><mat-icon>add</mat-icon></button>
+        </div>
+    </app-match-header>
+
+    <!-- <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div> -->
+</form>

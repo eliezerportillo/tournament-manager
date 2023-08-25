@@ -1,10 +1,12 @@
-export interface IMatch {
-    [key: string]: Object; 
+import { IEntity } from "./entity";
+
+export interface IMatch extends IEntity{
+    [key: string]: Object | null; 
     jornada: string;
     local: string;
-    marcadorLocal: number;
+    marcadorLocal: number | null;
     imageUrlLocal: string;
-    marcadorVisita: number;
+    marcadorVisita: number | null;
     imageUrlVisita: string;
     visita: string;
     fecha: number;

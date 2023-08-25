@@ -8,4 +8,10 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class AdminShellComponent {
   accountService: AccountService = inject(AccountService);
+
+  menus = [
+    { text: 'EQUIPOS', path: '#', disabled: true },    
+    { text: 'PARTIDOS', path: 'scores', disabled: false },
+    { text: 'PATROCINADORES', path: '#', disabled: true },
+  ];
 }

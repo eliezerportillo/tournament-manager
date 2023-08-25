@@ -13,6 +13,8 @@ import { RouterModule } from '@angular/router';
 import { MatchListComponent } from './components/match-list/match-list.component';
 import { MatchComponent } from './components/match/match.component';
 import { MatchHourComponent } from './components/match-hour/match-hour.component';
+import { CompanyNameComponent } from './components/company-name/company-name.component';
+import { MatchHeaderComponent } from './components/match-header/match-header.component';
 
 
 
@@ -28,7 +30,9 @@ import { MatchHourComponent } from './components/match-hour/match-hour.component
     MatchListComponent,
     MatchComponent,
     MatchHourComponent,
-    MatchListComponent
+    MatchListComponent,
+    CompanyNameComponent,
+    MatchHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +51,9 @@ import { MatchHourComponent } from './components/match-hour/match-hour.component
     TeamImageComponent,
     MatchComponent,
     MatchHourComponent,
-    MatchListComponent
+    MatchListComponent,
+    CompanyNameComponent,
+    MatchHeaderComponent,
   ]
 })
 export class SharedModule { }

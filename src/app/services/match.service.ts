@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QueryFn } from '@angular/fire/compat/firestore';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { IMatch } from 'src/app/models/match';
 import { Observable } from 'rxjs';
@@ -11,21 +11,34 @@ import { Group } from '../models/group';
   providedIn: 'root'
 })
 export class MatchService {
+
   private matchesCollection: AngularFirestoreCollection<IMatch>;
-  private matches$: Observable<IMatch[]>;
+  // private matches$: Observable<IMatch[]>;
   private standingsCollection: AngularFirestoreCollection<LineUp>;
 
   constructor(private db: AngularFirestore) {
     this.matchesCollection = this.db.collection<IMatch>('Partidos');
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
-    this.matches$ = this.matchesCollection.valueChanges();
+    // this.matches$ = this.matchesCollection.valueChanges();
   }
 
   getMatches(): Observable<IMatch[]> {
-    return this.matches$.pipe(
-      tap(matches => {        
+
+    // Use snapshotChanges() to get an observable of changes in the collection
+    const data$ = this.matchesCollection.snapshotChanges().pipe(
+      tap(matches => {
         console.log(`${matches.length} Matches read`);
       }),
+      map(actions =>
+        actions.map(action => {
+          return { id: action.payload.doc.id, ...action.payload.doc.data() } as IMatch;
+        })        
+      ),
+      shareReplay(1),
+    );
+
+    return data$.pipe(
+
       map((matches: IMatch[]) => {
         return matches.map(match => ({
           ...match,
@@ -36,12 +49,11 @@ export class MatchService {
           imageUrlVisita: Team.createImageUrl(match.visita)
         })) as IMatch[]
       }),
-      map((matches: IMatch[]) => matches.slice().sort((a, b) => a.hour.localeCompare(b.hour))),
-      shareReplay(1)
+      map((matches: IMatch[]) => matches.slice().sort((a, b) => a.hour.localeCompare(b.hour)))
     );
   }
 
-  getMatchesGroupedByStage(){
+  getMatchesGroupedByStage() {
     return this.getMatchesGroupedBy('jornada');
   }
 
@@ -50,7 +62,7 @@ export class MatchService {
       map((array => this.groupBy(array, groupKey)))
     )
   }
-  
+
   groupBy(dataArray: IMatch[], groupBy: string): Group<IMatch>[] {
     const grouped = dataArray.reduce((groupedData: { [key: string]: IMatch[] }, data: IMatch) => {
       const groupKey: string = <string>data[groupBy];
@@ -69,15 +81,15 @@ export class MatchService {
   }
 
 
-  async getLastMatchesByTeam(team: string, limit: number){
-    const firstLimitPart = Math.floor(limit/2);
+  async getLastMatchesByTeam(team: string, limit: number): Promise<IMatch[]> {
+    const firstLimitPart = Math.floor(limit / 2);
     const secondLimitPart = firstLimitPart + (limit % 2);
-    const promises = [      
+    const promises = [
       this.matchesCollection.ref.where('local', '==', team).where('marcadorLocal', '>=', 0).orderBy('marcadorLocal').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(firstLimitPart).get(),
       this.matchesCollection.ref.where('visita', '==', team).where('marcadorVisita', '>=', 0).orderBy('marcadorVisita').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(secondLimitPart).get()
     ];
     const responses = await Promise.all(promises);
-    const teamMatches = responses[0].docs.map(doc => doc.data()).concat(responses[1].docs.map(doc => doc.data()));
+    const teamMatches = responses[0].docs.map(this.parseDoc).concat(responses[1].docs.map(this.parseDoc));
     return teamMatches;
   }
 
@@ -102,9 +114,9 @@ export class MatchService {
 
 
 
-  async getMatch(local: string, visita: string) {
+  async getMatch(local: string, visita: string): Promise<IMatch> {
     const snapshot = await this.matchesCollection.ref.where('local', '==', local).where('visita', '==', visita).get();
-    return snapshot.docs.map(doc => doc.data())
+    return snapshot.docs.map(this.parseDoc)
       .map(match => ({
         ...match,
         date: this.parseDate(match.fecha),
@@ -115,9 +127,9 @@ export class MatchService {
       }))[0] as IMatch;
   }
 
-  private async getFiltered(filterBy: string, value: string) {
+  private async getFiltered(filterBy: string, value: string): Promise<IMatch[]> {
     const snapshot = await this.matchesCollection.ref.where(filterBy, '==', value).get();
-    return snapshot.docs.map(doc => doc.data());
+    return snapshot.docs.map(this.parseDoc);
   }
 
   private parseDateTime(fecha: number, hora: number) {
@@ -135,10 +147,13 @@ export class MatchService {
 
   async getLineup(teamName: string) {
     const snapshot = await this.standingsCollection.ref.where('equipo', '==', teamName).orderBy('order').get();
-    const players = snapshot.docs.map(doc => doc.data());
+    const players = snapshot.docs.map(this.parseDoc);
     return players;
   }
 
+  private parseDoc<T>(doc: QueryDocumentSnapshot<T>) {
+    return { id: doc.id, ...doc.data() }
+  }
 
 
   private parseDate(excelDate: number): Date | null {
@@ -175,4 +190,6 @@ export class MatchService {
 
     return `${hourString}:${minuteString}`;
   }
+
+
 }

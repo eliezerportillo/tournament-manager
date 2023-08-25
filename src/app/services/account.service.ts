@@ -6,4 +6,8 @@ import { Injectable } from '@angular/core';
 export class AccountService {
 
   constructor() { }
+
+  getComponyName(): string {
+    return 'AFC | Asociación de Futbol Cristiana';
+  }
 }

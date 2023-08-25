@@ -14,16 +14,16 @@ import { LineUp } from 'src/app/models/lineup';
 export class ListSelectorComponent {
 
   bottomSheetRef: MatBottomSheetRef<ListSelectorComponent> = inject(MatBottomSheetRef<ListSelectorComponent>);
-
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: {players: Player[] }) { 
+    this.players = data.players;
+    this.message = `Elegir jugador`;
+  }
   playerService: PlayerService = inject(PlayerService);
   players: Player[];
   message: string;
 
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: {players: Player[] }) { 
-    this.players = data.players;
-    this.message = `Elegir jugador`;
-  }
+  
 
   openLink(player: Player): void {
     this.bottomSheetRef.dismiss(player);
