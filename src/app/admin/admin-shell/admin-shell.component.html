@@ -1,0 +1,25 @@
+<div class="container">
+
+    <mat-toolbar color="primary">
+        <app-logo></app-logo>
+        <app-company-name></app-company-name>
+    </mat-toolbar>
+
+    <main>
+
+        <nav mat-tab-nav-bar color="primary" [tabPanel]="tabPanel">
+            <ng-container *ngFor="let menu of menus">
+                <a mat-tab-link [routerLink]="menu.path" routerLinkActive #rla="routerLinkActive" [disabled]="menu.disabled"
+                    [active]="rla.isActive">{{menu.text}}</a>
+            </ng-container>
+
+            <!-- Add more tab links as needed -->
+        </nav>
+
+        <section>
+            <mat-tab-nav-panel #tabPanel>
+                <router-outlet></router-outlet>
+            </mat-tab-nav-panel>
+        </section>
+    </main>
+</div>

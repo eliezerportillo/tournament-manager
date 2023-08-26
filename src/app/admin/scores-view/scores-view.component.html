@@ -1,0 +1,14 @@
+<ng-container *ngIf="matches">
+    <mat-toolbar class="transparent">
+        Partidos
+        <span class="spacer"></span>
+        <button mat-stroked-button (click)="openStandings()">Posiciones <mat-icon class="trending-up">trending_up</mat-icon></button>
+    </mat-toolbar>
+    <div *ngFor="let group of matches">
+        <mat-toolbar>Jornada {{ group.key }} de {{matches.length}}</mat-toolbar>
+
+        <app-match *ngFor="let match of group.values" [match]="match" (selected)="onSelected($event)"></app-match>
+
+    </div>
+    <app-match-list [matches]="matches"></app-match-list>
+</ng-container>

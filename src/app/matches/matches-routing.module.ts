@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from 'src/app/guards/auth.guard';
 import { LineupComponent } from './lineups/lineup/lineup.component';
 import { UploadLineupComponent } from './lineups/upload-lineup/upload-lineup.component';
-import { MatchListComponent } from './match-list/match-list.component';
+import { MatchesViewComponent } from './matches-view/matches-view.component';
 
 
 const routes: Routes = [
-  { path: '', component: MatchListComponent },
+  { path: '', component: MatchesViewComponent },
   {
     path: 'view',
     component: LineupComponent

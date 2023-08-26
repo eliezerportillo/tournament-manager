@@ -89,9 +89,10 @@ $tournament-manager-theme: mat.define-light-theme((color: (primary: $tournament-
 
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --primary-color: #000D3E;
+  --primary-color: #112660;
   --accent-color: #c6ad18;
   --ok-color: green;
+  --base-color: whitesmoke;
 }
 
 html,
@@ -118,4 +119,12 @@ body {
   z-index: 100;
   height: 100vh;
   width: 100vw;
+}
+
+.mat-toolbar {
+  color: var(--primary-color);
+}
+
+.transparent {
+  background-color: transparent;
 }

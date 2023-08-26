@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Match } from 'src/app/models/match';
+import { IMatch } from 'src/app/models/match';
 import { MatchService } from 'src/app/services/match.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class LineupComponent implements OnInit {
   local: string;
   visita: string;
 
-  match?: Match;
+  match?: IMatch;
 
   constructor(private route: ActivatedRoute, private matchService: MatchService) {
 

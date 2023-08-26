@@ -1,26 +1,41 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, CollectionReference, Query, DocumentData, QueryFn } from '@angular/fire/compat/firestore';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 import { ITeam } from '../models/team';
-import { firstValueFrom } from 'rxjs';
-import { LineUp } from '../models/lineup';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeamService {
   teamsCollection: AngularFirestoreCollection<ITeam>;
+  rankedCollection: AngularFirestoreCollection<ITeam>;
   
+  rankedTeams$: Observable<ITeam[]>;
   teams$: Observable<ITeam[]>;
 
   constructor(private db: AngularFirestore) {
-    this.teamsCollection = this.db.collection<ITeam>('Equipos', this.getOrdered);
+    this.rankedCollection = this.db.collection<ITeam>('Equipos', this.getOrdered);
+    this.teamsCollection = this.db.collection<ITeam>('Equipos', ref => ref.orderBy('nombre'));
     
+    this.rankedTeams$ = this.rankedCollection.valueChanges();
     this.teams$ = this.teamsCollection.valueChanges();
   }
 
 
+
+  getRankedTeams(): Observable<ITeam[]> {
+    return this.rankedCollection.snapshotChanges().pipe(
+      tap(matches => {
+        console.log(`${matches.length} Teams read`);
+      }),
+      map(actions =>
+        actions.map(action => {
+          return { id: action.payload.doc.id, ...action.payload.doc.data() } as ITeam;
+        })        
+      )      
+    );    
+  }
 
   getTeams(): Observable<ITeam[]> {
     return this.teams$;

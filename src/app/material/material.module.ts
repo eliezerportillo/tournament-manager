@@ -12,6 +12,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
+  
+
 
 
 @NgModule({
@@ -30,6 +37,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatMenuModule,
     MatBottomSheetModule,
     MatButtonToggleModule,
+    MatSelectModule,    
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule    
   ]
 })
 export class MaterialModule { }

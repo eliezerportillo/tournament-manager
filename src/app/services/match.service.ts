@@ -1,41 +1,101 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firestore';
-import { map } from 'rxjs/operators';
-import { Match } from 'src/app/models/match';
+import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QueryFn } from '@angular/fire/compat/firestore';
+import { map, shareReplay, tap } from 'rxjs/operators';
+import { IMatch } from 'src/app/models/match';
 import { Observable } from 'rxjs';
 import { Team } from '../models/team';
 import { LineUp } from '../models/lineup';
+import { Group } from '../models/group';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchService {
-  private matchesCollection: AngularFirestoreCollection<Match>;
-  private matches$: Observable<Match[]>;
+
+  private matchesCollection: AngularFirestoreCollection<IMatch>;
+  // private matches$: Observable<IMatch[]>;
   private standingsCollection: AngularFirestoreCollection<LineUp>;
 
   constructor(private db: AngularFirestore) {
-    this.matchesCollection = this.db.collection<Match>('Partidos');
+    this.matchesCollection = this.db.collection<IMatch>('Partidos');
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
-    this.matches$ = this.matchesCollection.valueChanges();
+    // this.matches$ = this.matchesCollection.valueChanges();
   }
 
-  getMatches(): Observable<Match[]> {
-    return this.matches$.pipe(
-      map((matches: Match[]) => {
+  getMatches(): Observable<IMatch[]> {
+
+    // Use snapshotChanges() to get an observable of changes in the collection
+    const data$ = this.matchesCollection.snapshotChanges().pipe(
+      tap(matches => {
+        console.log(`${matches.length} Matches read`);
+      }),
+      map(actions =>
+        actions.map(action => {
+          return { id: action.payload.doc.id, ...action.payload.doc.data() } as IMatch;
+        })
+      )
+    );
+
+    return data$.pipe(
+
+      map((matches: IMatch[]) => {
         return matches.map(match => ({
           ...match,
           date: this.parseDate(match.fecha),
           dateTime: this.parseDateTime(match.fecha, match.hora),
           hour: this.parseHour(match.hora),
           imageUrlLocal: Team.createImageUrl(match.local),
-          imageUrlVisita: Team.createImageUrl(match.visita),
-        })) as Match[]
+          imageUrlVisita: Team.createImageUrl(match.visita)
+        })) as IMatch[]
       }),
-      map((matches: Match[]) => matches.slice().sort((a, b) => a.hour.localeCompare(b.hour)))
+      map((matches: IMatch[]) => matches.slice().sort((a, b) => a.hour.localeCompare(b.hour)))
     );
   }
 
+  getMatchesGroupedByStage() {
+    return this.getMatchesGroupedBy('jornada');
+  }
+
+  getMatchesGroupedBy(groupKey: string): Observable<Group<IMatch>[]> {
+    return this.getMatches().pipe(
+      map((array => this.groupBy(array, groupKey)))
+    )
+  }
+
+  groupBy(dataArray: IMatch[], groupBy: string): Group<IMatch>[] {
+    const grouped = dataArray.reduce((groupedData: { [key: string]: IMatch[] }, data: IMatch) => {
+      const groupKey: string = <string>data[groupBy];
+      if (!groupedData[groupKey]) {
+        groupedData[groupKey] = [];
+      }
+      groupedData[groupKey].push(data);
+      return groupedData;
+    }, {});
+
+    return Object.entries(grouped).map(([key, value]) =>
+    (
+      { key, values: value.sort((a, b) => a.fecha - b.fecha) }
+    )
+    );
+  }
+
+
+  async getLastMatchesByTeam(team: string, limit: number): Promise<IMatch[]> {
+    const promises = [
+      this.matchesCollection.ref.where('local', '==', team).where('marcadorLocal', '>=', 0).orderBy('marcadorLocal').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(limit).get(),
+      this.matchesCollection.ref.where('visita', '==', team).where('marcadorVisita', '>=', 0).orderBy('marcadorVisita').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(limit).get()
+    ];
+    const responses = await Promise.all(promises);
+    const teamMatches = responses[0].docs.map(this.parseDoc).concat(responses[1].docs.map(this.parseDoc));
+
+    return teamMatches.sort((a, b) => {
+      if (b.fecha !== a.fecha) {
+        return b.fecha - a.fecha;
+      } else {
+        return b.hora - a.hora
+      }
+    });
+  }
 
   async getMatchesByTeam(team: string) {
     const promises = [
@@ -53,14 +113,14 @@ export class MatchService {
         hour: this.parseHour(match.hora),
         imageUrlLocal: Team.createImageUrl(match.local),
         imageUrlVisita: Team.createImageUrl(match.visita),
-      })) as Match[];
+      })) as IMatch[];
   }
 
 
 
-  async getMatch(local: string, visita: string) {
+  async getMatch(local: string, visita: string): Promise<IMatch> {
     const snapshot = await this.matchesCollection.ref.where('local', '==', local).where('visita', '==', visita).get();
-    return snapshot.docs.map(doc => doc.data())
+    return snapshot.docs.map(this.parseDoc)
       .map(match => ({
         ...match,
         date: this.parseDate(match.fecha),
@@ -68,12 +128,12 @@ export class MatchService {
         hour: this.parseHour(match.hora),
         imageUrlLocal: Team.createImageUrl(match.local),
         imageUrlVisita: Team.createImageUrl(match.visita),
-      }))[0] as Match;
+      }))[0] as IMatch;
   }
 
-  private async getFiltered(filterBy: string, value: string) {
+  private async getFiltered(filterBy: string, value: string): Promise<IMatch[]> {
     const snapshot = await this.matchesCollection.ref.where(filterBy, '==', value).get();
-    return snapshot.docs.map(doc => doc.data());
+    return snapshot.docs.map(this.parseDoc);
   }
 
   private parseDateTime(fecha: number, hora: number) {
@@ -91,10 +151,13 @@ export class MatchService {
 
   async getLineup(teamName: string) {
     const snapshot = await this.standingsCollection.ref.where('equipo', '==', teamName).orderBy('order').get();
-    const players = snapshot.docs.map(doc => doc.data());
+    const players = snapshot.docs.map(this.parseDoc);
     return players;
   }
 
+  private parseDoc<T>(doc: QueryDocumentSnapshot<T>) {
+    return { id: doc.id, ...doc.data() }
+  }
 
 
   private parseDate(excelDate: number): Date | null {
@@ -131,4 +194,6 @@ export class MatchService {
 
     return `${hourString}:${minuteString}`;
   }
+
+
 }

@@ -15,16 +15,20 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./tournaments/tournaments.module').then(m => m.TournamentsModule)
-      }
+      },
+      {
+        path: 'import',
+        loadChildren: () => import('./import/import.module').then(m => m.ImportModule)
+      } 
     ]
   },
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
-  },
+  },   
   {
-    path: 'import',
-    loadChildren: () => import('./import/import.module').then(m => m.ImportModule)
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
   }  
 
 ];

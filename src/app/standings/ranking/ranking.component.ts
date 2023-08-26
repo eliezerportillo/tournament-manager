@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ITeam } from 'src/app/models/team';
+import { ITeam, Team } from 'src/app/models/team';
 import { TeamService } from 'src/app/services/team.service';
 
 @Component({
@@ -8,16 +8,16 @@ import { TeamService } from 'src/app/services/team.service';
   templateUrl: './ranking.component.html',
   styleUrls: ['./ranking.component.scss']
 })
-export class RankingComponent {
-  teams$: Observable<ITeam[]>;
-  lastMatches: number;
+export class RankingComponent implements OnInit {
+  
+  teams$?: Observable<ITeam[]>;
+
 
   constructor(private teamService: TeamService) {
-    this.teams$ = this.teamService.getTeams();
-    this.lastMatches = 5;
+  }
+  
+  ngOnInit(): void {
+    this.teams$ = this.teamService.getRankedTeams();
   }
 
-  getImage(team: ITeam) {
-    return `assets/${team.nombre}.png`;
-  }
 }
