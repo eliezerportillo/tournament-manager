@@ -1,5 +1,5 @@
 import { Component, Inject, inject } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, FormBuilder, ValidatorFn } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { IMatch } from 'src/app/models/match';
 import { MatchService } from 'src/app/services/match.service';
@@ -12,23 +12,41 @@ import { UpdateScoreCommand } from 'src/app/services/update-score.command';
 })
 export class ScoreFillerComponent {
   title: string;
+  score: string;
   form: FormGroup;
+  fb: FormBuilder = inject(FormBuilder);
   matchService: MatchService = inject(MatchService);
   command: UpdateScoreCommand = inject(UpdateScoreCommand);
   bottomSheetRef: MatBottomSheetRef<ScoreFillerComponent> = inject(MatBottomSheetRef<ScoreFillerComponent>);
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: { match: IMatch }) {
-    this.title = `Información de partido`;
+    this.title = `Información del partido`;
     this.form = this.initForm(data.match);
+    this.score = this.getScore(data.match);
+  }
+
+  private getScore(match: IMatch): string {
+    return `${match.marcadorLocal}-${match.marcadorVisita}`;
+  }
+
+  close() {
+    if (this.getScore(this.data.match) != this.score) {
+      this.bottomSheetRef.dismiss(true);
+    } else {
+      this.bottomSheetRef.dismiss(false);
+    }
   }
 
   initForm(match: IMatch): FormGroup {
-    return new FormGroup({
+    return this.fb.group({
       local: new FormControl<number | null>(match.marcadorLocal, [Validators.min(0)]),
       visita: new FormControl<number | null>(match.marcadorVisita, [Validators.min(0)]),
       date: new FormControl<Date>(match.date, [Validators.required]),
       time: new FormControl<string>(match.hour, [Validators.required]),
       field: new FormControl<string>(match.campo, [Validators.required]),
-    });
+    },
+      {
+        validators: [MatchValidators.scoreValidator()]
+      });
   }
 
   get local() {
@@ -70,7 +88,7 @@ export class ScoreFillerComponent {
     this.data.match.fecha = this.convertToExcelDate(this.date?.value);
     this.data.match.hora = this.convertToExcelTime(this.convertTimeStringToMilliseconds(this.time?.value));
     await this.command.execute(this.data.match);
-    console.log(this.data.match);
+    this.close();
   }
 
   async delete() {
@@ -82,9 +100,9 @@ export class ScoreFillerComponent {
 
   private convertTimeStringToMilliseconds(timeString: string): number {
     const [hours, minutes] = timeString.split(':').map(Number);
-  
+
     const totalMilliseconds = hours * 60 * 60 * 1000 + minutes * 60 * 1000;
-  
+
     return totalMilliseconds;
   }
 
@@ -109,4 +127,38 @@ export class ScoreFillerComponent {
 
     return excelDateNumber;
   }
+}
+
+
+class MatchValidators {
+  static scoreValidator(): ValidatorFn {
+    return (group: AbstractControl<MatchForm>): ValidationErrors | null => {
+      const local = group.value.local;
+      const visita = group.value.visita;
+
+      const localControl = group.get('local');
+      localControl?.setErrors(null);
+      const vistaControl = group.get('visita');
+      vistaControl?.setErrors(null);
+      if (local === null && visita !== null) {
+        const err = { localScoreMissing: true };
+        localControl?.setErrors(err);
+        return err;
+      } else if (visita === null && local !== null) {
+        const err = { visitaScoreMissing: true };
+        vistaControl?.setErrors(err);
+        return err;
+      }
+      return null;
+    };
+
+  }
+}
+
+interface MatchForm {
+  local: number | null;
+  visita: number | null;
+  date: Date;
+  time: string;
+  field: string;
 }

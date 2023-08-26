@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, CollectionReference, Query, DocumentData, QueryFn } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 import { ITeam } from '../models/team';
 
@@ -25,7 +25,16 @@ export class TeamService {
 
 
   getRankedTeams(): Observable<ITeam[]> {
-    return this.rankedTeams$;
+    return this.rankedCollection.snapshotChanges().pipe(
+      tap(matches => {
+        console.log(`${matches.length} Teams read`);
+      }),
+      map(actions =>
+        actions.map(action => {
+          return { id: action.payload.doc.id, ...action.payload.doc.data() } as ITeam;
+        })        
+      )      
+    );    
   }
 
   getTeams(): Observable<ITeam[]> {

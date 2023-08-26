@@ -1,9 +1,10 @@
-import { Component, ElementRef, AfterViewInit, QueryList, ViewChildren, OnDestroy } from '@angular/core';
+import { Component, ElementRef, AfterViewInit, QueryList, ViewChildren, OnDestroy, inject } from '@angular/core';
 import { Observable, Subscription, map, shareReplay, tap } from 'rxjs';
 import { Group } from 'src/app/models/group';
 import { IMatch, Match } from 'src/app/models/match';
 import { MatchService } from 'src/app/services/match.service';
 import { MatchComponent } from '../../shared/components/match/match.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-matches-view',
@@ -11,6 +12,8 @@ import { MatchComponent } from '../../shared/components/match/match.component';
   styleUrls: ['./matches-view.component.scss']
 })
 export class MatchesViewComponent implements AfterViewInit {
+  router: Router = inject(Router);
+  route: ActivatedRoute = inject(ActivatedRoute);
   matches$: Observable<Group<IMatch>[]>;
 
   @ViewChildren(MatchComponent, { read: ElementRef }) matchElements?: QueryList<ElementRef>;
@@ -19,13 +22,15 @@ export class MatchesViewComponent implements AfterViewInit {
     this.matches$ = this.matchService.getMatchesGroupedByStage();
   }
 
-  ngAfterViewInit(): void {    
-    this.matchElements?.changes.subscribe( dates => {      
+  ngAfterViewInit(): void {
+    this.matchElements?.changes.subscribe(dates => {
       this.scrollToCurrentDayElement()
     });
   }
 
- 
+  onSelected(match: IMatch) {
+    this.router.navigate(['view'], { relativeTo: this.route, queryParams: { local: match.local, visita: match.visita } });
+  }
 
   private scrollToCurrentDayElement() {
 
@@ -33,7 +38,7 @@ export class MatchesViewComponent implements AfterViewInit {
     let closest = this.matchElements?.first; // Initialize with the first date
     let closestDate = new Date(closest?.nativeElement.getAttribute('data-date'));
     let closestDiff = Math.abs(currentDate.getTime() - closestDate.getTime());
-    
+
     for (const match of this.matchElements ?? []) {
       const elementDate = new Date(match?.nativeElement.getAttribute('data-date'));
       const diff = Math.abs(currentDate.getTime() - elementDate.getTime());

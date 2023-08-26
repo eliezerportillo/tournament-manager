@@ -22,7 +22,6 @@ export class UpdateScoreCommand {
       fecha: match.fecha,
       hora: match.hora,
       campo: match.campo
-    });
-
+    });    
   }
 }

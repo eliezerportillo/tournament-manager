@@ -1,0 +1,11 @@
+<div fxLayout="row">
+
+    <button mat-button (click)="close()">
+        <mat-icon>arrow_back</mat-icon>
+        {{title}}
+    </button>
+    <span class="spacer"></span>
+    <button mat-flat-button (click)="process()" [disabled]="disabledProcess">Procesar resultados</button>
+</div>
+
+<app-team-list [teams]="data.teams"></app-team-list>

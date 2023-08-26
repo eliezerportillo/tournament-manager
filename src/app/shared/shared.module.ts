@@ -15,6 +15,8 @@ import { MatchComponent } from './components/match/match.component';
 import { MatchHourComponent } from './components/match-hour/match-hour.component';
 import { CompanyNameComponent } from './components/company-name/company-name.component';
 import { MatchHeaderComponent } from './components/match-header/match-header.component';
+import { TeamListComponent } from './components/team-list/team-list.component';
+
 
 
 
@@ -32,7 +34,8 @@ import { MatchHeaderComponent } from './components/match-header/match-header.com
     MatchHourComponent,
     MatchListComponent,
     CompanyNameComponent,
-    MatchHeaderComponent
+    MatchHeaderComponent,
+    TeamListComponent    
   ],
   imports: [
     CommonModule,
@@ -54,6 +57,7 @@ import { MatchHeaderComponent } from './components/match-header/match-header.com
     MatchListComponent,
     CompanyNameComponent,
     MatchHeaderComponent,
+    TeamListComponent
   ]
 })
 export class SharedModule { }

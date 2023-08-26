@@ -1,7 +1,8 @@
 <ng-container *ngIf="match">
     <mat-card>
         <mat-card-content>
-            <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px" fxLayout.gt-xs="row"
+                fxLayoutAlign.gt-xs="space-between center">
                 <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="16px">
                     <app-team-image [src]="match.imageUrlLocal"></app-team-image>
                     <span>{{match.local}}</span>
@@ -9,6 +10,7 @@
                 </div>
 
                 <p>vs.</p>
+
                 <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="16px">
 
                     <app-team-image [src]="match.imageUrlVisita"></app-team-image>
@@ -17,6 +19,8 @@
                 </div>
             </div>
         </mat-card-content>
+
+        <ng-content select="[actions]"></ng-content>
 
     </mat-card>
 </ng-container>

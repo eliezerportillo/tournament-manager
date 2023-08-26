@@ -1,4 +1,7 @@
-export interface ITeam {
+import { IEntity } from "./entity";
+
+export interface ITeam extends IEntity {
+    tendencia: '<' | '>' | '=' | '';
     nombre: string;
     PJ: number;
     G: number;
@@ -11,7 +14,7 @@ export interface ITeam {
 }
 
 export class Team {
-    static createImageUrl(teamName: string){
-        return `assets/${teamName}.png`; 
+    static createImageUrl(teamName: string) {
+        return `assets/${teamName}.png`;
     }
 }

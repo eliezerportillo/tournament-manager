@@ -1,7 +1,7 @@
 import { IEntity } from "./entity";
 
-export interface IMatch extends IEntity{
-    [key: string]: Object | null; 
+export interface IMatch extends IEntity {
+    [key: string]: Object | null;
     jornada: string;
     local: string;
     marcadorLocal: number | null;
@@ -61,11 +61,38 @@ export class MatchResult {
         return Number(this.match.marcadorVisita)
     }
 
+    get local(): string { return this.match.local }
+    get visita(): string { return this.match.visita }
+
     get winner(): string {
         if (!this.hasWinner) {
             return '';
         }
 
-        return this.marcadorLocal > this.marcadorVisita ? this.match.local : this.match.visita;
+        return this.marcadorLocal > this.marcadorVisita ? this.local : this.visita;
+    }
+
+    get loser(): string {
+        if (!this.hasWinner) {
+            return '';
+        }
+
+        return this.marcadorLocal < this.marcadorVisita ? this.local : this.visita;
+    }
+
+    get winnerResult(): number {
+        if (!this.hasWinner) {
+            return 0;
+        }
+
+        return this.marcadorLocal > this.marcadorVisita ? this.marcadorLocal : this.marcadorVisita;
+    }
+
+    get loserResult(): number {
+        if (!this.hasWinner) {
+            return 0;
+        }
+
+        return this.marcadorLocal < this.marcadorVisita ? this.marcadorLocal : this.marcadorVisita;
     }
 }

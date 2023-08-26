@@ -10,12 +10,14 @@ import { ScoreFillerComponent } from './score-filler/score-filler.component';
 import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+import { StandingsViewComponent } from './standings-view/standings-view.component';
 
 @NgModule({
   declarations: [
     AdminShellComponent,
     ScoresViewComponent,
-    ScoreFillerComponent
+    ScoreFillerComponent,
+    StandingsViewComponent
   ],
   imports: [
     FlexLayoutModule,

@@ -32,9 +32,8 @@ export class MatchService {
       map(actions =>
         actions.map(action => {
           return { id: action.payload.doc.id, ...action.payload.doc.data() } as IMatch;
-        })        
-      ),
-      shareReplay(1),
+        })
+      )
     );
 
     return data$.pipe(
@@ -82,15 +81,20 @@ export class MatchService {
 
 
   async getLastMatchesByTeam(team: string, limit: number): Promise<IMatch[]> {
-    const firstLimitPart = Math.floor(limit / 2);
-    const secondLimitPart = firstLimitPart + (limit % 2);
     const promises = [
-      this.matchesCollection.ref.where('local', '==', team).where('marcadorLocal', '>=', 0).orderBy('marcadorLocal').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(firstLimitPart).get(),
-      this.matchesCollection.ref.where('visita', '==', team).where('marcadorVisita', '>=', 0).orderBy('marcadorVisita').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(secondLimitPart).get()
+      this.matchesCollection.ref.where('local', '==', team).where('marcadorLocal', '>=', 0).orderBy('marcadorLocal').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(limit).get(),
+      this.matchesCollection.ref.where('visita', '==', team).where('marcadorVisita', '>=', 0).orderBy('marcadorVisita').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(limit).get()
     ];
     const responses = await Promise.all(promises);
     const teamMatches = responses[0].docs.map(this.parseDoc).concat(responses[1].docs.map(this.parseDoc));
-    return teamMatches;
+
+    return teamMatches.sort((a, b) => {
+      if (b.fecha !== a.fecha) {
+        return b.fecha - a.fecha;
+      } else {
+        return b.hora - a.hora
+      }
+    });
   }
 
   async getMatchesByTeam(team: string) {
