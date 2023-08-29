@@ -17,7 +17,7 @@ export class MatchService {
   private standingsCollection: AngularFirestoreCollection<LineUp>;
 
   constructor(private db: AngularFirestore) {
-    this.matchesCollection = this.db.collection<IMatch>('Partidos');
+    this.matchesCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('fecha'));
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
     // this.matches$ = this.matchesCollection.valueChanges();
   }

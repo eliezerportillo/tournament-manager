@@ -1,6 +1,6 @@
 <ng-container *ngIf="(matches$ | async) as matches">
     <div *ngFor="let group of matches">
-        <mat-toolbar>Jornada {{ group.key }} de {{matches.length}}</mat-toolbar>
+        <mat-toolbar>{{ group.key }}</mat-toolbar>
 
         <app-match *ngFor="let match of group.values" [match]="match" (selected)="onSelected($event)"
             [attr.data-date]="match.date.toISOString()"></app-match>
