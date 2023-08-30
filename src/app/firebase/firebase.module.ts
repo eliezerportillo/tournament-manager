@@ -5,6 +5,8 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from 'src/environments/environment';
+import { AnalyticsModule } from '@angular/fire/analytics';
+
 
 
 @NgModule({
@@ -17,7 +19,8 @@ import { environment } from 'src/environments/environment';
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AnalyticsModule
   ]
 })
 export class FirebaseModule { }
