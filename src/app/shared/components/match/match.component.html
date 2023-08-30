@@ -7,6 +7,7 @@
             <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
 
                 <div fxFlex fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="8px">
+                    <!-- home -->
                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
 
                         <app-team-image [src]="match.imageUrlLocal"></app-team-image>
@@ -16,7 +17,7 @@
                         <span *ngIf="(match.marcadorLocal ?? 0) >= 0"
                             [class.winner]="(match.marcadorLocal ?? 0) > (match.marcadorVisita?? 0)">{{match.marcadorLocal}}</span>
                     </div>
-
+                    <!-- away -->
                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
 
                         <app-team-image [src]="match.imageUrlVisita"></app-team-image>
@@ -33,9 +34,16 @@
                 <div class="vertical-divider"></div>
 
                 <div class="match-info" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                    <p>{{ match.date | dateStatus }}</p>
-                    <app-match-hour [match]="match"></app-match-hour>
-                    <span>{{match.campo}}</span>
+                    <ng-container *ngIf="!isFinished(match) else finished;">
+                        <p>{{ match.date | dateStatus }}</p>
+                        <app-match-hour [match]="match"></app-match-hour>
+                        <span>{{match.campo}}</span>
+                    </ng-container>
+
+                    <ng-template #finished>
+                        <app-match-hour [match]="match"></app-match-hour>
+                        <p>{{ match.date | dateStatus }}</p>
+                    </ng-template>
                 </div>
 
             </div>

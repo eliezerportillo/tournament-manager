@@ -22,7 +22,7 @@ export class DateStatusPipe implements PipeTransform {
       return daysOfWeek[dayOfWeek];
     } else {
       const datePipe = new DatePipe(this.locale);
-      return datePipe.transform(value, 'EEEE, MMMM d, y') ?? value.toDateString();
+      return datePipe.transform(value, 'mediumDate') ?? value.toDateString();
     }
   }
 }
