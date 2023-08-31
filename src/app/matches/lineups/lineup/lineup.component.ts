@@ -14,6 +14,7 @@ export class LineupComponent implements OnInit {
   visita: string;
 
   match?: IMatch;
+  
 
   constructor(private route: ActivatedRoute, private matchService: MatchService) {
 

@@ -7,14 +7,19 @@ import { MatchesViewComponent } from './matches-view/matches-view.component';
 
 
 const routes: Routes = [
-  { path: '', component: MatchesViewComponent },
+  {
+    path: '', component: MatchesViewComponent,
+    data: { title: 'Partidos' }
+  },
   {
     path: 'view',
-    component: LineupComponent
+    component: LineupComponent,
+    data: { title: 'Ver partido' }
   },
   {
     path: 'lineup',
     component: UploadLineupComponent,
+    data: { title: 'Subir alineación' },
     canActivate: [authGuard]
   }
 

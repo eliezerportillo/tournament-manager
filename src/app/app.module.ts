@@ -32,7 +32,6 @@ import { MatchesModule } from './matches/matches.module';
 
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,8 +50,10 @@ import { MatchesModule } from './matches/matches.module';
   providers: [{ provide: LOCALE_ID, useValue: 'es-MX' }],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
+  
   constructor() {
+    
     registerLocaleData(localeEsMx, 'es-MX');
   }
 }

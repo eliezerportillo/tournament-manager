@@ -6,7 +6,8 @@ const routes: Routes = [
   // { path: '', redirectTo: '/import', pathMatch: 'full' },
   {
     path: '',
-    component: ImportExcelComponent
+    component: ImportExcelComponent,
+    data: { title: 'Importar datos' }
   },
 ];
 

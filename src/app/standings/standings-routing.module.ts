@@ -3,7 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { RankingComponent } from './ranking/ranking.component';
 
 const routes: Routes = [
-  { path: '', component: RankingComponent },
+  {
+    path: '', component: RankingComponent,
+    data: { title: 'Posiciones' }
+  },
 ];
 
 @NgModule({
