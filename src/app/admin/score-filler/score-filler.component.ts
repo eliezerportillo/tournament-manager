@@ -4,6 +4,7 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bott
 import { IMatch } from 'src/app/models/match';
 import { MatchService } from 'src/app/services/match.service';
 import { UpdateScoreCommand } from 'src/app/services/update-score.command';
+import { HourPipe } from 'src/app/shared/pipes/hour.pipe';
 
 @Component({
   selector: 'app-score-filler',
@@ -17,6 +18,7 @@ export class ScoreFillerComponent {
   fb: FormBuilder = inject(FormBuilder);
   matchService: MatchService = inject(MatchService);
   command: UpdateScoreCommand = inject(UpdateScoreCommand);
+  hourPipe: HourPipe = inject(HourPipe);
   bottomSheetRef: MatBottomSheetRef<ScoreFillerComponent> = inject(MatBottomSheetRef<ScoreFillerComponent>);
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: { match: IMatch }) {
     this.title = `Información del partido`;
@@ -28,21 +30,18 @@ export class ScoreFillerComponent {
     return `${match.marcadorLocal}-${match.marcadorVisita}`;
   }
 
-  close() {
-    if (this.getScore(this.data.match) != this.score) {
-      this.bottomSheetRef.dismiss(true);
-    } else {
-      this.bottomSheetRef.dismiss(false);
-    }
+  close() {    
+    this.bottomSheetRef.dismiss(this.data.match);
   }
 
   initForm(match: IMatch): FormGroup {
+    const time = this.hourPipe.transform(match.dateTime) ?? '';
     return this.fb.group({
       local: new FormControl<number | null>(match.marcadorLocal, [Validators.min(0)]),
       visita: new FormControl<number | null>(match.marcadorVisita, [Validators.min(0)]),
-      date: new FormControl<Date>(match.date, [Validators.required]),
-      time: new FormControl<string>(match.hour, [Validators.required]),
-      field: new FormControl<string>(match.campo, [Validators.required]),
+      date: new FormControl<Date>(match.dateTime, [Validators.required]),
+      time: new FormControl<string>(time),
+      field: new FormControl<string>(match.campo),
     },
       {
         validators: [MatchValidators.scoreValidator()]
@@ -87,8 +86,19 @@ export class ScoreFillerComponent {
     this.data.match.campo = this.field?.value;
     this.data.match.fecha = this.convertToExcelDate(this.date?.value);
     this.data.match.hora = this.convertToExcelTime(this.convertTimeStringToMilliseconds(this.time?.value));
+    
+    this.data.match.dateTime = this.setTime(this.time?.value, this.date?.value);
     await this.command.execute(this.data.match);
     this.close();
+  }
+
+  private setTime(hourString: string, date: Date) {
+    const [hour, minute] = hourString.split(':').map(Number);
+
+    // Set the hour and minute to the Date object
+    date?.setHours(hour);
+    date?.setMinutes(minute || 0);
+    return date;
   }
 
   async delete() {
@@ -120,7 +130,7 @@ export class ScoreFillerComponent {
 
   private convertToExcelDate(date: Date): number {
     const millisecondsPerDay = 24 * 60 * 60 * 1000;
-    const epochStart = Date.UTC(1899, 11, 31); // Excel's epoch starts on December 31, 1899
+    const epochStart = Date.UTC(1899, 11, 30); // Excel's epoch starts on December 31, 1899
 
     const daysSinceEpoch = Math.floor((date.getTime() - epochStart) / millisecondsPerDay);
     const excelDateNumber = daysSinceEpoch;

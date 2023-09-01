@@ -7,7 +7,8 @@ import { DatePipe } from '@angular/common';
 export class DateStatusPipe implements PipeTransform {
   constructor(@Inject(LOCALE_ID) private locale: string) { }
 
-  transform(value: Date): string {
+  transform(value: Date | null): string {
+    if (!value) return '';
     const now = new Date();
     const diffInMilliseconds = value.getTime() - now.getTime();
     const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
@@ -19,7 +20,7 @@ export class DateStatusPipe implements PipeTransform {
     } else if (diffInDays >= 2 && diffInDays < 7) {
       const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
       const dayOfWeek = value.getDay();
-      return daysOfWeek[dayOfWeek];
+      return `Próximo ${daysOfWeek[dayOfWeek]}`;
     } else {
       const datePipe = new DatePipe(this.locale);
       return datePipe.transform(value, 'mediumDate') ?? value.toDateString();

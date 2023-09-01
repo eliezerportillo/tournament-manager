@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { StandingsViewComponent } from './standings-view/standings-view.component';
+import { HourPipe } from '../shared/pipes/hour.pipe';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { StandingsViewComponent } from './standings-view/standings-view.componen
     MaterialModule,
     AdminRoutingModule,
     NgxMatTimepickerModule
-  ]
+  ],
+  providers: [HourPipe]
 })
 export class AdminModule { }

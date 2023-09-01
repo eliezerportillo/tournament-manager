@@ -1,8 +1,11 @@
 <ng-container *ngIf="match">
 
     <div *ngIf="match.hora; else noHour" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-        
-        <span *ngIf="unfinished; else finished"><mat-icon>sports</mat-icon>{{ match.hour }}</span>
+
+        <div *ngIf="unfinished; else finished" fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon>sports</mat-icon>
+            <span>{{ match.dateTime | hour }}</span>
+        </div>
     </div>
 </ng-container>
 <ng-template #noHour>
