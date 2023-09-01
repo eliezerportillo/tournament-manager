@@ -41,19 +41,21 @@ export class MatchService {
       map((matches: IMatch[]) => {
         return matches.map(match => ({
           ...match,
-          date: this.parseDate(match.fecha),
           dateTime: this.parseDateTime(match.fecha, match.hora),
-          hour: this.parseHour(match.hora),
           imageUrlLocal: Team.createImageUrl(match.local),
           imageUrlVisita: Team.createImageUrl(match.visita)
         })) as IMatch[]
       }),
-      map((matches: IMatch[]) => matches.slice().sort((a, b) => a.hour.localeCompare(b.hour)))
+      map((matches: IMatch[]) => matches.sort((a, b) => a.fecha - b.fecha))
     );
   }
 
   getMatchesGroupedByStage() {
     return this.getMatchesGroupedBy('jornada');
+  }
+
+  getMatchesGroupedByDate(){
+    return this.getMatchesGroupedBy('fecha');
   }
 
   getMatchesGroupedBy(groupKey: string): Observable<Group<IMatch>[]> {
@@ -74,7 +76,7 @@ export class MatchService {
 
     return Object.entries(grouped).map(([key, value]) =>
     (
-      { key, values: value.sort((a, b) => a.fecha - b.fecha) }
+      { key, values: value.sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()) }
     )
     );
   }
@@ -108,9 +110,8 @@ export class MatchService {
     return teamMatches
       .map(match => ({
         ...match,
-        date: this.parseDate(match.fecha),
+
         dateTime: this.parseDateTime(match.fecha, match.hora),
-        hour: this.parseHour(match.hora),
         imageUrlLocal: Team.createImageUrl(match.local),
         imageUrlVisita: Team.createImageUrl(match.visita),
       })) as IMatch[];
@@ -123,9 +124,7 @@ export class MatchService {
     return snapshot.docs.map(this.parseDoc)
       .map(match => ({
         ...match,
-        date: this.parseDate(match.fecha),
         dateTime: this.parseDateTime(match.fecha, match.hora),
-        hour: this.parseHour(match.hora),
         imageUrlLocal: Team.createImageUrl(match.local),
         imageUrlVisita: Team.createImageUrl(match.visita),
       }))[0] as IMatch;
@@ -140,13 +139,17 @@ export class MatchService {
     const date = this.parseDate(fecha);
     const hourString = this.parseHour(hora);
     // Extract the hour and minute from the hourString
+    this.setTime(hourString, date); // Set minutes to 0 if not provided
+
+    return date;
+  }
+
+  private setTime(hourString: string, date: Date | null) {
     const [hour, minute] = hourString.split(':').map(Number);
 
     // Set the hour and minute to the Date object
     date?.setHours(hour);
-    date?.setMinutes(minute || 0); // Set minutes to 0 if not provided
-
-    return date;
+    date?.setMinutes(minute || 0);
   }
 
   async getLineup(teamName: string) {

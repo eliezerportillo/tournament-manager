@@ -18,7 +18,8 @@ export class UpdateScoreCommand {
 
     const ref = this.db.firestore.collection('Partidos').doc(match.id);
     await ref.update({
-      marcadorLocal: match.marcadorLocal, marcadorVisita: match.marcadorVisita,
+      marcadorLocal: match.marcadorLocal, 
+      marcadorVisita: match.marcadorVisita,
       fecha: match.fecha,
       hora: match.hora,
       campo: match.campo

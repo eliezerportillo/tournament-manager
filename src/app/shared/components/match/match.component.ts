@@ -19,7 +19,7 @@ export class MatchComponent {
   }
 
   noPlay(match: IMatch): boolean {
-    return ![match.local.toLocaleLowerCase(), match.visita.toLocaleLowerCase()].includes('descansa');
+    return Match.noPlay(match);
   }
 
   isFinished(match: IMatch): boolean {

@@ -9,15 +9,17 @@ export interface IMatch extends IEntity {
     marcadorVisita: number | null;
     imageUrlVisita: string;
     visita: string;
-    fecha: number;
-    date: Date;
+    fecha: number; // excel data
+    hora: number; // excel data    
     dateTime: Date;
-    hour: string;
-    hora: number;
+
     campo: string;
 }
 
 export class Match {
+    static noPlay(match: IMatch): boolean {
+        return [match.local.toLocaleLowerCase(), match.visita.toLocaleLowerCase()].includes('descansa');
+    }
     static isFinished(matchDateTime: Date): boolean {
         const today = new Date();
         today.setHours(today.getHours() + 1);
@@ -33,9 +35,9 @@ export class MatchResult {
         this.today = new Date();
 
     }
-    get date(): Date {
-        return this.match.date
-    }
+    // get date(): Date {
+    //     return this.match.date
+    // }
     get finished(): boolean {
         this.today.setHours(this.today.getHours() + 1);
         return this.today > this.match?.dateTime;

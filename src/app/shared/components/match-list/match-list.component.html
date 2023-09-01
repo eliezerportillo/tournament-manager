@@ -1,9 +1,9 @@
 <ng-container *ngIf="matches">
     <div *ngFor="let group of matches">
-        <mat-toolbar>Jornada {{ group.key }} de {{matches.length}}</mat-toolbar>
+        <mat-toolbar>{{ group.key }} </mat-toolbar>
 
         <app-match *ngFor="let match of group.values" [match]="match"
-            [attr.data-date]="match.date.toISOString()"></app-match>
+            [attr.data-date]="match.dateTime.toISOString()"></app-match>
 
     </div>
 </ng-container>
