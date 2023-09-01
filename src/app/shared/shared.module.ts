@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { LogoComponent } from './logo/logo.component';
 import { DateStatusPipe } from './pipes/date-status.pipe';
 import { ShortNamePipe } from './pipes/short-name.pipe';
@@ -16,6 +16,8 @@ import { MatchHourComponent } from './components/match-hour/match-hour.component
 import { CompanyNameComponent } from './components/company-name/company-name.component';
 import { MatchHeaderComponent } from './components/match-header/match-header.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
+import { HourPipe } from './pipes/hour.pipe';
+import { ExcelDatePipe } from './pipes/excel-date.pipe';
 
 
 
@@ -35,7 +37,9 @@ import { TeamListComponent } from './components/team-list/team-list.component';
     MatchListComponent,
     CompanyNameComponent,
     MatchHeaderComponent,
-    TeamListComponent    
+    TeamListComponent,
+    HourPipe,
+    ExcelDatePipe    
   ],
   imports: [
     CommonModule,
@@ -57,7 +61,10 @@ import { TeamListComponent } from './components/team-list/team-list.component';
     MatchListComponent,
     CompanyNameComponent,
     MatchHeaderComponent,
-    TeamListComponent
-  ]
+    TeamListComponent,
+    HourPipe,
+    ExcelDatePipe
+  ],
+  providers: [DatePipe]
 })
 export class SharedModule { }

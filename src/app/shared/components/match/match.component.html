@@ -1,4 +1,4 @@
-<div *ngIf="match && noPlay(match)">
+<div *ngIf="match">
     <ng-container>
         <!-- routerLink="view" [queryParams]="{ local: match.local, visita: match.visita }" -->
         <div class="match-box" matRipple (click)="$event.preventDefault(); select(match)">
@@ -30,20 +30,24 @@
                     </div>
 
                 </div>
-
                 <div class="vertical-divider"></div>
 
-                <div class="match-info" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                    <ng-container *ngIf="!isFinished(match) else finished;">
-                        <p>{{ match.date | dateStatus }}</p>
-                        <app-match-hour [match]="match"></app-match-hour>
-                        <span>{{match.campo}}</span>
-                    </ng-container>
 
-                    <ng-template #finished>
-                        <app-match-hour [match]="match"></app-match-hour>
-                        <p>{{ match.date | dateStatus }}</p>
-                    </ng-template>
+                <div class="match-info" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+
+                    <p>{{match.jornada}}</p>
+                    <ng-container *ngIf="!noPlay(match)">
+                        <ng-container *ngIf="!isFinished(match) else finished;">
+                            <p>{{ match.dateTime | dateStatus }}</p>
+                            <app-match-hour [match]="match"></app-match-hour>
+                            <span>{{match.campo}}</span>
+                        </ng-container>
+
+                        <ng-template #finished>
+                            <app-match-hour [match]="match"></app-match-hour>
+                            <p>{{ match.dateTime | dateStatus }}</p>
+                        </ng-template>
+                    </ng-container>
                 </div>
 
             </div>

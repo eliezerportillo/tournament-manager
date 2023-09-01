@@ -7,7 +7,7 @@
 
     <main>
 
-        <nav mat-tab-nav-bar color="primary" [tabPanel]="tabPanel">
+        <nav mat-tab-nav-bar color="primary" [tabPanel]="tabPanel" class="tab-header">
             <ng-container *ngFor="let menu of menus">
                 <a mat-tab-link [routerLink]="menu.path" routerLinkActive #rla="routerLinkActive" [disabled]="menu.disabled"
                     [active]="rla.isActive">{{menu.text}}</a>
