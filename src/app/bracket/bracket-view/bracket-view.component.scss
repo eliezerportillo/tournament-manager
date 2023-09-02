@@ -1,0 +1,37 @@
+// .match {
+//     width: 250px;
+//     height: 80px;
+//     background-color: red;
+
+//     position: relative; // Make sure the parent div is relatively positioned
+
+//     &::before {
+//       content: '';
+//       position: absolute;
+//       bottom: 0;
+//       left: 50%; // Adjust this value to position the line where you want
+//       transform: translateX(-50%); // Center the line horizontally
+//       width: 2px; // Adjust the width of the line
+//       height: 100%; // Make the line span the entire height of the parent div
+//       background-color: #000; // Line color
+//     }
+//   }
+
+.tournament-bracket {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    overflow: auto;
+
+    .round {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .match {
+            
+            min-width: 350px;
+        }
+    }
+}

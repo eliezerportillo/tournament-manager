@@ -35,7 +35,7 @@ export class ImportExcelComponent {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
 
-      const allowedSheetNames = workbook.SheetNames.filter(sheetName => ['equipos', 'jugadores', 'partidos'].includes(sheetName.toLocaleLowerCase()));
+      const allowedSheetNames = workbook.SheetNames.filter(sheetName => ['equipos', 'jugadores', 'partidos', 'partidosv2'].includes(sheetName.toLocaleLowerCase()));
       // Process each sheet in the Excel file
       for (const sheetName of allowedSheetNames) {
         const worksheet = workbook.Sheets[sheetName];

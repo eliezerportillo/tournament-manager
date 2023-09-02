@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { BracketRoutingModule } from './bracket-routing.module';
 import { BracketViewComponent } from './bracket-view/bracket-view.component';
+import { SharedModule } from '../shared/shared.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -10,7 +12,8 @@ import { BracketViewComponent } from './bracket-view/bracket-view.component';
     BracketViewComponent
   ],
   imports: [
-    CommonModule,
+    SharedModule,
+    FlexLayoutModule,
     BracketRoutingModule
   ]
 })

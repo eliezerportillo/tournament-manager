@@ -1,31 +1,52 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QueryFn } from '@angular/fire/compat/firestore';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { filter, map, shareReplay, tap } from 'rxjs/operators';
 import { IMatch } from 'src/app/models/match';
 import { Observable } from 'rxjs';
 import { Team } from '../models/team';
 import { LineUp } from '../models/lineup';
-import { Group } from '../models/group';
+import { Group, Grouper } from '../models/group';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchService {
 
+
   private matchesCollection: AngularFirestoreCollection<IMatch>;
   // private matches$: Observable<IMatch[]>;
   private standingsCollection: AngularFirestoreCollection<LineUp>;
+  bracketCollection: AngularFirestoreCollection<IMatch>;
 
   constructor(private db: AngularFirestore) {
-    this.matchesCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('fecha'));
+    this.matchesCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('fecha').where('esClasificacion', '==', 0));
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
+    this.bracketCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('ordenEtapa').orderBy('numero').where('esClasificacion', '==', 1));
     // this.matches$ = this.matchesCollection.valueChanges();
   }
 
   getMatches(): Observable<IMatch[]> {
+    return this.getMatchesFromCollection(this.matchesCollection).pipe(
+      map((matches) => matches.filter(match => match.esClasificacion == undefined || match.esClasificacion == false))
+    );
+  }
 
-    // Use snapshotChanges() to get an observable of changes in the collection
-    const data$ = this.matchesCollection.snapshotChanges().pipe(
+  getMatchesGroupedByDate() {
+    return this.getMatchesGroupedBy('fecha');
+  }
+
+  getMatchesGroupedBy(groupKey: string): Observable<Group<IMatch>[]> {
+    return this.getMatches().pipe(
+      map((array => Grouper.groupBy(array, groupKey, (a, b) => a.dateTime.getTime() - b.dateTime.getTime())))
+    )
+  }
+
+  getBracket(): Observable<IMatch[]> {
+    return this.getMatchesFromCollection(this.bracketCollection);
+  }
+
+  private getMatchesFromCollection(collection: AngularFirestoreCollection<IMatch>) {
+    return collection.snapshotChanges().pipe(
       tap(matches => {
         console.log(`${matches.length} Matches read`);
       }),
@@ -33,11 +54,7 @@ export class MatchService {
         actions.map(action => {
           return { id: action.payload.doc.id, ...action.payload.doc.data() } as IMatch;
         })
-      )
-    );
-
-    return data$.pipe(
-
+      ),
       map((matches: IMatch[]) => {
         return matches.map(match => ({
           ...match,
@@ -49,39 +66,6 @@ export class MatchService {
       map((matches: IMatch[]) => matches.sort((a, b) => a.fecha - b.fecha))
     );
   }
-
-  getMatchesGroupedByStage() {
-    return this.getMatchesGroupedBy('jornada');
-  }
-
-  getMatchesGroupedByDate(){
-    return this.getMatchesGroupedBy('fecha');
-  }
-
-  getMatchesGroupedBy(groupKey: string): Observable<Group<IMatch>[]> {
-    return this.getMatches().pipe(
-      map((array => this.groupBy(array, groupKey)))
-    )
-  }
-
-  groupBy(dataArray: IMatch[], groupBy: string): Group<IMatch>[] {
-    const grouped = dataArray.reduce((groupedData: { [key: string]: IMatch[] }, data: IMatch) => {
-      const groupKey: string = <string>data[groupBy];
-      if (!groupedData[groupKey]) {
-        groupedData[groupKey] = [];
-      }
-      groupedData[groupKey].push(data);
-      return groupedData;
-    }, {});
-
-    return Object.entries(grouped).map(([key, value]) =>
-    (
-      { key, values: value.sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()) }
-    )
-    );
-  }
-
-
   async getLastMatchesByTeam(team: string, limit: number): Promise<IMatch[]> {
     const promises = [
       this.matchesCollection.ref.where('local', '==', team).where('marcadorLocal', '>=', 0).orderBy('marcadorLocal').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(limit).get(),

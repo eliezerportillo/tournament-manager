@@ -1,1 +1,11 @@
-<div #bracketContainer></div>
+<div class="tournament-bracket">
+    <div class="round" *ngFor="let round of rounds">
+       
+        <ng-container *ngFor="let match of round.values">           
+            <app-match class="match" [match]="match" showHeader="true"></app-match>
+        </ng-container>
+
+    </div>
+
+
+</div>
