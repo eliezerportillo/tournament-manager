@@ -7,7 +7,7 @@ import { LoginComponent } from './login/login.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/bracket', pathMatch: 'full' },
+  { path: '', redirectTo: '/matches', pathMatch: 'full' },
   {
     path: '',
     component: ShellComponent,
