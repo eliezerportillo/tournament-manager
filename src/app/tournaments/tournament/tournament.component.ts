@@ -16,6 +16,7 @@ export class TournamentComponent implements AfterViewInit {
     this.menus = [
       { text: 'PARTIDOS', path: '/matches' },
       { text: 'POSICIONES', path: '/ranking' },
+      { text: 'FASE FINAL', path: '/bracket' },
       { text: 'ESTADÍSTICAS', path: '/stats' },      
     ];
   }

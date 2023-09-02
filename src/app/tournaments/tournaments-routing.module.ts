@@ -19,6 +19,10 @@ const routes: Routes = [
         path: 'stats',
         loadChildren: () => import('../statistics/statistics.module').then(m => m.StatisticsModule)
       },
+      {
+        path: 'bracket',
+        loadChildren: () => import('../bracket/bracket.module').then(m => m.BracketModule)
+      },
 
     ]
   }

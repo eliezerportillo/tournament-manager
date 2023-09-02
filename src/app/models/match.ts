@@ -1,8 +1,10 @@
 import { IEntity } from "./entity";
 
 export interface IMatch extends IEntity {
-    [key: string]: Object | null;
-    jornada: string;
+    [key: string]: Object | null;   
+    esClasificacion: boolean; 
+    etapa: string;
+    numero: number;
     local: string;
     marcadorLocal: number | null;
     imageUrlLocal: string;
