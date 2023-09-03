@@ -1,4 +1,5 @@
 export const environment = {
+    production: false,
     firebaseConfig: {
         apiKey: "AIzaSyCJtis8unkesCn03U-83Zjq29sTf72yoPE",
         authDomain: "afc-torneo.firebaseapp.com",

@@ -1,0 +1,14 @@
+<div class="no-data" *ngIf="!hasSponsors else content" fxLayout="column" fxLayoutAlign="center center"
+    fxLayoutGap="8px">
+    <mat-icon>no_accounts</mat-icon>
+    <p>Sin patrocinadores</p>
+    <button mat-raised-button color="primary">Agregar un patrocinador</button>
+</div>
+
+<ng-template #content>
+    <mat-toolbar>
+        Patrocinadores
+        <span class="spacer"></span>
+        <mat-icon>person_add_alt</mat-icon>
+    </mat-toolbar>
+</ng-template>

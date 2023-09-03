@@ -3,51 +3,58 @@
         <mat-icon>arrow_back</mat-icon>
         1er Torneo de Fut 7
     </button>
-
 </mat-toolbar>
-<!-- General info -->
-<mat-card>
-    <mat-card-header *ngIf="match">
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{match.dateTime | dateStatus}}</mat-card-title>
-        <mat-card-subtitle>
-            <app-match-hour [match]="match"></app-match-hour>
-        </mat-card-subtitle>
-    </mat-card-header>
-    <!-- <img mat-card-image src="assets/card-banner.png" alt="banner afc"> -->
-    <mat-card-content>
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-            <div fxLayout="column" fxLayoutAlign="space-between center">
-                <app-team-image [src]="match?.imageUrlLocal"></app-team-image>
-                <span>{{local}}</span>
+
+<div class="container" fxLayout="column" fxLayoutGap="8px">
+    <!-- General info -->
+    <mat-card>
+        <mat-card-header *ngIf="match">
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{match.dateTime | dateStatus}}</mat-card-title>
+            <mat-card-subtitle>
+                <app-match-hour [match]="match"></app-match-hour>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <!-- <img mat-card-image src="assets/card-banner.png" alt="banner afc"> -->
+        <mat-card-content>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxLayout="column" fxLayoutAlign="space-between center">
+                    <app-team-image [src]="match?.imageUrlLocal"></app-team-image>
+                    <span>{{local}}</span>
+                </div>
+
+                <p>vs.</p>
+                <div fxLayout="column" fxLayoutAlign="space-between center">
+
+                    <app-team-image [src]="match?.imageUrlVisita"></app-team-image>
+                    <span>{{visita}}</span>
+                </div>
             </div>
+        </mat-card-content>
 
-            <p>vs.</p>
-            <div fxLayout="column" fxLayoutAlign="space-between center">
-
-                <app-team-image [src]="match?.imageUrlVisita"></app-team-image>
-                <span>{{visita}}</span>
-            </div>
-        </div>
-    </mat-card-content>
-
-</mat-card>
-
-<!-- Alineaciones -->
-<ng-container *ngIf="match">
-
-
-    <mat-card class="standings">
-        <mat-tab-group>
-            <mat-tab label="ALINEACIONES">
-
-              <app-lineup-viewer [local]="local" [visita]="visita"></app-lineup-viewer>
-
-                
-
-            </mat-tab>
-        </mat-tab-group>
     </mat-card>
 
-</ng-container>
+    <!-- Sponsors -->
+    <app-sponsor-list></app-sponsor-list>
 
+    <!-- Alineaciones -->
+    <ng-container *ngIf="match">
+
+
+        <mat-card class="standings">
+            <mat-tab-group>
+                <mat-tab label="ALINEACIONES">
+
+                    <app-lineup-viewer [local]="local" [visita]="visita"></app-lineup-viewer>
+
+
+
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card>
+
+    </ng-container>
+
+
+
+</div>
