@@ -128,3 +128,10 @@ body {
 .transparent {
   background-color: transparent;
 }
+
+.no-data {  
+  margin: 16px 0px;
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  padding: 16px;
+}

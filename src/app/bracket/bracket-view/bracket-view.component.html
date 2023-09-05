@@ -1,5 +1,5 @@
-<div class="tournament-bracket">
-    <div class="round" *ngFor="let round of rounds">
+<div class="tournament-bracket" fxLayout="row" fxLayoutAlign="start center" >
+    <div class="round" *ngFor="let round of rounds" fxLayout="column" fxLayoutAlign="start stretch">
        
         <ng-container *ngFor="let match of round.values">           
             <app-match class="match" [match]="match" showHeader="true"></app-match>

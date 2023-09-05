@@ -18,6 +18,7 @@ import { MatchHeaderComponent } from './components/match-header/match-header.com
 import { TeamListComponent } from './components/team-list/team-list.component';
 import { HourPipe } from './pipes/hour.pipe';
 import { ExcelDatePipe } from './pipes/excel-date.pipe';
+import { SponsorListComponent } from './components/sponsor-list/sponsor-list.component';
 
 
 
@@ -39,7 +40,8 @@ import { ExcelDatePipe } from './pipes/excel-date.pipe';
     MatchHeaderComponent,
     TeamListComponent,
     HourPipe,
-    ExcelDatePipe    
+    ExcelDatePipe,
+    SponsorListComponent    
   ],
   imports: [
     CommonModule,
@@ -63,7 +65,8 @@ import { ExcelDatePipe } from './pipes/excel-date.pipe';
     MatchHeaderComponent,
     TeamListComponent,
     HourPipe,
-    ExcelDatePipe
+    ExcelDatePipe,
+    SponsorListComponent
   ],
   providers: [DatePipe]
 })

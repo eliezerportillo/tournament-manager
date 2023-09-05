@@ -12,13 +12,21 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { StandingsViewComponent } from './standings-view/standings-view.component';
 import { HourPipe } from '../shared/pipes/hour.pipe';
+import { SponsorsViewComponent } from './sponsors/sponsors-view/sponsors-view.component';
+import { SponsorCreateComponent } from './sponsors/sponsor-create/sponsor-create.component';
+import { UploadComponent } from './upload/upload.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { HammerModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
     AdminShellComponent,
     ScoresViewComponent,
     ScoreFillerComponent,
-    StandingsViewComponent
+    StandingsViewComponent,
+    SponsorsViewComponent,
+    SponsorCreateComponent,
+    UploadComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -28,7 +36,9 @@ import { HourPipe } from '../shared/pipes/hour.pipe';
     SharedModule,
     MaterialModule,
     AdminRoutingModule,
-    NgxMatTimepickerModule
+    NgxMatTimepickerModule,
+    HammerModule,
+    ImageCropperModule
   ],
   providers: [HourPipe]
 })

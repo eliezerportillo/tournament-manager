@@ -14,10 +14,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
-  
+
 
 
 
@@ -37,10 +39,12 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatMenuModule,
     MatBottomSheetModule,
     MatButtonToggleModule,
-    MatSelectModule,    
+    MatSelectModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    MatNativeDateModule    
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ]
 })
 export class MaterialModule { }

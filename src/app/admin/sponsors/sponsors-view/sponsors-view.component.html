@@ -1,0 +1,21 @@
+<ng-container *ngIf="sponsors$ | async as sponsors">
+
+    <ng-container *ngIf="hasSponsors else noSponsors">
+        <mat-toolbar>
+            <span>Patrocinadores</span>
+            <span class="spacer"></span>
+            <button mat-button color="primary" (click)="newSponsor()">
+                <mat-icon>person_add_alt</mat-icon>
+            </button>
+        </mat-toolbar>
+    </ng-container>
+
+</ng-container>
+
+<ng-template #noSponsors>
+    <div class="no-data" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="8px">
+        <mat-icon>no_accounts</mat-icon>
+        <p>Sin patrocinadores</p>
+        <button mat-raised-button color="primary" (click)="newSponsor()">Agregar un patrocinador</button>
+    </div>
+</ng-template>

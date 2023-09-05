@@ -1,0 +1,20 @@
+<ng-container *ngIf="hasSponsors">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-subtitle>
+                Patrocinadores
+            </mat-card-subtitle>
+        </mat-card-header>
+        <div fxLayout="row" fxLayoutAlign="space-evenly center">
+            <ng-container *ngFor="let sponsor of getVisibleLogos() as sponsors">
+                <a [href]="sponsor.website" target="_blank">
+                    <img [src]="sponsor.logoUrl" [alt]="sponsor.name">                    
+                </a>
+            </ng-container>
+        </div>
+        <mat-card-footer *ngIf="canShowProgressBar">
+            <mat-progress-bar mode="determinate" [value]="progress" color="accent">
+            </mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+</ng-container>
