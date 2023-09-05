@@ -11,14 +11,19 @@ export class UploadComponent implements OnInit {
   mode: string;
   @Input()
   text: string;
+  @Input()
+  accept: string;
 
-  fileString: any;
+  
   @Output()
   file = new EventEmitter<any>();
+  
   constructor() {
     this.mode = 'image';
     this.text = 'Añadir foto';
+    this.accept = 'image/png';
   }
+
 
   fileSelected($event: any): void {
     this.readThis($event.target);
@@ -29,8 +34,8 @@ export class UploadComponent implements OnInit {
     var myReader: FileReader = new FileReader();
     var fileType = inputValue.parentElement.id;
     myReader.onloadend = (e) => {
-      this.fileString = myReader.result;
-      this.file.emit(this.fileString);
+      const fileString = myReader.result;
+      this.file.emit(fileString);
     };
 
     myReader.readAsDataURL(file);

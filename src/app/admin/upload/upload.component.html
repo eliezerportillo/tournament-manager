@@ -1,21 +1,21 @@
-<input #fileInput type="file" (change)="fileSelected($event)" style="display:none;" />
+<input #fileInput type="file" (change)="fileSelected($event)" style="display:none;" [accept]="accept"/>
 
 <div [ngSwitch]="mode">
 
     <div *ngSwitchCase="'button'">
-        <button mat-flat-button type="button" (click)="fileInput.click()" color="primary">
+        <button mat-stroked-button type="button" (click)="fileInput.click()" color="primary">
             <mat-icon>photo_camera</mat-icon>
             <span>{{text}}</span>
         </button>
     </div>
 
-    <div class="image" *ngSwitchCase="'image'">
-        <div class="perfect-center">
-            <app-logo></app-logo>
-            <button mat-flat-button type="button" (click)="fileInput.click()" color="primary">
-                <mat-icon>photo_camera</mat-icon>
-                <span>{{text}}</span>
-            </button>
-        </div>
+    <div class="image perfect-center" *ngSwitchCase="'image'">
+
+        <app-logo></app-logo>
+        <button mat-stroked-button type="button" (click)="fileInput.click()" color="primary">
+            <mat-icon>photo_camera</mat-icon>
+            <span>{{text}}</span>
+        </button>
+
     </div>
 </div>

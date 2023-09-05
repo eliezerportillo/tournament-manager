@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild, inject, AfterViewInit, OnDestroy } from '@angular/core';
 import { ISponsor } from 'src/app/models/sponsor';
 import { SponsorService } from 'src/app/services/sponsor.service';
-import { firstValueFrom, map } from 'rxjs';
+import { firstValueFrom, map, tap } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
@@ -14,33 +14,33 @@ export class SponsorListComponent implements OnInit, AfterViewInit, OnDestroy {
   currentPage = 0;
   itemsPerPage = 1;
   interval: any; // To hold the interval reference
-
+  hasSponsors = false;
   @Input()
   sponsors: ISponsor[] = [
-    {
-      name: 'Ledezmart',
-      priority: 3,
-      website: 'https://www.ledezmart.com/',
-      logoUrl: 'assets/ledezmart.png'
-    },
-    {
-      name: 'Netploy',
-      priority: 4,
-      website: 'https://www.facebook.com/netploy.solutions',
-      logoUrl: 'assets/netploy.png'
-    },
-    {
-      name: 'IAFCJ',
-      priority: 2,
-      website: 'https://www.iafcj.org/',
-      logoUrl: 'assets/iafcj.png'
-    },
-    {
-      name: 'COMUDE',
-      priority: 1,
-      website: 'https://www.iafcj.org/',
-      logoUrl: 'assets/comude.png'
-    },
+    // {
+    //   name: 'Ledezmart',
+    //   priority: 3,
+    //   website: 'https://www.ledezmart.com/',
+    //   logoUrl: 'assets/ledezmart.png'
+    // },
+    // {
+    //   name: 'Netploy',
+    //   priority: 4,
+    //   website: 'https://www.facebook.com/netploy.solutions',
+    //   logoUrl: 'assets/netploy.png'
+    // },
+    // {
+    //   name: 'IAFCJ',
+    //   priority: 2,
+    //   website: 'https://www.iafcj.org/',
+    //   logoUrl: 'assets/iafcj.png'
+    // },
+    // {
+    //   name: 'COMUDE',
+    //   priority: 1,
+    //   website: 'https://www.iafcj.org/',
+    //   logoUrl: 'assets/comude.png'
+    // },
     // {
     //   nombre: 'addidas',
     //   prioridad: 1,
@@ -62,6 +62,8 @@ export class SponsorListComponent implements OnInit, AfterViewInit, OnDestroy {
   intervalProgress: any;
   progress: number = 0;
   paused: boolean = false;
+
+
   ngOnInit(): void {
     this.checkBreakpoint();
     this.load();
@@ -146,8 +148,10 @@ export class SponsorListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async load() {
-    // const sp = this.sponsorService.get().pipe(map(sponsors => sponsors.sort((a, b) => a.prioridad - b.prioridad)))
-    // this.sponsors = await firstValueFrom(sp);    
+    const sp = this.sponsorService.get().pipe(
+      tap(sponsors => this.hasSponsors = sponsors.length > 0)
+    );
+    this.sponsors = await firstValueFrom(sp);    
     this.sponsors = this.sponsors.sort((a, b) => a.priority - b.priority);
 
   }

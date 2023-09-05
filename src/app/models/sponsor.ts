@@ -4,5 +4,5 @@ export interface ISponsor extends IEntity {
     name: string;
     priority: number;
     logoUrl: string;
-    website: string;
+    website?: string;
 }

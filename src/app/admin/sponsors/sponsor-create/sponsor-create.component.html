@@ -1,56 +1,48 @@
-<form class="container" [formGroup]="form">
-    <header fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button routerLink=".." color="warn">
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-            <h1>{{title.length ? title : 'Nuevo patrocinador' }}</h1>
+<form [formGroup]="form" fxLayout="column"  fxLayoutAlign="start stretch" fxLayoutGap="8px">
 
-        </div>
-        <div class="spacer"></div>
-        <button mat-stroked-button color="primary" (click)="publish()" [disabled]="!form.valid" color="accent">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+
+        <button mat-button (click)="close()">
+            <mat-icon>arrow_back</mat-icon>
+            <span>{{title.length ? title : 'Nuevo patrocinador' }}</span>
+        </button>
+
+        <button mat-flat-button color="primary" (click)="publish()" [disabled]="!form.valid">
             <div fxLayout="row" fxLayoutAlign="space-between center">
                 <span>Guardar</span>
                 <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
             </div>
         </button>
-    </header>
+    </div>
 
-    <div fxLayout="column">
-
-        <main fxLayout="column" fxLayoutAlign="start stretch">
-
-            <div *ngIf="logo" class="actions-bar">
-                <app-upload (file)="onLoad($event)" [mode]="'button'"></app-upload>
-            </div>
-            <app-upload (file)="onLoad($event)" *ngIf="!logo"></app-upload>
-            <!-- Imagen -->            
-            <img [src]="logo" alt="logotipo" *ngIf="logo">
+   
+    <!-- Imagen -->
+    <app-upload (file)="onLoad($event)" text="Seleccionar imagen" mode="button"></app-upload>
+    <ng-container *ngIf="logo">        
+        <img [src]="logo" alt="logotipo">
+    </ng-container>
 
 
-            <div fxLayout="column" fxLayoutAlign="space-between stretch">
+    <div fxLayout="column" fxLayoutAlign="space-between stretch">
 
-                <!-- Name -->
-                <mat-form-field appearance="fill">
-                    <mat-label>Nombre</mat-label>
-                    <input matInput type="text" formControlName="name"
-                        placeholder="Nombre del patrocinador">
-                </mat-form-field>
-                              
+        <!-- Name -->
+        <mat-form-field appearance="fill">
+            <mat-label>Nombre</mat-label>
+            <input matInput type="text" formControlName="name" placeholder="Nombre del patrocinador">
+        </mat-form-field>
 
-                <!-- Priority -->
-                <mat-form-field appearance="fill">
-                    <mat-label>Prioridad</mat-label>
-                    <input matInput type="number" formControlName="priority" placeholder="Orden en el que se muestra">
-                </mat-form-field>
 
-                 <!-- Priority -->
-                 <mat-form-field appearance="fill">
-                    <mat-label>Sitio web</mat-label>
-                    <input matInput type="text" formControlName="website" placeholder="https://www...">
-                </mat-form-field>
-            </div>
-        </main>
+        <!-- Priority -->
+        <mat-form-field appearance="fill">
+            <mat-label>Prioridad</mat-label>
+            <input matInput type="number" formControlName="priority" placeholder="Orden en el que se muestra">
+        </mat-form-field>
+
+        <!-- Priority -->
+        <mat-form-field appearance="fill">
+            <mat-label>Sitio web</mat-label>
+            <input matInput type="text" formControlName="website" placeholder="https://www...">
+        </mat-form-field>
     </div>
 </form>
 

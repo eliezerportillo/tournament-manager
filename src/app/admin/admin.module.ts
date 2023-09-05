@@ -15,6 +15,8 @@ import { HourPipe } from '../shared/pipes/hour.pipe';
 import { SponsorsViewComponent } from './sponsors/sponsors-view/sponsors-view.component';
 import { SponsorCreateComponent } from './sponsors/sponsor-create/sponsor-create.component';
 import { UploadComponent } from './upload/upload.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { HammerModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,7 @@ import { UploadComponent } from './upload/upload.component';
     StandingsViewComponent,
     SponsorsViewComponent,
     SponsorCreateComponent,
-    UploadComponent
+    UploadComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -34,7 +36,9 @@ import { UploadComponent } from './upload/upload.component';
     SharedModule,
     MaterialModule,
     AdminRoutingModule,
-    NgxMatTimepickerModule
+    NgxMatTimepickerModule,
+    HammerModule,
+    ImageCropperModule
   ],
   providers: [HourPipe]
 })

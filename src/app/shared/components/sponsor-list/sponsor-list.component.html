@@ -1,4 +1,4 @@
-<ng-container *ngIf="sponsors">
+<ng-container *ngIf="hasSponsors">
     <mat-card>
         <mat-card-header>
             <mat-card-subtitle>
@@ -8,7 +8,7 @@
         <div fxLayout="row" fxLayoutAlign="space-evenly center">
             <ng-container *ngFor="let sponsor of getVisibleLogos() as sponsors">
                 <a [href]="sponsor.website" target="_blank">
-                    <img [src]="sponsor.logoUrl" alt="Patrocinador">                    
+                    <img [src]="sponsor.logoUrl" [alt]="sponsor.name">                    
                 </a>
             </ng-container>
         </div>
