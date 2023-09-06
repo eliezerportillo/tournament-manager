@@ -1,12 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { ISponsor } from 'src/app/models/sponsor';
-import { StandingsViewComponent } from '../../standings-view/standings-view.component';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { firstValueFrom } from 'rxjs';
 import { SponsorService } from 'src/app/services/sponsor.service';
+import { ISponsor } from 'src/app/models/sponsor';
 
 @Component({
   selector: 'app-sponsor-create',
@@ -17,15 +16,16 @@ export class SponsorCreateComponent {
   auth: AngularFireAuth = inject(AngularFireAuth)
   storage = inject(AngularFireStorage);
   sponsorService = inject(SponsorService);
-  bottomSheetRef: MatBottomSheetRef<SponsorCreateComponent> = inject(MatBottomSheetRef<StandingsViewComponent>);
+  bottomSheetRef: MatBottomSheetRef<SponsorCreateComponent> = inject(MatBottomSheetRef<SponsorCreateComponent>);
+  fb = inject(FormBuilder);
 
   form: FormGroup<CreateSponsor>;
-  loading: boolean = false;
-  hasLogo: boolean = false;
-  imageChanged: boolean = false;
+  loading = false;
+  hasLogo = false;
+  imageChanged = false;
 
-  constructor(fb: FormBuilder) {
-    this.form = new SponsorCreator(fb).createForm();
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data?: { sponsor?: ISponsor }) {
+    this.form = new SponsorCreator(this.fb).createForm(data?.sponsor);
   }
 
   get logo() { return this.form.value.logoUrl ?? ''; }
@@ -36,27 +36,30 @@ export class SponsorCreateComponent {
     if (this.imageChanged) {
       // const user = await firstValueFrom(this.auth.authState);
       // if (user) {
-        const refStorage = this.storage.ref(`images/sponsors/${this.title}`);
-        const task = await refStorage.putString(this.logo, 'data_url', { contentType: 'image/png' });
-        const url = await task.ref.getDownloadURL();
-        this.logoUrlControl?.setValue(url);
+      const refStorage = this.storage.ref(`images/sponsors/${this.title}`);
+      const task = await refStorage.putString(this.logo, 'data_url', { contentType: 'image/png' });
+      const url = await task.ref.getDownloadURL();
+      this.logoUrlControl?.setValue(url);
       // }
     }
-    const data = {
+    const data: any = {
       name: this.form.value?.name ?? '',
       logoUrl: this.form.value?.logoUrl ?? '',
       priority: this.form.value?.priority ?? 0,
       website: this.form.value?.website ?? ''
     };
+    if (this.data?.sponsor?.id) {
+      data['id'] = this.data?.sponsor?.id;
+    }
     await this.sponsorService.add(data);
     this.loading = false;
     this.close();
   }
 
-  onLoad(file: any) {
+  onLoad(base64String: string) {
     this.imageChanged = true;
-    this.hasLogo = file.length > 0;
-    this.logoUrlControl?.setValue(file);
+    this.hasLogo = base64String.length > 0;
+    this.logoUrlControl?.setValue(base64String);
   }
 
   get logoUrlControl() {
@@ -73,12 +76,12 @@ export class SponsorCreateComponent {
 class SponsorCreator {
   constructor(private fb: FormBuilder) { }
 
-  createForm(): FormGroup<CreateSponsor> {
+  createForm(sponsor?: ISponsor): FormGroup<CreateSponsor> {
     const frm = this.fb.group<CreateSponsor>({
-      name: new FormControl('', { validators: [Validators.required], nonNullable: true }),
-      logoUrl: new FormControl('', { validators: [Validators.required], nonNullable: true }),
-      priority: new FormControl(1, { validators: [Validators.required], nonNullable: true }),
-      website: new FormControl('', { nonNullable: false })
+      name: new FormControl(sponsor?.name ?? '', { validators: [Validators.required], nonNullable: true }),
+      logoUrl: new FormControl(sponsor?.logoUrl ?? '', { validators: [Validators.required], nonNullable: true }),
+      priority: new FormControl(sponsor?.priority ?? 0, { validators: [Validators.required], nonNullable: true }),
+      website: new FormControl(sponsor?.website ?? '', { nonNullable: false })
     });
 
     return frm

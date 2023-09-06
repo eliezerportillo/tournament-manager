@@ -11,7 +11,7 @@ export class TeamListComponent {
   @Input()
   teams: ITeam[] = [];
   
-  lastMatches: number = 5;
+  lastMatches = 5;
 
   getImage(team: ITeam) {
     return Team.createImageUrl(team.nombre);

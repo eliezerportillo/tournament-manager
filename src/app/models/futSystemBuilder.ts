@@ -1,5 +1,5 @@
 import { Formation } from "./formation";
-import { LineUp, Markable } from "./lineup";
+import { Markable } from "./lineup";
 import { PlayerType } from "./player";
 
 export class FutSystemBuilder {

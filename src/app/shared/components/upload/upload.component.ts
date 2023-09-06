@@ -1,11 +1,11 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent {
 
   @Input()
   mode: string;
@@ -16,7 +16,7 @@ export class UploadComponent implements OnInit {
 
   
   @Output()
-  file = new EventEmitter<any>();
+  file = new EventEmitter<string>();
   
   constructor() {
     this.mode = 'image';
@@ -30,19 +30,17 @@ export class UploadComponent implements OnInit {
   }
 
   readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
-    var fileType = inputValue.parentElement.id;
-    myReader.onloadend = (e) => {
-      const fileString = myReader.result;
+    let file: File = inputValue.files[0];
+    let myReader: FileReader = new FileReader();
+    // let fileType = inputValue.parentElement.id;
+    myReader.onloadend = () => {
+      const fileString = myReader.result as string;
       this.file.emit(fileString);
     };
 
     myReader.readAsDataURL(file);
   }
 
-  ngOnInit(): void {
 
-  }
 
 }

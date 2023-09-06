@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Group, Grouper } from 'src/app/models/group';
 import { IMatch } from 'src/app/models/match';
@@ -13,10 +13,6 @@ export class BracketViewComponent implements OnInit {
 
   matchService: MatchService = inject(MatchService);  
   rounds: Group<IMatch>[] = [];
-
-  constructor() {
-
-  }
 
   ngOnInit(): void {
     this.getBracket()

@@ -1,13 +1,13 @@
 
 import { inject } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firestore';
 import { Observable, map, tap } from 'rxjs';
 
 export abstract class FirestoreService<T> {
   db: AngularFirestore = inject(AngularFirestore);
   protected collection: AngularFirestoreCollection<T>;
-  constructor(private collectionName: string) {
-    this.collection = this.db.collection<T>(collectionName);
+  constructor(private collectionName: string, queryFn?: QueryFn) {
+    this.collection = this.db.collection<T>(collectionName, queryFn);
   }
 
   get(): Observable<T[]> {
@@ -21,6 +21,6 @@ export abstract class FirestoreService<T> {
             return { id: action.payload.doc.id, ...action.payload.doc.data() } as T;
           })
         )
-      );;
+      );
   }
 }

@@ -1,67 +1,30 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild, inject, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild, inject, OnDestroy } from '@angular/core';
 import { ISponsor } from 'src/app/models/sponsor';
 import { SponsorService } from 'src/app/services/sponsor.service';
-import { firstValueFrom, map, tap } from 'rxjs';
+import { firstValueFrom, tap } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
-  selector: 'app-sponsor-list',
-  templateUrl: './sponsor-list.component.html',
-  styleUrls: ['./sponsor-list.component.scss']
+  selector: 'app-sponsors-banner',
+  templateUrl: './sponsors-banner.component.html',
+  styleUrls: ['./sponsors-banner.component.scss']
 })
-export class SponsorListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SponsorsBannerComponent implements OnInit, OnDestroy {
 
   currentPage = 0;
   itemsPerPage = 1;
-  interval: any; // To hold the interval reference
+  interval?: NodeJS.Timer; // To hold the interval reference
   hasSponsors = false;
   @Input()
-  sponsors: ISponsor[] = [
-    // {
-    //   name: 'Ledezmart',
-    //   priority: 3,
-    //   website: 'https://www.ledezmart.com/',
-    //   logoUrl: 'assets/ledezmart.png'
-    // },
-    // {
-    //   name: 'Netploy',
-    //   priority: 4,
-    //   website: 'https://www.facebook.com/netploy.solutions',
-    //   logoUrl: 'assets/netploy.png'
-    // },
-    // {
-    //   name: 'IAFCJ',
-    //   priority: 2,
-    //   website: 'https://www.iafcj.org/',
-    //   logoUrl: 'assets/iafcj.png'
-    // },
-    // {
-    //   name: 'COMUDE',
-    //   priority: 1,
-    //   website: 'https://www.iafcj.org/',
-    //   logoUrl: 'assets/comude.png'
-    // },
-    // {
-    //   nombre: 'addidas',
-    //   prioridad: 1,
-    //   sitio: 'https://www.adidas.co.uk/football',
-    //   imageUrl: 'https://digitalhub.fifa.com/m/45c63e2e1a57b617/webimage-fifa_fp_adidas-co_lbgr.png'
-    // },
-    // {
-    //   nombre: 'Coca-Cola',
-    //   prioridad: 2,
-    //   sitio: 'https://www.coca-colamexico.com.mx/',
-    //   imageUrl: 'https://digitalhub.fifa.com/m/405f79d35c1286a9/webimage-fifa_fp_cocacola-co_lgbr.png'
-    // },
-  ]
+  sponsors: ISponsor[] = [];
 
   private breakpointObserver: BreakpointObserver = inject(BreakpointObserver);
   sponsorService: SponsorService = inject(SponsorService);
   private renderer: Renderer2 = inject(Renderer2);
   @ViewChild('logoCarousel', { static: true }) logoCarouselRef!: ElementRef;
   intervalProgress: any;
-  progress: number = 0;
-  paused: boolean = false;
+  progress = 0;
+  paused = false;
 
 
   ngOnInit(): void {
@@ -102,17 +65,6 @@ export class SponsorListComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  ngAfterViewInit() {
-    // const logoCarousel = this.logoCarouselRef.nativeElement;
-
-    // this.renderer.listen(logoCarousel, 'animationiteration', () => {
-    //   // This event is fired when the animation completes a loop
-    //   // You can add your logic here, e.g., hide the carousel
-    //   // this.renderer. setStyle(logoCarousel.parentElement, 'display', 'none');
-
-    //   this.renderer.removeChild(logoCarousel.parentElement, logoCarousel);
-    // });
-  }
 
   ngOnDestroy(): void {
     this.stopAutoCarousel();
@@ -151,7 +103,7 @@ export class SponsorListComponent implements OnInit, AfterViewInit, OnDestroy {
     const sp = this.sponsorService.get().pipe(
       tap(sponsors => this.hasSponsors = sponsors.length > 0)
     );
-    this.sponsors = await firstValueFrom(sp);    
+    this.sponsors = await firstValueFrom(sp);
     this.sponsors = this.sponsors.sort((a, b) => a.priority - b.priority);
 
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ITeam, Team } from 'src/app/models/team';
+import { ITeam } from 'src/app/models/team';
 import { TeamService } from 'src/app/services/team.service';
 
 @Component({

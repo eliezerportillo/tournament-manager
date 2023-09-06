@@ -12,7 +12,7 @@ export class MatchScrollService {
     // Your logic here...
     const currentDate = new Date();
     let closest = elements?.[0]; // Initialize with the first date
-    let closestDate = new Date(closest?.nativeElement.getAttribute('data-date'));
+    const closestDate = new Date(closest?.nativeElement.getAttribute('data-date'));
     let closestDiff = Math.abs(currentDate.getTime() - closestDate.getTime());
 
     for (const element of elements ?? []) {

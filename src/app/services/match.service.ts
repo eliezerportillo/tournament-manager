@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QueryFn } from '@angular/fire/compat/firestore';
-import { filter, map, shareReplay, tap } from 'rxjs/operators';
+import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
+import { map, tap } from 'rxjs/operators';
 import { IMatch } from 'src/app/models/match';
 import { Observable } from 'rxjs';
 import { Team } from '../models/team';

@@ -1,9 +1,9 @@
-import { Injectable, inject } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+
 import { ISponsor } from '../models/sponsor';
 import { FirestoreService } from './firestore.service';
-import { CreateSponsor } from '../admin/sponsors/sponsor-create/sponsor-create.component';
+import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +11,26 @@ import { CreateSponsor } from '../admin/sponsors/sponsor-create/sponsor-create.c
 export class SponsorService extends FirestoreService<ISponsor> {
 
   constructor() {
-    super('Patrocinadores');
+    super('Patrocinadores', ref => ref.orderBy('priority'));
   }
 
   async add(sponsor: ISponsor) {
-    const doc = this.collection.doc();
+    let doc: AngularFirestoreDocument;
+    if (sponsor.id) {
+      doc = this.collection.doc(sponsor.id);
+    } else {
+      doc = this.collection.doc();
+    }
     await doc.set(sponsor);
+  }
+
+  async delete(sponsor: ISponsor) {
+    let doc: AngularFirestoreDocument;
+
+    doc = this.collection.doc(sponsor.id);
+    if (doc) {
+      await doc.delete();
+    }
   }
 }
 

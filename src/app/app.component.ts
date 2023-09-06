@@ -7,6 +7,7 @@ import { AccountService } from './services/account.service';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { environment } from 'src/environments/environment';
+import { Analytics } from '@angular/fire/analytics';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  analytics: any;
+  analytics?: Analytics;
 
   private route: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);

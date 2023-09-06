@@ -9,7 +9,7 @@ import { AccountService } from 'src/app/services/account.service';
 export class CompanyNameComponent implements OnInit {
 
   accountService: AccountService = inject(AccountService);
-  name: string = '';
+  name = '';
 
   ngOnInit(): void {
     this.name = this.accountService.getComponyName();

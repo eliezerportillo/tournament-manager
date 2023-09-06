@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { Location } from '@angular/common';
 import { PlayerService } from '../services/player.service';
-import { Player } from '../models/player';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

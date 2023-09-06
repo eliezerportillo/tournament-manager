@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { StandingsRoutingModule } from './standings-routing.module';
 import { RankingComponent } from './ranking/ranking.component';
 import { MaterialModule } from '../material/material.module';

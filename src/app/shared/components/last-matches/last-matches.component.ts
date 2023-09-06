@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IMatch, MatchResult } from 'src/app/models/match';
+import { MatchResult } from 'src/app/models/match';
 import { MatchService } from 'src/app/services/match.service';
 
 
@@ -12,7 +12,7 @@ import { MatchService } from 'src/app/services/match.service';
 export class LastMatchesComponent implements OnInit {
 
   @Input()
-  lastMatches: number = 0;
+  lastMatches = 0;
 
   @Input()
   team: string;

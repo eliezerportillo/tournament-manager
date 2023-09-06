@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Team } from 'src/app/models/team';
 import { firstValueFrom } from 'rxjs';
@@ -18,7 +18,7 @@ import { FormationPickerComponent } from 'src/app/matches/formation-picker/forma
   templateUrl: './upload-lineup.component.html',
   styleUrls: ['./upload-lineup.component.scss']
 })
-export class UploadLineupComponent {
+export class UploadLineupComponent implements OnInit {
 
 
   auth: AngularFireAuth = inject(AngularFireAuth);
@@ -30,8 +30,8 @@ export class UploadLineupComponent {
   captain?: Player;
 
   team: Player[] = [];
-  loading: boolean = false;
-  formationCompleted: boolean = false;
+  loading = false;
+  formationCompleted = false;
   futSystems: Formation[];
 
 
@@ -122,7 +122,7 @@ export class UploadLineupComponent {
       }
     });
 
-    this.selectedFormationControl.valueChanges.subscribe(value => this.formationCompleted = false)
+    this.selectedFormationControl.valueChanges.subscribe(() => this.formationCompleted = false)
   }
 
 

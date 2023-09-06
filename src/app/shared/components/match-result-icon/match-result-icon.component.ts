@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { IMatch, MatchResult } from 'src/app/models/match';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-match-result-icon',

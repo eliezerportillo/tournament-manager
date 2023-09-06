@@ -1,5 +1,5 @@
-import { Component, ElementRef, AfterViewInit, QueryList, ViewChildren, OnDestroy, inject } from '@angular/core';
-import { Observable, Subscription, map, shareReplay, tap } from 'rxjs';
+import { Component, ElementRef, AfterViewInit, QueryList, ViewChildren, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Group } from 'src/app/models/group';
 import { IMatch, Match } from 'src/app/models/match';
 import { MatchService } from 'src/app/services/match.service';
