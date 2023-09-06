@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, Inject,  inject } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { Observable, from } from 'rxjs';
-import { Player, PlayerType } from 'src/app/models/player';
+
+import { Player } from 'src/app/models/player';
 import { PlayerService } from 'src/app/services/player.service';
-import { filter } from 'rxjs/operators';
-import { LineUp } from 'src/app/models/lineup';
+
 
 @Component({
   selector: 'app-list-selector',

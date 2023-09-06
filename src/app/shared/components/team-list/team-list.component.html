@@ -11,10 +11,10 @@
 
                 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
                     <span>{{index + 1}}</span>
-                    <app-match-result-icon matchResult="up" *ngIf="element.tendencia == '>'"></app-match-result-icon>
-                    <app-match-result-icon matchResult="down" *ngIf="element.tendencia == '<'"></app-match-result-icon>
+                    <app-match-result-icon matchResult="up" *ngIf="element.tendencia === '>'"></app-match-result-icon>
+                    <app-match-result-icon matchResult="down" *ngIf="element.tendencia === '<'"></app-match-result-icon>
                     <app-match-result-icon matchResult="equals"
-                        *ngIf="element.tendencia == '='"></app-match-result-icon>                    
+                        *ngIf="element.tendencia === '='"></app-match-result-icon>                    
                     <app-team-image [src]="getImage(element)"></app-team-image>
                     <p>{{element.nombre}}</p>
                 </div>

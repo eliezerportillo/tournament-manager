@@ -1,7 +1,7 @@
 import { IEntity } from "./entity";
 
 export interface IMatch extends IEntity {
-    [key: string]: Object | null;   
+    [key: string]: unknown | null;   
     esClasificacion: boolean; 
     etapa: string;
     numero: number;

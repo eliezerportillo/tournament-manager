@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminShellComponent } from './admin-shell/admin-shell.component';
 import { ScoresViewComponent } from './scores-view/scores-view.component';
 import { authGuard } from '../guards/auth.guard';
-import { SponsorsViewComponent } from './sponsors/sponsors-view/sponsors-view.component';
 
 const routes: Routes = [
   {
@@ -17,7 +16,7 @@ const routes: Routes = [
       },
       {
         path: 'sponsors',
-        component: SponsorsViewComponent
+        loadChildren: () => import('../sponsors/sponsors.module').then(m => m.SponsorsModule)
       }
     ]
   }

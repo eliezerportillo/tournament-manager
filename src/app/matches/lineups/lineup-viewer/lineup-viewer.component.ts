@@ -1,7 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-import { Group } from 'src/app/models/group';
 import { LineUp } from 'src/app/models/lineup';
 import { Team } from 'src/app/models/team';
 import { MatchService } from 'src/app/services/match.service';

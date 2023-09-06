@@ -11,11 +11,11 @@ import { UpdateStandingsCommand } from 'src/app/services/update-standings.comman
 })
 export class StandingsViewComponent implements OnInit {
   title: string;
-  processing: boolean = false;
+  hasChanges = false;
+  processing = false;
   teams: ITeam[];
   updateStandingsCommand: UpdateStandingsCommand = inject(UpdateStandingsCommand);
   bottomSheetRef: MatBottomSheetRef<StandingsViewComponent> = inject(MatBottomSheetRef<StandingsViewComponent>);
-  hasChanges: boolean = false;
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: { teams: ITeam[], matches: IMatch[] }) {
     this.title = `Posiciones`;
     this.teams = JSON.parse(JSON.stringify(data.teams));

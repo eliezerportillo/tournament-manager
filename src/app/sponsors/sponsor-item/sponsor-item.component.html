@@ -1,0 +1,15 @@
+<ng-container *ngIf="sponsor">
+    <mat-card>
+        <mat-card-header>
+            <div mat-card-avatar [ngStyle]="{backgroundImage: 'url('+ sponsor.logoUrl +')'}" class="sponsor-image">                
+            </div>
+            <mat-card-title>{{sponsor.name}}</mat-card-title>
+            <mat-card-subtitle>Prioridad {{sponsor.priority}}</mat-card-subtitle>
+            <mat-card-subtitle>{{sponsor.website}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions align="end">
+            <button mat-button color="warn" (click)="delete()">ELIMINAR</button>
+            <button mat-button (click)="open()">EDITAR</button>
+          </mat-card-actions>
+    </mat-card>
+</ng-container>

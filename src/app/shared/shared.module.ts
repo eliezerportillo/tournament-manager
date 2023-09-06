@@ -18,7 +18,9 @@ import { MatchHeaderComponent } from './components/match-header/match-header.com
 import { TeamListComponent } from './components/team-list/team-list.component';
 import { HourPipe } from './pipes/hour.pipe';
 import { ExcelDatePipe } from './pipes/excel-date.pipe';
-import { SponsorListComponent } from './components/sponsor-list/sponsor-list.component';
+import { SponsorsBannerComponent } from './components/sponsors-banner/sponsors-banner.component';
+import { UploadComponent } from './components/upload/upload.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 
 
@@ -41,7 +43,9 @@ import { SponsorListComponent } from './components/sponsor-list/sponsor-list.com
     TeamListComponent,
     HourPipe,
     ExcelDatePipe,
-    SponsorListComponent    
+    SponsorsBannerComponent    ,
+    UploadComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -66,7 +70,9 @@ import { SponsorListComponent } from './components/sponsor-list/sponsor-list.com
     TeamListComponent,
     HourPipe,
     ExcelDatePipe,
-    SponsorListComponent
+    SponsorsBannerComponent,
+    UploadComponent,
+    ConfirmationDialogComponent,
   ],
   providers: [DatePipe]
 })

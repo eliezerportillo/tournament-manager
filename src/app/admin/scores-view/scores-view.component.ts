@@ -1,14 +1,14 @@
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { Observable, OperatorFunction, firstValueFrom, map } from 'rxjs';
+import { Observable,  firstValueFrom } from 'rxjs';
 import { Group } from 'src/app/models/group';
-import { IMatch, Match, MatchResult } from 'src/app/models/match';
+import { IMatch, Match } from 'src/app/models/match';
 import { ITeam } from 'src/app/models/team';
 import { MatchService } from 'src/app/services/match.service';
 import { TeamService } from 'src/app/services/team.service';
 import { ScoreFillerComponent } from '../score-filler/score-filler.component';
-import { UpdateStandingsCommand } from 'src/app/services/update-standings.command';
+
 import { StandingsViewComponent } from '../standings-view/standings-view.component';
 import { MatchComponent } from 'src/app/shared/components/match/match.component';
 import { MatchScrollService } from 'src/app/services/match-scroll.service';
@@ -39,7 +39,7 @@ export class ScoresViewComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.matchElements?.changes.subscribe(dates => {
+    this.matchElements?.changes.subscribe(() => {
       this.scrollService.scrollToCurrentDayElement(this.matchElements?.toArray() ?? []);
     });
   }
@@ -62,7 +62,7 @@ export class ScoresViewComponent implements OnInit, AfterViewInit {
   }
 
   openStandings() {
-    const ref = this.bottomSheet.open(StandingsViewComponent, { data: { teams: this.teams, matches: this.matches.map(x => x.values).flat() } });
+    this.bottomSheet.open(StandingsViewComponent, { data: { teams: this.teams, matches: this.matches.map(x => x.values).flat() } });
   }
 
 }

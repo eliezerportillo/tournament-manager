@@ -3,7 +3,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ISponsor } from 'src/app/models/sponsor';
 import { SponsorService } from 'src/app/services/sponsor.service';
 import { SponsorCreateComponent } from '../sponsor-create/sponsor-create.component';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-sponsors-view',
@@ -16,7 +16,7 @@ export class SponsorsViewComponent implements OnInit {
 
   sponsorService: SponsorService = inject(SponsorService);
   sponsors: ISponsor[] = [];
-  sponsors$: any;
+  sponsors$?: Observable<ISponsor[]>;
 
   hasSponsors = false;
 
@@ -29,6 +29,6 @@ export class SponsorsViewComponent implements OnInit {
   }
 
   newSponsor() {
-    const ref = this.bottomSheet.open(SponsorCreateComponent, { disableClose: true });
+    this.bottomSheet.open(SponsorCreateComponent, { disableClose: true });
   }
 }

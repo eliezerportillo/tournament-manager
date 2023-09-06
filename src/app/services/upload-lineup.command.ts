@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { LineUp } from '../models/lineup';
 import { Player } from '../models/player';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Formation } from '../models/formation';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +33,7 @@ export class UploadLineupCommand {
 
   }
 
-  async saveDataToFirestore(teamName: string, data: any[]) {
+  async saveDataToFirestore(teamName: string, data: unknown[]) {
     try {
       const collectionRef = this.db.firestore.collection('Alineaciones');
 

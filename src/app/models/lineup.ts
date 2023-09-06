@@ -1,5 +1,4 @@
 import { IEntity } from "./entity";
-import { Formation } from "./formation";
 import { PlayerType } from "./player";
 
 export interface LineUp extends IEntity {

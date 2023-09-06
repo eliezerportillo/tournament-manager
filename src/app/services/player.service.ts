@@ -1,7 +1,7 @@
 import { Injectable, } from '@angular/core';
-import { AngularFirestoreCollection, AngularFirestore, CollectionReference, Query, DocumentData, } from '@angular/fire/compat/firestore';
+import { AngularFirestoreCollection, AngularFirestore, } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { Player, PlayerType } from '../models/player';
+import { Player } from '../models/player';
 import { Stats } from '../models/stats';
 
 type WhereFilterOp =
@@ -32,12 +32,12 @@ export class PlayerService {
   }
 
   async getGoalKeepers(teamName: string) {
-    const snapshot = await this.playersCollection.ref.orderBy('portero').where('equipo', '==', teamName).where('portero', '==', 1).get();    
+    const snapshot = await this.playersCollection.ref.orderBy('portero').where('equipo', '==', teamName).where('portero', '==', 1).get();
     return snapshot.docs.map(doc => doc.data());
   }
 
   async getPlayersByTeam(teamName: string) {
-    const snapshot = await this.playersCollection.ref.orderBy('jugador').where('equipo', '==', teamName).get();    
+    const snapshot = await this.playersCollection.ref.orderBy('jugador').where('equipo', '==', teamName).get();
     return snapshot.docs.map(doc => doc.data());
   }
 
@@ -67,8 +67,8 @@ export class PlayerService {
     return s;
   }
 
-  private async getFiltered(filterBy: string, op: WhereFilterOp = '>', value: any = 0) {
-    const snapshot = await this.playersCollection.ref.orderBy(filterBy).orderBy('jugador').where(filterBy, op, value).get();    
+  private async getFiltered(filterBy: string, op: WhereFilterOp = '>', value: unknown = 0) {
+    const snapshot = await this.playersCollection.ref.orderBy(filterBy).orderBy('jugador').where(filterBy, op, value).get();
     return snapshot.docs.map(doc => doc.data());
   }
 
