@@ -2,8 +2,7 @@
 
     <div *ngIf="match.hora; else noHour" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
 
-        <div *ngIf="unfinished; else finished" fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon>sports</mat-icon>
+        <div *ngIf="unfinished; else finished" fxLayout="row" fxLayoutAlign="center center">            
             <span>{{ match.dateTime | hour }}</span>
         </div>
     </div>

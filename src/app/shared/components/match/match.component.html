@@ -41,7 +41,9 @@
                             <ng-container *ngIf="!isFinished(match) else finished;">
                                 <p>{{ match.dateTime | dateStatus }}</p>
                                 <app-match-hour [match]="match"></app-match-hour>
-                                <span>{{match.campo}}</span>
+                                <div fxLayout="row" fxLayoutAlign="center center" *ngIf="match.campo">
+                                    <mat-icon>flag</mat-icon> {{match.campo}}
+                                </div>
                             </ng-container>
 
                             <ng-template #finished>
