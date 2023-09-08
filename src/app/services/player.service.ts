@@ -1,6 +1,6 @@
 import { Injectable, } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom, from, of } from 'rxjs';
 import { Player } from '../models/player';
 import { Stats } from '../models/stats';
 
@@ -22,34 +22,37 @@ type WhereFilterOp =
 export class PlayerService {
 
   playersCollection: AngularFirestoreCollection<Player>;
+  stats?: Stats;
 
-  players$: Observable<Player[]>;
+
 
   constructor(private db: AngularFirestore) {
     this.playersCollection = this.db.collection<Player>('Jugadores');
-
-    this.players$ = this.playersCollection.valueChanges();
   }
 
-  async getGoalKeepers(teamName: string) {
+  async getGoalKeepers(teamName: string): Promise<Player[]> {
     const snapshot = await this.playersCollection.ref.orderBy('portero').where('equipo', '==', teamName).where('portero', '==', 1).get();
     return snapshot.docs.map(doc => doc.data());
   }
 
-  async getPlayersByTeam(teamName: string) {
+  async getPlayersByTeam(teamName: string): Promise<Player[]> {
     const snapshot = await this.playersCollection.ref.orderBy('jugador').where('equipo', '==', teamName).get();
     return snapshot.docs.map(doc => doc.data());
   }
 
-  async getPlayerByEmail(email: string) {
+  async getPlayerByEmail(email: string): Promise<Player> {
     return (await this.getFiltered('correo', '==', email))[0];
   }
 
-  async getCaptains() {
+  async getCaptains(): Promise<Player[]> {
     return this.getFiltered('capitan');
   }
 
   async getPlayersStats(): Promise<Stats> {
+    if (this.stats) {
+      return firstValueFrom(of(this.stats));
+    }
+
     const promises = [
       this.getFiltered('goles'),
       this.getFiltered('amarillas'),
@@ -57,19 +60,22 @@ export class PlayerService {
     ];
     const responses = await Promise.all(promises);
 
-    const s: Stats = {
+    const stats: Stats = {
       goals: responses[0],
       yellows: responses[1],
       reds: responses[2],
-
     }
 
-    return s;
+    this.stats = stats;
+
+    return stats;
   }
 
   private async getFiltered(filterBy: string, op: WhereFilterOp = '>', value: unknown = 0) {
     const snapshot = await this.playersCollection.ref.orderBy(filterBy).orderBy('jugador').where(filterBy, op, value).get();
-    return snapshot.docs.map(doc => doc.data());
+    const data = snapshot.docs.map(doc => doc.data());
+    console.log(`${data.length} Players read filtered by ${filterBy} ${op} ${value}`);
+    return data;
   }
 
 

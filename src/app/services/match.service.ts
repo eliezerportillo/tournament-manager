@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
-import { map, tap } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { IMatch } from 'src/app/models/match';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Team } from '../models/team';
 import { LineUp } from '../models/lineup';
 import { Group, Grouper } from '../models/group';
@@ -14,21 +14,25 @@ export class MatchService {
 
 
   private matchesCollection: AngularFirestoreCollection<IMatch>;
-  // private matches$: Observable<IMatch[]>;
+  private matchesCache?:IMatch[];
   private standingsCollection: AngularFirestoreCollection<LineUp>;
   bracketCollection: AngularFirestoreCollection<IMatch>;
 
   constructor(private db: AngularFirestore) {
     this.matchesCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('fecha').where('esClasificacion', '==', 0));
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
-    this.bracketCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('ordenEtapa').orderBy('numero').where('esClasificacion', '==', 1));
-    // this.matches$ = this.matchesCollection.valueChanges();
+    this.bracketCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('ordenEtapa').orderBy('numero').where('esClasificacion', '==', 1));    
   }
 
   getMatches(): Observable<IMatch[]> {
+    if (this.matchesCache) {
+      return of(this.matchesCache);
+    }
+
     return this.getMatchesFromCollection(this.matchesCollection).pipe(
-      map((matches) => matches.filter(match => match.esClasificacion == undefined || match.esClasificacion == false))
-    );
+      map((matches) => matches.filter(match => match.esClasificacion == undefined || match.esClasificacion == false)),
+      tap(matches => this.matchesCache = matches)
+    );    
   }
 
   getMatchesGroupedByDate() {
