@@ -3,8 +3,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ISponsor } from 'src/app/models/sponsor';
 import { SponsorCreateComponent } from '../sponsor-create/sponsor-create.component';
 import { SponsorService } from 'src/app/services/sponsor.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { ModalService } from 'src/app/services/modal.service';
 
 
 
@@ -16,7 +15,7 @@ import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/
 export class SponsorItemComponent {
   bottomSheet: MatBottomSheet = inject(MatBottomSheet);
   sponsorService: SponsorService = inject(SponsorService);
-  dialog = inject(MatDialog);
+  modal = inject(ModalService);
   @Input()
   sponsor?: ISponsor;
 
@@ -35,10 +34,6 @@ export class SponsorItemComponent {
   }
 
   openConfirmationDialog() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: { message: '¿Estás seguro de que deseas eliminar?' }
-    });
-
-    return dialogRef.afterClosed();
+    return this.modal.confirm('¿Estás seguro de que deseas eliminar?');
   }
 }
