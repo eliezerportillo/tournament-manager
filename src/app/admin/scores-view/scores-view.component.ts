@@ -26,8 +26,7 @@ export class ScoresViewComponent implements OnInit, AfterViewInit {
   scrollService: MatchScrollService = inject(MatchScrollService);
 
   teams: ITeam[] = [];
-
-  matches: Group<IMatch>[] = [];
+  
   matches$?: Observable<Group<IMatch>[]>;
   @ViewChildren(MatchComponent, { read: ElementRef }) matchElements?: QueryList<ElementRef>;
 
@@ -46,7 +45,7 @@ export class ScoresViewComponent implements OnInit, AfterViewInit {
 
   async load() {
     this.matches$ = this.matchService.getMatchesGroupedByDate();
-    // this.matches = await firstValueFrom(matches$);
+    
     this.teams = await firstValueFrom(this.teamService.getRankedTeams());
   }
 
@@ -61,8 +60,8 @@ export class ScoresViewComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openStandings() {
-    this.bottomSheet.open(StandingsViewComponent, { data: { teams: this.teams, matches: this.matches.map(x => x.values).flat() } });
+  openStandings(matches: Group<IMatch>[]) {
+    this.bottomSheet.open(StandingsViewComponent, { data: { teams: this.teams, matches: matches.map(x => x.values).flat() } });
   }
 
 }
