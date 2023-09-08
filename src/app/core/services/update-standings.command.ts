@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IMatch, MatchResult } from '../../core/models/match';
-import { ITeam } from '../../core/models/team';
+import { IMatch, MatchResult } from '@app-core/models/match';
+import { ITeam } from '@app-core/models/team';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, CollectionReference, Query, DocumentData } from '@angular/fire/compat/firestore';
 import { Observable, map, tap } from 'rxjs';
 
-import { ITeam } from '../../core/models/team';
+import { ITeam } from '@app-core/models/team';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { LineUp } from '../../core/models/lineup';
-import { Player } from '../../core/models/player';
+import { LineUp } from '@app-core/models/lineup';
+import { Player } from '@app-core/models/player';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({

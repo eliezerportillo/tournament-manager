@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ISponsor } from '../../core/models/sponsor';
+import { ISponsor } from '@app-core/models/sponsor';
 import { FirestoreService } from './firestore.service';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 

@@ -3,9 +3,9 @@ import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } f
 import { map, tap } from 'rxjs/operators';
 import { IMatch } from '@app-core/models/match';
 import { Observable } from 'rxjs';
-import { Team } from '../../core/models/team';
-import { LineUp } from '../../core/models/lineup';
-import { Group, Grouper } from '../../core/models/group';
+import { Team } from '@app-core/models/team';
+import { LineUp } from '@app-core/models/lineup';
+import { Group, Grouper } from '@app-core/models/group';
 
 @Injectable({
   providedIn: 'root'

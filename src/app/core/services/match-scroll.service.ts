@@ -1,5 +1,5 @@
 import { ElementRef, Injectable } from '@angular/core';
-import { Match } from '../../core/models/match';
+import { Match } from '@app-core/models/match';
 
 @Injectable({
   providedIn: 'root'

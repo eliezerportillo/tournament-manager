@@ -1,8 +1,8 @@
 import { Injectable, } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { Player } from '../../core/models/player';
-import { Stats } from '../../core/models/stats';
+import { Player } from '@app-core/models/player';
+import { Stats } from '@app-core/models/stats';
 
 type WhereFilterOp =
   | '<'
