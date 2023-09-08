@@ -30,7 +30,7 @@ export class ScoreFillerComponent {
     return `${match.marcadorLocal}-${match.marcadorVisita}`;
   }
 
-  close() {    
+  close() {
     this.bottomSheetRef.dismiss(this.data.match);
   }
 
@@ -84,9 +84,9 @@ export class ScoreFillerComponent {
     this.data.match.marcadorLocal = this.local?.value;
     this.data.match.marcadorVisita = this.visita?.value;
     this.data.match.campo = this.field?.value;
-    this.data.match.fecha = this.convertToExcelDate(this.date?.value);
-    this.data.match.hora = this.convertToExcelTime(this.convertTimeStringToMilliseconds(this.time?.value));
-    
+    this.data.match.fecha = this.date?.dirty ? this.convertToExcelDate(this.date?.value) : this.data.match.fecha;
+    this.data.match.hora = this.time?.dirty ? this.convertToExcelTime(this.convertTimeStringToMilliseconds(this.time?.value)) : this.data.match.hora;
+
     this.data.match.dateTime = this.setTime(this.time?.value, this.date?.value);
     await this.command.execute(this.data.match);
     this.close();
