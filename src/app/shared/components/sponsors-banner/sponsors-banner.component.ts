@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild, inject, OnDestroy } from '@angular/core';
-import { ISponsor } from 'src/app/models/sponsor';
-import { SponsorService } from 'src/app/services/sponsor.service';
+import { ISponsor } from '@app-core/models/sponsor';
+import { SponsorService } from '@app-core/services/sponsor.service';
 import { firstValueFrom, tap } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
