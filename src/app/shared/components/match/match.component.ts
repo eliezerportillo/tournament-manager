@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IMatch, Match } from 'src/app/models/match';
+import { IMatch, Match } from '@app-core/models/match';
 
 @Component({
   selector: 'app-match',

@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Group, Grouper } from 'src/app/models/group';
-import { IMatch } from 'src/app/models/match';
-import { MatchService } from 'src/app/services/match.service';
+import { Group, Grouper } from '@app-core/models/group';
+import { IMatch } from '@app-core/models/match';
+import { MatchService } from '@app-core/services/match.service';
 
 @Component({
   selector: 'app-bracket-view',

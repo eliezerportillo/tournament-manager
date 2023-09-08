@@ -3,10 +3,10 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { AccountService } from './services/account.service';
+import { AccountService } from './core/services/account.service';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { environment } from 'src/environments/environment';
+import { environment } from '@app-environments/environment';
 import { Analytics } from '@angular/fire/analytics';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Team } from 'src/app/models/team';
+import { Team } from '@app-core/models/team';
 
 @Component({
   selector: 'app-team-image',

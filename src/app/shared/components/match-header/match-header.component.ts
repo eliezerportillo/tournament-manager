@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IMatch } from 'src/app/models/match';
+import { IMatch } from '@app-core/models/match';
 
 @Component({
   selector: 'app-match-header',

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Group } from 'src/app/models/group';
-import { IMatch } from 'src/app/models/match';
+import { Group } from '@app-core/models/group';
+import { IMatch } from '@app-core/models/match';
 
 @Component({
   selector: 'app-match-list',
