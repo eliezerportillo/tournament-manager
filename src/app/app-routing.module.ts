@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ShellComponent } from './shell/shell.component';
 
-
 const routes: Routes = [
   { path: '', redirectTo: '/matches', pathMatch: 'full' },
   {
@@ -11,27 +10,34 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./tournaments/tournaments.module').then(m => m.TournamentsModule)
+        loadChildren: () =>
+          import('@app-modules/tournaments/tournaments.module').then(
+            (m) => m.TournamentsModule
+          ),
       },
       {
         path: 'import',
-        loadChildren: () => import('./import/import.module').then(m => m.ImportModule)
-      } 
-    ]
+        loadChildren: () =>
+          import('@app-modules/import/import.module').then(
+            (m) => m.ImportModule
+          ),
+      },
+    ],
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
-  },   
+    loadChildren: () =>
+      import('@app-modules/login/login.module').then((m) => m.LoginModule),
+  },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
-  }  
-
+    loadChildren: () =>
+      import('@app-modules/admin/admin.module').then((m) => m.AdminModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

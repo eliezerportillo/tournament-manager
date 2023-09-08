@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ITeam, Team } from 'src/app/models/team';
+import { ITeam, Team } from '@app-core/models/team';
 
 @Component({
   selector: 'app-team-list',

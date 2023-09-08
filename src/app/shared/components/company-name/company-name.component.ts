@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from '@app-core/services/account.service';
 
 @Component({
   selector: 'app-company-name',
