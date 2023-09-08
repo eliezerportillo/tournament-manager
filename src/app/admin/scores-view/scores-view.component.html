@@ -2,7 +2,7 @@
     <mat-toolbar class="transparent">
         Partidos
         <span class="spacer"></span>
-        <button mat-stroked-button (click)="openStandings()">Posiciones <mat-icon class="trending-up">trending_up</mat-icon></button>
+        <button mat-stroked-button (click)="openStandings(matches)">Posiciones <mat-icon class="trending-up">trending_up</mat-icon></button>
     </mat-toolbar>
     <div *ngFor="let group of matches">
         <mat-toolbar>{{ group.key | excelDate | dateStatus }}</mat-toolbar>
