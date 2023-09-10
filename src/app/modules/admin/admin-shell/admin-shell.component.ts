@@ -12,6 +12,7 @@ export class AdminShellComponent {
   menus = [
     { text: 'EQUIPOS', path: '#', disabled: true },    
     { text: 'PARTIDOS', path: 'scores', disabled: false },
+    { text: 'JUGADORES', path: 'players', disabled: false },
     { text: 'PATROCINADORES', path: 'sponsors', disabled: false },
   ];
 }

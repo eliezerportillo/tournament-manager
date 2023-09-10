@@ -21,6 +21,9 @@ import { ExcelDatePipe } from './pipes/excel-date.pipe';
 import { SponsorsBannerComponent } from './components/sponsors-banner/sponsors-banner.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { NumberInputComponent } from './number-input/number-input.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DeleteButtonComponent } from './components/delete-button/delete-button.component';
 
 
 
@@ -43,15 +46,19 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     TeamListComponent,
     HourPipe,
     ExcelDatePipe,
-    SponsorsBannerComponent    ,
+    SponsorsBannerComponent,
     UploadComponent,
     ConfirmationDialogComponent,
+    NumberInputComponent,
+    DeleteButtonComponent,
   ],
   imports: [
     CommonModule,
     FlexLayoutModule,
     MaterialModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,
@@ -73,6 +80,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     SponsorsBannerComponent,
     UploadComponent,
     ConfirmationDialogComponent,
+    NumberInputComponent,
+    DeleteButtonComponent
   ],
   providers: [DatePipe]
 })

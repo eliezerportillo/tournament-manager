@@ -21,12 +21,12 @@ import { HourPipe } from '@app-shared/pipes/hour.pipe';
     StandingsViewComponent,    
   ],
   imports: [
+    AdminRoutingModule,
     FlexLayoutModule,    
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
     MaterialModule,
-    AdminRoutingModule,
     NgxMatTimepickerModule    
   ],
   providers: [HourPipe]
