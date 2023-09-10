@@ -17,6 +17,10 @@ const routes: Routes = [
       {
         path: 'sponsors',
         loadChildren: () => import('@app-modules/sponsors/sponsors.module').then(m => m.SponsorsModule)
+      },
+      {
+        path: 'players',
+        loadChildren: () => import('@app-modules/players/players.module').then(m => m.PlayersModule)
       }
     ]
   }

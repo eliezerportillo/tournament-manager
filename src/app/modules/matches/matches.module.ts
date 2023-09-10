@@ -40,6 +40,6 @@ import { PlayerListComponent } from './players/player-list/player-list.component
     MaterialModule,
     FormsModule,
     ReactiveFormsModule
-  ]
+  ]  
 })
 export class MatchesModule { }

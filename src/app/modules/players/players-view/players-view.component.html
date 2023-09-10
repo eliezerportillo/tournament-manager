@@ -1,0 +1,30 @@
+<form [formGroup]="form" fxLayout="column" fxLayoutAlign="start stretch">
+
+    <mat-form-field>
+        <mat-label>Mostrar por equipo</mat-label>
+        <mat-select formControlName="teamName">
+            <mat-option *ngFor="let team of teams" [value]="team.nombre">
+                {{team.nombre}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <ng-container *ngIf="hasPlayers else noPlayers">
+        <mat-list role="list">
+
+            <mat-list-item role="listitem" *ngFor="let p of players" matRipple>
+                <app-player-item [player]="p" (selected)="onSelected($event)"></app-player-item>
+            </mat-list-item>
+
+
+        </mat-list>
+    </ng-container>
+</form>
+
+
+<ng-template #noPlayers>
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="8px">
+        <mat-icon>person_off</mat-icon>
+        Seleccione un equipo
+    </div>
+</ng-template>
