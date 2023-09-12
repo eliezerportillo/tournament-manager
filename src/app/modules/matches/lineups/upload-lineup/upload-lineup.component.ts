@@ -79,7 +79,7 @@ export class UploadLineupComponent implements OnInit {
 
 
   private async loadPlayers(teamName: string) {
-    this.team = await this.playerService.getPlayersByTeam(teamName);
+    this.team = await firstValueFrom(this.playerService.getPlayersByTeam(teamName));
   }
 
   async openBottomSheet(position?: Markable) {
