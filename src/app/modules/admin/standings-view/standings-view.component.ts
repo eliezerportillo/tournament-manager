@@ -43,5 +43,6 @@ export class StandingsViewComponent implements OnInit {
     this.processing = true;
     this.teams = await this.updateStandingsCommand.execute(this.data.matches, this.data.teams);
     this.processing = false;
+    this.close();
   }
 }
