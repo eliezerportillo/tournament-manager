@@ -10,7 +10,7 @@ import { ShellComponent } from './shell/shell.component';
 import { FirebaseModule } from './firebase/firebase.module';
 import { MaterialModule } from '@app-material/material.module';
 import { SharedModule } from '@app-shared/shared.module';
-import { MatchesModule } from './modules/matches/matches.module';
+import { MatchesModule } from '@app-modules/matches/matches.module';
 
 
 
