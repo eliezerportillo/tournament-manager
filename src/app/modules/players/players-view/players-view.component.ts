@@ -3,17 +3,20 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Player } from '@app-core/models/player';
 import { TeamService } from '@app-core/services/team.service';
 import { PlayerService } from '@app-core/services/player.service';
-import { firstValueFrom } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { ITeam } from '@app-core/models/team';
 import { ModalService } from '@app-core/services/modal.service';
-import { PlayerEditorComponent } from '../player-editor/player-editor.component';
+import { PlayerEditorComponent } from '@app-modules/players/player-editor/player-editor.component';
 import { LocalStorageKeys } from '@app-core/models/local-storage-keys';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+
 @Component({
   selector: 'app-players-view',
   templateUrl: './players-view.component.html',
   styleUrls: ['./players-view.component.scss']
 })
 export class PlayersViewComponent implements OnInit {
+  bottomSheet: MatBottomSheet = inject(MatBottomSheet);
 
   playerService = inject(PlayerService);
   teamService = inject(TeamService);
@@ -51,13 +54,11 @@ export class PlayersViewComponent implements OnInit {
     return this.form.value?.teamName;
   }
 
-  get hasPlayers() {
-    return this.playersList[this.teamName]?.length > 0 ?? false;
-  }
+
 
 
   get players() {
-    return this.playersList[this.teamName] ?? []
+    return this.playersList[this.teamName];
   }
 
 
@@ -78,20 +79,28 @@ export class PlayersViewComponent implements OnInit {
   }
 
   async getPlayers(teamName: string) {
-    this.playersList[teamName] = await this.playerService.getPlayersByTeam(teamName);
+    this.playersList[teamName] = this.playerService.getPlayersByTeam(teamName);
   }
 
-  onSelected(match: Player) {
-    // this.modalService.open(PlayerEditorComponent, match).subscribe(result => {
-    //   if (result) {
+  onSelected(player: Player) {
+    this.modalService.open(PlayerEditorComponent, { player: player, isNew: false, team: this.teamName }).subscribe(result => {
+      if (result) {
 
-    //   }
-    // });
+      }
+    });
+  }
+
+  newPlayer() {
+    this.modalService.open(PlayerEditorComponent, { isNew: true, team: this.teamName }).subscribe(result => {
+      if (result) {
+
+      }
+    });
   }
 }
 
 interface PlayerList {
-  [teamName: string]: Player[];
+  [teamName: string]: Observable<Player[]>;
 }
 
 interface PlayersFilter {

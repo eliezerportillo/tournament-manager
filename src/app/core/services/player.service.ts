@@ -1,6 +1,6 @@
 import { Injectable, } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, } from '@angular/fire/compat/firestore';
-import { firstValueFrom, of } from 'rxjs';
+import { Observable, firstValueFrom, map, of } from 'rxjs';
 import { Player } from '@app-core/models/player';
 import { Stats } from '@app-core/models/stats';
 
@@ -35,9 +35,16 @@ export class PlayerService {
     return snapshot.docs.map(doc => doc.data());
   }
 
-  async getPlayersByTeam(teamName: string): Promise<Player[]> {
-    const snapshot = await this.playersCollection.ref.orderBy('jugador').where('equipo', '==', teamName).get();
-    return snapshot.docs.map(doc => doc.data());
+  getPlayersByTeam(teamName: string): Observable<Player[]> {
+    return this.db.collection<Player>('Jugadores', ref => ref.orderBy('jugador').where('equipo', '==', teamName))
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(action => {
+            return { id: action.payload.doc.id, ...action.payload.doc.data() } as Player;
+          })
+        )
+      );
   }
 
   async getPlayerByEmail(email: string): Promise<Player> {

@@ -8,7 +8,11 @@ import { FormControl } from '@angular/forms'
 })
 export class NumberInputComponent {
   @Input() control?: FormControl;
-  @Input() controlName?: string;
+  @Input() controlName: string;
+
+  constructor() {
+    this.controlName = '';
+  }
 
   increment() {
     this.control?.setValue(this.control.value + 1);
@@ -22,13 +26,13 @@ export class NumberInputComponent {
     if (this.control?.hasError('required')) {
       return 'Campo obligatorio';
     }
-    
+
     if (this.control?.hasError('min')) {
-      return `Valor no puede ser mejor que ${ this.control.getError('min').min }`;
+      return `Valor no puede ser mejor que ${this.control.getError('min').min}`;
     }
 
     if (this.control?.hasError('max')) {
-      return `Valor no puede ser mejor que ${ this.control.getError('max').max }`;
+      return `Valor no puede ser mejor que ${this.control.getError('max').max}`;
     }
 
     return '';

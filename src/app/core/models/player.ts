@@ -1,4 +1,6 @@
-export interface Player {
+import { IEntity } from "./entity";
+
+export interface Player extends IEntity {
     equipo: string;
     jugador: string;
     amarillas?: number;
@@ -11,17 +13,9 @@ export interface Player {
     correo?: string;
 }
 
-// export type PlayerType =
-// | 'portero'
-// | 'defensa'
-// | 'medio'
-// | 'delantero';
-
-
 export enum PlayerType {
     portero = 'portero',
     defensa = 'defensa',
     medio = 'medio',
     delantero = 'delantero'
-  }
-  
+}
