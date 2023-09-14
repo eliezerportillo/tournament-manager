@@ -1,11 +1,14 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { IEditorComponent } from '@app-core/models/editor-component';
-import { Player } from '@app-core/models/player';
+import { IPlayer } from '@app-core/models/player';
+import { BatchItemCreatorCommand } from '@app-core/services/batch-item-creator.command';
 import { CreatePlayerCommand } from '@app-core/services/create-player.command';
 import { DeletePlayerCommand } from '@app-core/services/delete-player.command';
 import { UpdatePlayerCommand } from '@app-core/services/update-player.command';
+import { BatchCreatorComponent } from '@app-shared/components/batch-creator/batch-creator.component';
 
 @Component({
   selector: 'app-player-editor',
@@ -18,11 +21,15 @@ export class PlayerEditorComponent implements IEditorComponent {
   updatePlayerCommand = inject(UpdatePlayerCommand);
   deletePlayerCommand = inject(DeletePlayerCommand);
   createPlayerCommand = inject(CreatePlayerCommand);
+  batchItemCreatorCommand = inject(BatchItemCreatorCommand);
+
+  @ViewChild(BatchCreatorComponent) batchCreatorComponent!: BatchCreatorComponent;
 
   fb = inject(FormBuilder);
   form: FormGroup;
+  activePlayerForm = TypePlayerForm.OnePlayer;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: { player: Player, isNew: boolean, team: string }) {
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: { player: IPlayer, isNew: boolean, team: string }) {
     this.form = this.initForm(data);
   }
 
@@ -46,9 +53,18 @@ export class PlayerEditorComponent implements IEditorComponent {
     return this.form.get('isCap')
   }
 
-  initForm(data: { player: Player, isNew: boolean, team: string }): FormGroup {
+  get playersControl() {
+    return this.form.get('name') as FormControl;
+  }
+
+  onFormTypeChanges(event: MatTabChangeEvent) {
+
+    this.form = this.initForm(this.data);
+  }
+
+  initForm(data: { player: IPlayer, isNew: boolean, team: string }): FormGroup {
     let form = this.fb.group({
-      name: [data.isNew ? '' : data.player.jugador ?? '', Validators.required],
+      name: [data.isNew ? '' : data.player.name ?? '', Validators.required],
       team: [data.team, Validators.required],
       yellowCards: [data.isNew ? 0 : data.player.amarillas ?? 0, Validators.min(0)],
       redCards: [data.isNew ? 0 : data.player.rojas ?? 0, Validators.min(0)],
@@ -75,37 +91,63 @@ export class PlayerEditorComponent implements IEditorComponent {
     this.close();
   }
 
-  async save() {
+  save() {
 
-
-    if (this.isNew) {
-      const player: Player = {
-        jugador: this.form.value?.name,
-        equipo: this.data.team,
-        amarillas: this.form.value?.yellowCards,
-        rojas: this.form.value?.redCards,
-        goles: this.form.value?.goals,
-        capitan: this.form.value?.isCap,
-        portero: this.form.value?.isGoalkeeper,
-        noBautizado: this.form.value?.isListener,
-        correo: this.form.value?.email,
-      }
-      await this.createPlayerCommand.execute(player);
-    } else {
-      this.data.player.amarillas = this.form.value?.yellowCards;
-      this.data.player.rojas = this.form.value?.redCards;
-      this.data.player.goles = this.form.value?.goals;
-      this.data.player.capitan = this.form.value?.isCap;
-      this.data.player.portero = this.form.value?.isGoalkeeper;
-      this.data.player.noBautizado = this.form.value?.isListener;
-      this.data.player.correo = this.form.value?.email;
-      await this.updatePlayerCommand.execute(this.data.player);
+    if (this.activePlayerForm == TypePlayerForm.OnePlayer) {
+      this.savePlayer();
+    } else if (this.activePlayerForm == TypePlayerForm.MorePlayers) {
+      this.createPlayers();
     }
 
     this.close();
   }
 
+  async createPlayers() {
+    const players: IPlayer[] = this.batchCreatorComponent.createObjects<IPlayer>();
+    this.batchItemCreatorCommand.execute(players.map(p => {
+      p.equipo = this.data.team,
+        p.jugador = p.name;
+      return p;
+    }))
+  }
 
+
+
+  private savePlayer() {
+    if (this.isNew) {
+      this.createPlayer();
+    } else {
+      this.updatePlayer();
+    }
+  }
+
+  private async updatePlayer() {
+    this.data.player.amarillas = this.form.value?.yellowCards;
+    this.data.player.rojas = this.form.value?.redCards;
+    this.data.player.goles = this.form.value?.goals;
+    this.data.player.capitan = this.form.value?.isCap;
+    this.data.player.portero = this.form.value?.isGoalkeeper;
+    this.data.player.noBautizado = this.form.value?.isListener;
+    this.data.player.correo = this.form.value?.email;
+    await this.updatePlayerCommand.execute(this.data.player);
+  }
+
+  private async createPlayer() {
+    const player: IPlayer = {
+      name: this.form.value?.name,
+      jugador: this.form.value?.name,
+      equipo: this.data.team,
+      capitan: this.form.value?.isCap,
+      portero: this.form.value?.isGoalkeeper,
+      noBautizado: this.form.value?.isListener
+    };
+
+    if (player.capitan) {
+      player.correo = this.form.value?.email;
+    }
+
+    await this.createPlayerCommand.execute(player);
+  }
 }
 
 class PlayerValidators {
@@ -128,4 +170,10 @@ interface PlayerForm {
   isCap: boolean;
   isListener: boolean;
   email: string;
+}
+
+
+enum TypePlayerForm {
+  OnePlayer = 0,
+  MorePlayers = 1
 }

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Player } from '@app-core/models/player';
+import { IPlayer } from '@app-core/models/player';
 
 @Component({
   selector: 'app-stats-list',
@@ -12,7 +12,7 @@ export class StatsListComponent {
     this._players = [];
   }
 
-  _players: Player[];
+  _players: IPlayer[];
 
   @Input()
   name?: string;
@@ -21,17 +21,17 @@ export class StatsListComponent {
   statName: string;
 
   @Input()
-  set players(value: Player[]) {
+  set players(value: IPlayer[]) {
     this._players = value.sort((a, b) => this.getStatValue(b) - this.getStatValue(a));
   } 
 
-  get players(): Player[] {
+  get players(): IPlayer[] {
     return this._players;
   }
 
 
 
-  getStatValue(player: Player) {
+  getStatValue(player: IPlayer) {
     return (player as any)[this.statName];
   }
 

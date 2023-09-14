@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Player } from '@app-core/models/player';
+import { IPlayer } from '@app-core/models/player';
 import { TeamService } from '@app-core/services/team.service';
 import { PlayerService } from '@app-core/services/player.service';
 import { Observable, firstValueFrom } from 'rxjs';
@@ -82,7 +82,7 @@ export class PlayersViewComponent implements OnInit {
     this.playersList[teamName] = this.playerService.getPlayersByTeam(teamName);
   }
 
-  onSelected(player: Player) {
+  onSelected(player: IPlayer) {
     this.modalService.open(PlayerEditorComponent, { player: player, isNew: false, team: this.teamName }).subscribe(result => {
       if (result) {
 
@@ -100,7 +100,7 @@ export class PlayersViewComponent implements OnInit {
 }
 
 interface PlayerList {
-  [teamName: string]: Observable<Player[]>;
+  [teamName: string]: Observable<IPlayer[]>;
 }
 
 interface PlayersFilter {

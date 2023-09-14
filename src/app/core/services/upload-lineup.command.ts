@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { LineUp } from '@app-core/models/lineup';
-import { Player } from '@app-core/models/player';
+import { IPlayer } from '@app-core/models/player';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class UploadLineupCommand {
   db: AngularFirestore = inject(AngularFirestore);
 
 
-  async execute(startings: LineUp[], substitutes: Player[]) {
+  async execute(startings: LineUp[], substitutes: IPlayer[]) {
     const players = startings.map(p => {
       p.startging = true;      
       return p;
@@ -21,7 +21,7 @@ export class UploadLineupCommand {
     substitutes.forEach((p, index) => {
       players.push({
         equipo: p.equipo,
-        jugador: p.jugador,
+        name: p.name,
         startging: false,
         order: startings.length + index + 1        
       })

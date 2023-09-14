@@ -96,8 +96,8 @@
     <div fxFlex>
         <div *ngIf="localSubstitutes && localSubstitutes.length > 0; else noStanding">
             <mat-list role="list">
-                <mat-list-item role="listitem" *ngFor="let p of localSubstitutes">
-                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
+                <mat-list-item role="listitem" *ngFor="let p of localSubstitutes">                    
+                    <span>{{ p.name | shortName }}</span>
                 </mat-list-item>
             </mat-list>
         </div>
@@ -107,10 +107,9 @@
 
         <div *ngIf="visitaSubstitutes && visitaSubstitutes.length > 0; else noStanding">
             <mat-list role="list">
-                <mat-list-item role="listitem" *ngFor="let p of visitaSubstitutes ">
-                    <app-player-name [player]="p" [shortName]="true"></app-player-name>
+                <mat-list-item role="listitem" *ngFor="let p of visitaSubstitutes ">                    
+                    <span>{{ p.name | shortName }}</span>
                 </mat-list-item>
-
             </mat-list>
 
         </div>

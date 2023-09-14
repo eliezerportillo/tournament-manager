@@ -1,9 +1,8 @@
-import { IEntity } from "./entity";
 import { PlayerType } from "./player";
 
-export interface LineUp extends IEntity {
+export interface LineUp {
     equipo: string;
-    jugador: string;
+    name: string;
     order: number;
     startging?: boolean;
     playerType?: PlayerType;

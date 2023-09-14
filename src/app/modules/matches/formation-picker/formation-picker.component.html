@@ -32,8 +32,8 @@
                                             <button mat-mini-fab [color]="p.marked ? 'accent' : 'primary'"
                                                 (click)="mark(p)">
                                                 <mat-icon>add</mat-icon>
-                                            </button>
-                                            <app-player-name [player]="p" [shortName]="true"></app-player-name>
+                                            </button>                                            
+                                            <span>{{ p.name | shortName }}</span>
                                         </div>
                                     </span>
                                 </ng-container>

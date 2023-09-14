@@ -1,7 +1,9 @@
 <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
     <button mat-button (click)="close()">
         <mat-icon>arrow_back</mat-icon>
-        <span>Información del Jugador</span>
+        <ng-container *ngIf="isNew else updateTitle">
+            <span>Agragar jugador a {{data.team}}</span>
+        </ng-container>
     </button>
     <span class="spacer"></span>
     <ng-container *ngIf="!isNew">
@@ -10,46 +12,90 @@
     <button mat-flat-button (click)="save()" [disabled]="form.invalid">GUARDAR</button>
 </div>
 
+<ng-template #updateTitle>
+    <span>Información del Jugador</span>
+</ng-template>
+
 
 <form [formGroup]="form" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
 
     <ng-container *ngIf="isNew else updatePlayer">
-        <h3>{{data.team}}</h3>
-        <!-- name -->
-        <mat-form-field>
-            <mat-label>Nombre</mat-label>
-            <input matInput placeholder="Nombre completo" formControlName="name">
-        </mat-form-field>
+
+        <mat-tab-group [(selectedIndex)]="activePlayerForm" (selectedTabChange)="onFormTypeChanges($event)">
+            <!-- One player editor -->
+            <mat-tab label="Un jugador">
+                <div fxLayout="column" fxLayoutAlign="start stretch">
+                    <div fxLayout="row wrap">
+
+                        <!-- Cap -->
+                        <mat-checkbox formControlName="isCap" color="primary">Es capitan</mat-checkbox>
+                        <!-- Goalkeeper -->
+                        <mat-checkbox formControlName="isGoalkeeper" color="primary">Es portero</mat-checkbox>
+                        <!-- Listener -->
+                        <mat-checkbox formControlName="isListener" color="primary">Es no bautizado</mat-checkbox>
+
+                    </div>
+                    <!-- name -->
+                    <mat-form-field>
+                        <mat-label>Nombre</mat-label>
+                        <input matInput placeholder="Nombre completo" formControlName="name">
+                    </mat-form-field>
+
+                    <!-- email -->
+                    <mat-form-field *ngIf="isCap?.value">
+                        <mat-label>Correo electrónico</mat-label>
+                        <input matInput placeholder="Correo electrónico" formControlName="email">
+                        <mat-icon matSuffix>
+                            alternate_email
+                        </mat-icon>
+                    </mat-form-field>
+
+                </div>
+            </mat-tab>
+
+            <!-- Batch players input -->
+            <mat-tab label="Varios jugadores">
+                <p>Agrega más jugadores al mismo tiempo.</p>
+                <app-batch-creator [control]="playersControl"></app-batch-creator>
+            </mat-tab>
+        </mat-tab-group>
     </ng-container>
 
     <ng-template #updatePlayer>
-        <h4>{{data.player.jugador}}</h4>
+        <h4>{{data.player.name}}</h4>
         <div>
             Equipo: <span>{{data.team}}</span>
         </div>
+        <!-- Goals -->
+        <app-number-input controlName="Goles" [control]="goals" />
+        <!-- Yellow cards -->
+        <app-number-input controlName="Tarjetas Amarillas" [control]="yCards" />
+        <!-- Red  Cards -->
+        <app-number-input controlName="Tarjetas Rojas" [control]="rCards" />
+        <div fxLayout="row wrap">
+
+            <!-- Cap -->
+            <mat-checkbox formControlName="isCap" color="primary">Es capitan</mat-checkbox>
+            <!-- Goalkeeper -->
+            <mat-checkbox formControlName="isGoalkeeper" color="primary">Es portero</mat-checkbox>
+            <!-- Listener -->
+            <mat-checkbox formControlName="isListener" color="primary">Es no bautizado</mat-checkbox>
+
+        </div>
+
+        <!-- email -->
+        <mat-form-field *ngIf="isCap?.value">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput placeholder="Correo electrónico" formControlName="email">
+            <mat-icon matSuffix>
+                alternate_email
+            </mat-icon>
+        </mat-form-field>
     </ng-template>
 
 
 
-    <!-- Goals -->
-    <app-number-input controlName="Goles" [control]="goals" />
-    <!-- Yellow cards -->
-    <app-number-input controlName="Tarjetas Amarillas" [control]="yCards" />
-    <!-- Red  Cards -->
-    <app-number-input controlName="Tarjetas Rojas" [control]="rCards" />
 
-    <!-- Cap -->
-    <mat-slide-toggle formControlName="isCap" color="primary">Es capitan</mat-slide-toggle>
-    <!-- Goalkeeper -->
-    <mat-slide-toggle formControlName="isGoalkeeper" color="primary">Es portero</mat-slide-toggle>
-    <!-- Listener -->
-    <mat-slide-toggle formControlName="isListener" color="primary">No bautizado</mat-slide-toggle>
-    <!-- email -->
-    <mat-form-field *ngIf="isCap?.value">
-        <mat-label>Correo electrónico</mat-label>
-        <input matInput placeholder="Correo electrónico" formControlName="email">
-        <mat-icon matSuffix>
-            alternate_email
-        </mat-icon>
-    </mat-form-field>
+
+
 </form>
