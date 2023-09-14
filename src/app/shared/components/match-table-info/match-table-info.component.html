@@ -1,0 +1,89 @@
+<div class="p-5">
+  <header class="py-4 font-medium">
+    {{ match.key | excelDate | dateStatus }}
+  </header>
+  <table mat-table [dataSource]="dataSource" class="table-auto">
+    <ng-container matColumnDef="local">
+      <th mat-header-cell *matHeaderCellDef>Player Local</th>
+      <td mat-cell *matCellDef="let element">
+        <app-player-avatar
+          [name]="element?.local"
+          [icon]="element?.imageUrlLocal"
+          [iconPosition]="'left'"
+        ></app-player-avatar>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="scoring">
+      <th mat-header-cell *matHeaderCellDef>Score</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="font-medium text-lg" *ngIf="element?.scoring">
+          {{ element?.scoring }}
+        </div>
+        <div *ngIf="!element?.scoring" class="flex justify-center">
+          <img [src]="'assets/vs.png'" alt="vs" class="w-12 h-12" />
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="visita">
+      <th mat-header-cell *matHeaderCellDef>Player Visitor</th>
+      <td mat-cell *matCellDef="let element">
+        <app-player-avatar
+          [name]="element?.visita"
+          [icon]="element?.imageUrlVisita"
+          [iconPosition]="'right'"
+        ></app-player-avatar>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="details">
+      <th mat-header-cell *matHeaderCellDef>Player Visitor</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="flex p-2">
+          <div
+            class="text-sm flex flex-col gap-1 border-l-2 px-2 justify-center items-center flex-auto"
+          >
+            <div class="text-lg font-medium">
+              {{ element?.etapa }} {{ element?.numero }}
+            </div>
+            <ng-container>
+              <div *ngIf="!isFinished(element); else finished" class="flex flex-col gap-2">
+                <div class="text-sm font-medium">
+                  {{ element?.dateTime | dateStatus }}
+                </div>
+                <app-badge-status>
+                  <app-match-hour
+                    [match]="element"
+                    class="text-sm font-medium"
+                  ></app-match-hour>
+                </app-badge-status>
+                <div
+                  fxLayout="row"
+                  fxLayoutAlign="center center"
+                  *ngIf="element?.campo"
+                >
+                  <mat-icon>flag</mat-icon> {{ element?.campo }}
+                </div>
+              </div>
+
+              <ng-template #finished>
+                <div class="text-sm font-medium text-center flex flex-col gap-1">
+                  <app-badge-status>
+                    <app-match-hour [match]="element"></app-match-hour>
+                  </app-badge-status>
+                  <div>{{ element?.dateTime | dateStatus }}</div>
+                </div>
+              </ng-template>
+            </ng-container>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container *ngIf="showHeaders">
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    </ng-container>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

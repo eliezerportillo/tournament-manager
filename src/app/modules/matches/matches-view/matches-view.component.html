@@ -1,9 +1,5 @@
 <ng-container *ngIf="(matches$ | async) as matches">
     <div *ngFor="let group of matches">
-        <mat-toolbar>{{ group.key | excelDate | dateStatus }}</mat-toolbar>
-
-        <app-match *ngFor="let match of group.values" [match]="match" (selected)="onSelected($event)"
-            [attr.data-date]="match.dateTime.toISOString()"></app-match>
-
+        <app-match-table-info [match]="group"></app-match-table-info>
     </div>
 </ng-container>

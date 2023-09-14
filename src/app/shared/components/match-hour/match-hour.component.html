@@ -1,15 +1,22 @@
 <ng-container *ngIf="match">
-
-    <div *ngIf="match.hora; else noHour" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-
-        <div *ngIf="unfinished; else finished" fxLayout="row" fxLayoutAlign="center center">            
-            <span>{{ match.dateTime | hour }}</span>
-        </div>
+  <div
+    *ngIf="match.hora; else noHour"
+    fxLayout="row"
+    fxLayoutAlign="start center"
+    fxLayoutGap="8px"
+  >
+    <div
+      *ngIf="unfinished; else finished"
+      fxLayout="row"
+      fxLayoutAlign="center center"
+    >
+      <div>{{ match.dateTime | hour }}</div>
     </div>
+  </div>
 </ng-container>
 <ng-template #noHour>
-    <p>Hora por confirmar</p>
+  <div>Hora por confirmar</div>
 </ng-template>
 <ng-template #finished>
-    <p>Finalizado</p>
+  <div>Finalizado</div>
 </ng-template>

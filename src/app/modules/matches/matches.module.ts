@@ -15,14 +15,13 @@ import { ListSelectorComponent } from './players/list-selector/list-selector.com
 import { PlayerPickerComponent } from './players/player-picker/player-picker.component';
 import { StartingPlayerComponent } from './players/starting-player/starting-player.component';
 import { PlayerListComponent } from './players/player-list/player-list.component';
-
-
+import { MatchTableInfoComponent } from '@app-shared/components/match-table-info/match-table-info.component';
 
 @NgModule({
   declarations: [
-    FormationPickerComponent,    
+    FormationPickerComponent,
     LineupViewerComponent,
-    MatchesViewComponent,    
+    MatchesViewComponent,
     LineupComponent,
     LineupViewerComponent,
     UploadLineupComponent,
@@ -30,7 +29,7 @@ import { PlayerListComponent } from './players/player-list/player-list.component
     ListSelectorComponent,
     PlayerPickerComponent,
     StartingPlayerComponent,
-    PlayerListComponent
+    PlayerListComponent,
   ],
   imports: [
     MatchesRoutingModule,
@@ -39,7 +38,8 @@ import { PlayerListComponent } from './players/player-list/player-list.component
     FirebaseModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
-  ]  
+    ReactiveFormsModule,
+    MatchTableInfoComponent,
+  ],
 })
-export class MatchesModule { }
+export class MatchesModule {}
