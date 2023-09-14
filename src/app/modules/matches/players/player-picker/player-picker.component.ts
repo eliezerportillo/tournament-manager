@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Player, PlayerType } from '@app-core/models/player';
+import { IPlayer, PlayerType } from '@app-core/models/player';
 import { LineUp } from '@app-core/models/lineup';
 
 @Component({
@@ -17,10 +17,10 @@ export class PlayerPickerComponent {
   playerType?: PlayerType = PlayerType.defensa;
 
   @Input()
-  selectedPlayers?: Player[] = [];
+  selectedPlayers?: IPlayer[] = [];
 
   @Output()
-  selectedPlayer = new EventEmitter<Player>();
+  selectedPlayer = new EventEmitter<IPlayer>();
 
   
 }

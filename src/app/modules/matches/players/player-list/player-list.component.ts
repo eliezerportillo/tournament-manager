@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Player } from '@app-core/models/player';
+import { IPlayer } from '@app-core/models/player';
 
 @Component({
   selector: 'app-player-list',
@@ -8,5 +8,5 @@ import { Player } from '@app-core/models/player';
 })
 export class PlayerListComponent {
   @Input()
-  players?: Player[];
+  players?: IPlayer[];
 }

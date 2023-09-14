@@ -87,23 +87,7 @@ export class MatchService {
     });
   }
 
-  async getMatchesByTeam(team: string) {
-    const promises = [
-      this.getFiltered('local', team),
-      this.getFiltered('visita', team)
-    ];
-    const responses = await Promise.all(promises);
-    const teamMatches = responses[0].concat(responses[1]);
 
-    return teamMatches
-      .map(match => ({
-        ...match,
-
-        dateTime: this.parseDateTime(match.fecha, match.hora),
-        imageUrlLocal: Team.createImageUrl(match.local),
-        imageUrlVisita: Team.createImageUrl(match.visita),
-      })) as IMatch[];
-  }
 
 
 

@@ -1,7 +1,7 @@
-import { Player } from "./player";
+import { IPlayer } from "./player";
 
 export interface Stats {
-    goals: Player[];
-    yellows: Player[];
-    reds: Player[];
+    goals: IPlayer[];
+    yellows: IPlayer[];
+    reds: IPlayer[];
 }

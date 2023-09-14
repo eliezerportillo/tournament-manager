@@ -20,7 +20,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 
@@ -50,7 +50,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatTooltipModule,
     MatInputModule,
     MatDialogModule,
-    MatSlideToggleModule
+    
+    MatCheckboxModule
   ]
 })
 export class MaterialModule { }

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Player } from '@app-core/models/player';
+import { LineUp } from '@app-core/models/lineup';
+import { IPlayer } from '@app-core/models/player';
 import { Team } from '@app-core/models/team';
 
 @Component({
@@ -13,10 +14,10 @@ export class StartingPlayerComponent {
   home: boolean;
 
   playerImageUrl: string;
-  _player!: Player;
+  _player!: LineUp;
 
   @Input()
-  set player(value: Player | undefined) {
+  set player(value: LineUp | undefined) {
     if (value === undefined) return;
     this.playerImageUrl = Team.createImageUrl(value.equipo);
     this._player = value;
