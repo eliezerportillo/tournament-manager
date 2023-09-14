@@ -1,7 +1,7 @@
 import { Injectable, } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, } from '@angular/fire/compat/firestore';
-import { firstValueFrom, of } from 'rxjs';
-import { Player } from '@app-core/models/player';
+import { Observable, firstValueFrom, map, of } from 'rxjs';
+import { IPlayer, Player } from '@app-core/models/player';
 import { Stats } from '@app-core/models/stats';
 
 type WhereFilterOp =
@@ -21,30 +21,38 @@ type WhereFilterOp =
 })
 export class PlayerService {
 
-  playersCollection: AngularFirestoreCollection<Player>;
+  playersCollection: AngularFirestoreCollection<IPlayer>;
   stats?: Stats;
 
 
 
   constructor(private db: AngularFirestore) {
-    this.playersCollection = this.db.collection<Player>('Jugadores');
+    this.playersCollection = this.db.collection<IPlayer>('Jugadores');
   }
 
-  async getGoalKeepers(teamName: string): Promise<Player[]> {
+  async getGoalKeepers(teamName: string): Promise<IPlayer[]> {
     const snapshot = await this.playersCollection.ref.orderBy('portero').where('equipo', '==', teamName).where('portero', '==', 1).get();
     return snapshot.docs.map(doc => doc.data());
   }
 
-  async getPlayersByTeam(teamName: string): Promise<Player[]> {
-    const snapshot = await this.playersCollection.ref.orderBy('jugador').where('equipo', '==', teamName).get();
-    return snapshot.docs.map(doc => doc.data());
+  getPlayersByTeam(teamName: string): Observable<IPlayer[]> {
+    return this.db.collection<IPlayer>('Jugadores', ref => ref.orderBy('jugador').where('equipo', '==', teamName))
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(action => {
+            const obj = { id: action.payload.doc.id, ...action.payload.doc.data() } as IPlayer;
+            return new Player(obj);
+          })
+        )
+      );
   }
 
-  async getPlayerByEmail(email: string): Promise<Player> {
+  async getPlayerByEmail(email: string): Promise<IPlayer> {
     return (await this.getFiltered('correo', '==', email))[0];
   }
 
-  async getCaptains(): Promise<Player[]> {
+  async getCaptains(): Promise<IPlayer[]> {
     return this.getFiltered('capitan');
   }
 

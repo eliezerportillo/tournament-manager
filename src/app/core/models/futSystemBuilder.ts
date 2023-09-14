@@ -30,7 +30,7 @@ export class FutSystemBuilder {
             for (let index = 0; index < n; index++) {
                 const player: Markable = {
                     equipo: 'team',
-                    jugador: this.PLACEHOLDER,
+                    name: this.PLACEHOLDER,
                     playerType: this.playerTypes[i + 1],
                     order: ++counter,
                     marked: false

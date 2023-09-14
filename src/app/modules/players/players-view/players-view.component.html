@@ -8,11 +8,13 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-
-    <ng-container *ngIf="hasPlayers else noPlayers">
+    
+    <ng-container *ngIf="players | async as p; else noPlayers">
+        <button mat-flat-button (click)="newPlayer()" color="accent">Nuevo jugador</button>
+        <h2>{{p.length}} Jugadores</h2>
         <mat-list role="list">
 
-            <mat-list-item role="listitem" *ngFor="let p of players" matRipple>
+            <mat-list-item role="listitem" *ngFor="let p of p" matRipple>
                 <app-player-item [player]="p" (selected)="onSelected($event)"></app-player-item>
             </mat-list-item>
 

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Player } from '@app-core/models/player';
+import { INamedObject } from '@app-core/models/named.object';
+import { IPlayer } from '@app-core/models/player';
 
 @Component({
   selector: 'app-player-name',
@@ -8,7 +9,7 @@ import { Player } from '@app-core/models/player';
 })
 export class PlayerNameComponent {
   @Input()
-  player?: Player;
+  player?: IPlayer;
 
   @Input()
   shortName?: boolean;

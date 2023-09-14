@@ -1,6 +1,7 @@
 <ng-container *ngIf="control">
 
     <mat-form-field>
+        <mat-label>{{controlName}}</mat-label>
         <input matInput [formControl]="control" placeholder="{{controlName}}">
         <mat-icon matSuffix (click)="increment()">add</mat-icon>
         <mat-icon matSuffix (click)="decrement()">remove</mat-icon>

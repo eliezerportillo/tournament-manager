@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Group } from '@app-core/models/group';
 import { IMatch, Match } from '@app-core/models/match';
 import { MatchService } from '@app-core/services/match.service';
-import { MatchComponent } from '../../../shared/components/match/match.component';
+import { MatchComponent } from '@app-shared/components/match/match.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatchScrollService } from '@app-core/services/match-scroll.service';
 

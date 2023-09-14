@@ -1,0 +1,6 @@
+<ng-container *ngIf="control">
+    <mat-form-field class="example-full-width">    
+        <mat-label>Nombres</mat-label>
+        <textarea matInput placeholder="Escribe un nombre en cada linea distinta." [formControl]="control" rows="10"></textarea>
+    </mat-form-field>
+</ng-container>

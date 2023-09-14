@@ -1,5 +1,32 @@
 <ng-container *ngIf="player">
-    <div (click)="$event.preventDefault(); select(player)" tabIndex="0">
-        {{player.jugador}}
+    <div (click)="$event.preventDefault(); select(player)" tabIndex="0" fxLayout="row" fxLayoutAlign="start center">
+        <span>
+            {{player.name}}
+        </span>
+        <span class="spacer"></span>
+
+        <div fxFlex fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+
+
+
+            <div class="red-cards" *ngIf="player.rojas" fxLayout="row" fxLayoutAlign="start center">
+                <span>{{player.rojas}}</span>
+                <mat-icon>crop_portrait</mat-icon>
+            </div>
+            <div class="yellow-cards" *ngIf="player.amarillas" fxLayout="row" fxLayoutAlign="start center">
+                <span>{{player.amarillas}}</span>
+                <mat-icon>crop_portrait</mat-icon>
+            </div>
+            <div class="goals" *ngIf="player.goles" fxLayout="row" fxLayoutAlign="start center">
+                <span>{{player.goles}}</span>
+                <mat-icon>sports_soccer</mat-icon>
+            </div>
+            <div class="goalkeeper" *ngIf="player.portero" fxLayout="row" fxLayoutAlign="start center">
+                <img src="assets/gloves.png" alt="Portero" title="Portero">
+            </div>
+            <div class="cap" *ngIf="player.capitan" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon>star</mat-icon>
+            </div>
+        </div>
     </div>
 </ng-container>

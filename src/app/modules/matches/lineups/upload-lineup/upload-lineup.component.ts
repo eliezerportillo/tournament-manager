@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Team } from '@app-core/models/team';
 import { firstValueFrom } from 'rxjs';
 import { PlayerService } from '@app-core/services/player.service';
-import { Player, PlayerType } from '@app-core/models/player';
+import { IPlayer, PlayerType } from '@app-core/models/player';
 import { LineUp, Markable } from '@app-core/models/lineup';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ListSelectorComponent } from '@app-modules/matches/players/list-selector/list-selector.component';
@@ -27,9 +27,9 @@ export class UploadLineupComponent implements OnInit {
   uploadCommand: UploadLineupCommand = inject(UploadLineupCommand);
   snackBar: MatSnackBar = inject(MatSnackBar);
 
-  captain?: Player;
+  captain?: IPlayer;
 
-  team: Player[] = [];
+  team: IPlayer[] = [];
   loading = false;
   formationCompleted = false;
   futSystems: Formation[];
@@ -66,7 +66,7 @@ export class UploadLineupComponent implements OnInit {
   }
 
   get substitutes() {
-    return this.team.filter(p => !this.startings.map(x => x.jugador).includes(p.jugador))
+    return this.team.filter(p => !this.startings.map(x => x.name).includes(p.name))
   }
 
 
@@ -79,7 +79,7 @@ export class UploadLineupComponent implements OnInit {
 
 
   private async loadPlayers(teamName: string) {
-    this.team = await this.playerService.getPlayersByTeam(teamName);
+    this.team = await firstValueFrom(this.playerService.getPlayersByTeam(teamName));
   }
 
   async openBottomSheet(position?: Markable) {
@@ -96,7 +96,7 @@ export class UploadLineupComponent implements OnInit {
     const selectedPlayer: LineUp | undefined = await firstValueFrom(ref.afterDismissed());
     if (selectedPlayer) {
       position.equipo = selectedPlayer.equipo;
-      position.jugador = selectedPlayer.jugador;
+      position.name = selectedPlayer.name;
       position.marked = true;
       this.formationCompleted = this.formationPicker?.builder?.isCompleted() ?? false;
     }

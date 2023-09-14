@@ -4,12 +4,12 @@
         <!-- Use ng-container with *ngIf to conditionally apply the pipe -->
         <ng-container *ngIf="shortName; else fullName">
             <!-- Apply the pipe to the data -->
-            <span>{{ player.jugador | shortName }}</span>
+            <span>{{ player.name | shortName }}</span>
         </ng-container>
 
         <ng-template #fullName>
             <!-- Data without the pipe -->
-            {{ player.jugador | titlecase }}
+            {{ player.name | titlecase }}
         </ng-template>
 
         <img src="assets/gloves.png" alt="Portero" *ngIf="player.portero" title="Portero">
