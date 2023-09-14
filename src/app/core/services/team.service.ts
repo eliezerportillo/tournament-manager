@@ -57,6 +57,12 @@ export class TeamService {
     );
   }
 
+  async getTeam(team: string) {
+    const d = await this.teamsCollection.ref.where('equipo', '==', team).limit(1).get();
+
+    return d.docs.map(doc => ({ id: doc.id, ...doc.data() } as ITeam))[0];
+  }
+
 
 
   private getOrdered(ref: CollectionReference<DocumentData>): Query<DocumentData> {
