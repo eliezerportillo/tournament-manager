@@ -1,0 +1,25 @@
+
+
+
+app-team-list {
+    border-radius: 8px;
+}
+
+.vs {
+    width: 32px;
+}
+
+mat-card {
+    // background-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: lighter;
+    font-size: small;
+
+    .match-footer {
+        text-align: center;        
+    }
+
+    mat-card-content {
+        overflow: auto;
+    }
+}

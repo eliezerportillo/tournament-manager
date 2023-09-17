@@ -1,3 +1,45 @@
-<ng-container *ngIf="teams">
+<div class="mat-elevation-z1" *ngIf="match" matRipple (click)="$event.preventDefault(); select(match)" tabIndex="0">
+    <mat-card>
+        <mat-card-content>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
 
-</ng-container>
+                <div fxLayout="column" fxLayoutAlign="space-between stretch">
+                    <div fxFlex fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="8px">
+                        <!-- home -->
+                        <app-team-image [src]="match.imageUrlLocal" [size]="'medium'"></app-team-image>
+
+                        <!-- VS -->
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+
+                            <ng-container *ngIf="!isFinished(match) else finished;">
+                                <img class="vs" src="assets/vs2.png" alt="vs">
+                            </ng-container>
+
+                            <ng-template #finished>
+                                <span *ngIf="(match.marcadorLocal ?? 0) >= 0"
+                                    [class.winner]="(match.marcadorLocal ?? 0) > (match.marcadorVisita?? 0)">{{match.marcadorLocal}}</span>
+                                -
+                                <span *ngIf="(match.marcadorVisita ?? 0) >= 0"
+                                    [class.winner]="(match.marcadorVisita ?? 0) > (match.marcadorLocal ?? 0)">{{match.marcadorVisita}}</span>
+                            </ng-template>
+                          
+
+
+                        </div>
+                        <!-- away -->
+                        <app-team-image [src]="match.imageUrlVisita" [size]="'medium'"></app-team-image>
+
+                    </div>
+                    <div class="match-footer">
+                        {{match.dateTime | dateStatus}}
+                    </div>
+                </div>
+
+                <ng-container *ngIf="teams.length > 0">
+                    <app-team-list [teams]="teams" [columns]="columns" [mode]="mode"></app-team-list>
+                </ng-container>
+
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -1,7 +1,9 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
-import { IMatch } from '@app-core/models/match';
-import { ITeam } from '@app-core/models/team';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { IMatch, Match } from '@app-core/models/match';
+import { ITeam, StandingColumn } from '@app-core/models/team';
 import { TeamService } from '@app-core/services/team.service';
+import { MatchDisplayType } from '@app-shared/components/team-list/team-list.component';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-match-standing',
@@ -12,23 +14,48 @@ export class MatchStandingComponent implements OnInit {
 
   teamService = inject(TeamService);
   teams: ITeam[] = [];
+  mode = MatchDisplayType.widget;
 
   @Input()
   match?: IMatch;
+  columns: StandingColumn[];
+
+  @Output()
+  selected: EventEmitter<IMatch> = new EventEmitter<IMatch>()
+
+  select(event: IMatch) {
+    this.selected.emit(event);
+  }
+
+  noPlay(match: IMatch): boolean {
+    return Match.noPlay(match);
+  }
+
+  isFinished(match: IMatch): boolean {
+    return Match.isFinished(match.dateTime);
+  }
+
+  constructor() {
+    this.columns = [
+      StandingColumn.Team,
+      StandingColumn.Wins,
+      StandingColumn.Draws,
+      StandingColumn.Losses,
+      StandingColumn.Points
+    ]
+  }
 
 
   ngOnInit(): void {
     this.getStandings();
   }
 
-  
+
 
   private async getStandings() {
-    if (this.match) {
-      const home = this.teamService.getTeam(this.match.local);
-      const away = this.teamService.getTeam(this.match.visita);
-
-      this.teams = await Promise.all([home, away]);
+    const teams = await firstValueFrom(this.teamService.getTeams());
+    if (this.match) {     
+      this.teams = teams.filter(x => x.nombre == this.match?.local || x.nombre == this.match?.visita).sort((a, b) => b.Pts - a.Pts);
     }
   }
 }
