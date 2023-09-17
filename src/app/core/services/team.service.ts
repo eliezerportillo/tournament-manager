@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, CollectionReference, Query, DocumentData } from '@angular/fire/compat/firestore';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, filter, firstValueFrom, map, of, shareReplay, tap } from 'rxjs';
 
 import { ITeam } from '@app-core/models/team';
 
@@ -12,6 +12,8 @@ export class TeamService {
   rankedCollection: AngularFirestoreCollection<ITeam>;
   rankedTeams?: ITeam[];
   teams?: ITeam[];
+  teams$?: Observable<ITeam[]>;
+  ranked$?: Observable<ITeam[]>;
 
 
   constructor(private db: AngularFirestore) {
@@ -22,11 +24,11 @@ export class TeamService {
 
 
   getRankedTeams(): Observable<ITeam[]> {
-    if (this.rankedTeams) {
-      return of(this.rankedTeams);
+    if (this.ranked$) {
+      return this.ranked$;
     }
 
-    return this.rankedCollection.snapshotChanges().pipe(
+    this.ranked$ = this.rankedCollection.snapshotChanges().pipe(
       map(actions =>
         actions.map(action => {
           return { id: action.payload.doc.id, ...action.payload.doc.data() } as ITeam;
@@ -36,15 +38,18 @@ export class TeamService {
         console.log(`${teams.length} Rankend Teams read`);
         this.rankedTeams = teams;
       }),
+      shareReplay(1)
     );
+
+    return this.ranked$;
   }
 
   getTeams(): Observable<ITeam[]> {
-    if (this.teams) {
-      return of(this.teams);
+    if (this.teams$) {
+      return this.teams$;
     }
 
-    return this.teamsCollection.snapshotChanges().pipe(
+    this.teams$ = this.teamsCollection.snapshotChanges().pipe(
       map(actions =>
         actions.map(action => {
           return { id: action.payload.doc.id, ...action.payload.doc.data() } as ITeam;
@@ -53,15 +58,13 @@ export class TeamService {
       tap(teams => {
         console.log(`${teams.length} Teams read`);
         this.teams = teams;
-      })
+      }),
+      shareReplay(1)
     );
+
+    return this.teams$;
   }
 
-  async getTeam(team: string) {
-    const d = await this.teamsCollection.ref.where('equipo', '==', team).limit(1).get();
-
-    return d.docs.map(doc => ({ id: doc.id, ...doc.data() } as ITeam))[0];
-  }
 
 
 
