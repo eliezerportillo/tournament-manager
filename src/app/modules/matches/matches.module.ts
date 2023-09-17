@@ -15,6 +15,7 @@ import { ListSelectorComponent } from './players/list-selector/list-selector.com
 import { PlayerPickerComponent } from './players/player-picker/player-picker.component';
 import { StartingPlayerComponent } from './players/starting-player/starting-player.component';
 import { PlayerListComponent } from './players/player-list/player-list.component';
+import { MatchStandingComponent } from './match-standing/match-standing.component';
 
 
 
@@ -30,7 +31,8 @@ import { PlayerListComponent } from './players/player-list/player-list.component
     ListSelectorComponent,
     PlayerPickerComponent,
     StartingPlayerComponent,
-    PlayerListComponent
+    PlayerListComponent,
+    MatchStandingComponent
   ],
   imports: [
     MatchesRoutingModule,

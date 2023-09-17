@@ -8,6 +8,10 @@ import { Team } from '@app-core/models/team';
 })
 export class TeamImageComponent {
 
+
+  @Input()
+  size?: string = 'small';
+
   @Input()
   src?: string;
 

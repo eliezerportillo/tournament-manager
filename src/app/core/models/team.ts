@@ -18,3 +18,17 @@ export class Team {
         return `assets/${teamName}.png`;
     }
 }
+
+
+export enum StandingColumn {
+    Team = 'team',
+    MatchesPlayed = 'PJ',
+    Wins = 'G',
+    Draws = 'E',
+    Losses = 'P',
+    Goals = 'GF',
+    GoalsConsided = 'GC',
+    GoalDif = 'DG',
+    Points = 'Pts',
+    Last = 'last',
+}

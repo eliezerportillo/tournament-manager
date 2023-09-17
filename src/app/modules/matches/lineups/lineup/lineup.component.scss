@@ -1,7 +1,6 @@
-
 .container {
     margin: 0 8px;
-    
+
 }
 
 .example-header-image {
@@ -20,6 +19,27 @@
     }
 }
 
-.visita{
+.visita {
     text-align: right;
+}
+
+mat-card-title {
+    display: flex;
+    flex-direction: row wrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.score-result {
+    display: flex;
+    flex-direction: row;
+
+    .score-value {
+        padding: 0 8px;
+    }
+}
+
+.vs {
+    width: 32px;
 }

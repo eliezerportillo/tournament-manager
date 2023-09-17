@@ -1,8 +1,8 @@
+import { INamedObject } from "./named.object";
 import { PlayerType } from "./player";
 
-export interface LineUp {
-    equipo: string;
-    name: string;
+export interface LineUp extends INamedObject {
+    equipo: string;    
     order: number;
     startging?: boolean;
     playerType?: PlayerType;

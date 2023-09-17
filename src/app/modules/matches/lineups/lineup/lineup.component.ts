@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IMatch } from '@app-core/models/match';
+import { IMatch, Match } from '@app-core/models/match';
 import { MatchService } from '@app-core/services/match.service';
 
 @Component({
@@ -33,6 +33,27 @@ export class LineupComponent implements OnInit {
     });
 
 
+  }
+
+  
+  isFinished(match: IMatch): boolean {
+    return Match.isFinished(match.dateTime);
+  }
+
+  async share(match: IMatch) {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `${match.local} vs ${match.visita}. Campo ${match.campo}. ${match.dateTime}`,
+          text: `${match.local} vs ${match.visita}. Campo ${match.campo}. ${match.dateTime}`,
+          url: window.location.href
+        });
+      } else {
+        window.open(window.location.href);
+      }
+    } catch (error) {
+      console.error('Error sharing content:', error);
+    }
   }
 
   private async loadMatch() {
