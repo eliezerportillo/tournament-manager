@@ -6,6 +6,8 @@ import { MatchService } from '@app-core/services/match.service';
 import { MatchComponent } from '@app-shared/components/match/match.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatchScrollService } from '@app-core/services/match-scroll.service';
+import { MatchStandingComponent } from '../match-standing/match-standing.component';
+
 
 @Component({
   selector: 'app-matches-view',
@@ -18,7 +20,7 @@ export class MatchesViewComponent implements AfterViewInit {
   scrollService: MatchScrollService = inject(MatchScrollService);
   matches$: Observable<Group<IMatch>[]>;
 
-  @ViewChildren(MatchComponent, { read: ElementRef }) matchElements?: QueryList<ElementRef>;
+  @ViewChildren(MatchStandingComponent, { read: ElementRef }) matchElements?: QueryList<ElementRef>;
 
   constructor(private matchService: MatchService) {
     this.matches$ = this.matchService.getMatchesGroupedByDate();
