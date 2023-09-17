@@ -31,24 +31,42 @@ th.mat-column-position,
 td.mat-column-position {
     padding-left: 8px;
 }
-
-.mat-mdc-table-sticky-border-elem-right {
-    border-left: 1px solid #e0e0e0;
+.table {
+    .mat-mdc-table-sticky-border-elem-right {
+        border-left: 1px solid #e0e0e0;
+    }
+    
+    .mat-mdc-table-sticky-border-elem-left {
+        border-right: 1px solid #e0e0e0;
+    }
 }
 
-.mat-mdc-table-sticky-border-elem-left {
-    border-right: 1px solid #e0e0e0;
-}
 
-.legend {
-    background-color: #f8f9fa;
-    border: 1px solid #dadce0;
-    margin: 8px;
+.widget {
+    border-radius: 8px;
+    table {
+        background-color: var(--base-color);
+    }
+    .mat-mdc-row,
+    .mat-mdc-header-row,
+    .mat-mdc-cell,
+    .mat-mdc-header-row {
+        border-bottom: none;
+        height: 24px !important;
+        border-bottom-style: hidden;
+        font-weight: lighter;
+    }
 
-    p {
-        font-weight: 500;
-        margin: 0;
-        margin-bottom: 16px;
+    td.mat-cell{
+        border-bottom-style: none;
+    }
+    
+    th.mat-header-cell{
+        border-bottom-style: none;
+    }
 
+   
+    th {
+        font-weight: lighter;
     }
 }

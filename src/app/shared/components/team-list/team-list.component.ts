@@ -21,6 +21,8 @@ export class TeamListComponent {
   @Input()
   mode: MatchDisplayType;
 
+  modes = MatchDisplayType;
+
   constructor() {
     this, this.mode = MatchDisplayType.table;
     this.columns = [
@@ -43,7 +45,7 @@ export class TeamListComponent {
   }
 }
 
-enum MatchDisplayType {
-  table,
-  widget
+export enum MatchDisplayType {
+  table = 'table',
+  widget = 'widget'
 }
