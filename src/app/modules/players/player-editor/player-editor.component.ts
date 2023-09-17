@@ -64,7 +64,7 @@ export class PlayerEditorComponent implements IEditorComponent {
 
   initForm(data: { player: IPlayer, isNew: boolean, team: string }): FormGroup {
     let form = this.fb.group({
-      name: [data.isNew ? '' : data.player.name ?? '', Validators.required],
+      name: [data.isNew ? '' : (data.player.name || data.player.jugador) ?? '', Validators.required],
       team: [data.team, Validators.required],
       yellowCards: [data.isNew ? 0 : data.player.amarillas ?? 0, Validators.min(0)],
       redCards: [data.isNew ? 0 : data.player.rojas ?? 0, Validators.min(0)],

@@ -16,7 +16,7 @@
 
             <!-- Title and number (right side) -->
             <div matListItemTitle fxLayout fxLayoutAlign="space-between center">
-                <p>{{p.name}}</p>
+                <p>{{p.name || p.jugador}}</p>
                 <span class="spacer"></span>
                 <p>{{getStatValue(p)}}</p>
             </div>
