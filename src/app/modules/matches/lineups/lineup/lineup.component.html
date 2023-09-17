@@ -1,41 +1,67 @@
 <mat-toolbar>
     <button mat-button routerLink="..">
         <mat-icon>arrow_back</mat-icon>
-        1er Torneo de Fut 7
+        1er Torneo Cristiano de Fut 7
+    </button>
+    <span class="spacer"></span>
+    <button mat-mini-fab (click)="share(match)" *ngIf="match">
+        <mat-icon>share</mat-icon>
     </button>
 </mat-toolbar>
 
-<div class="container" fxLayout="column" fxLayoutGap="8px">
+<div class="container" fxLayout="column" fxLayoutGap="8px" *ngIf="match">
     <!-- General info -->
     <mat-card>
-        <mat-card-header *ngIf="match">
+        <mat-card-header>
             <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>{{match.dateTime | dateStatus}}</mat-card-title>
+            <mat-card-title>
+                <span> {{match.dateTime | dateStatus}}</span>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>schedule</mat-icon>
+                    <app-match-hour [match]="match"></app-match-hour>
+                </div>
+                <div *ngIf="!isFinished(match) && match.campo" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>flag</mat-icon>
+                    <span>{{match.campo}}</span>
+                </div>
+            </mat-card-title>
+
             <mat-card-subtitle>
-                <app-match-hour [match]="match"></app-match-hour>
+                <span>Información del partido</span>
             </mat-card-subtitle>
         </mat-card-header>
         <!-- <img mat-card-image src="assets/card-banner.png" alt="banner afc"> -->
         <mat-card-content>
             <div fxLayout="row" fxLayoutAlign="space-between center">
                 <div fxLayout="column" fxLayoutAlign="space-between center">
-                    <app-team-image [src]="match?.imageUrlLocal"></app-team-image>
+                    <app-team-image [src]="match.imageUrlLocal"></app-team-image>
                     <span>{{local}}</span>
                 </div>
 
-                <p>vs.</p>
+                <ng-container *ngIf="!isFinished(match) else finished">
+                    <img class="vs" src="assets/vs2.png" alt="vs">
+                </ng-container>
+
+                <ng-template #finished>
+                    <div class="score-result">
+                        <span class="score-value">{{match.marcadorLocal}}</span>
+                        <span>-</span>
+                        <span class="score-value">{{match.marcadorVisita}}</span>
+                    </div>
+                </ng-template>
+
+
                 <div fxLayout="column" fxLayoutAlign="space-between center">
 
-                    <app-team-image [src]="match?.imageUrlVisita"></app-team-image>
+                    <app-team-image [src]="match.imageUrlVisita"></app-team-image>
                     <span>{{visita}}</span>
                 </div>
             </div>
         </mat-card-content>
-
-    </mat-card>        
+    </mat-card>
 
     <!-- Alineaciones -->
-    <ng-container *ngIf="match">
+    <ng-container>
 
 
         <mat-card class="standings">
