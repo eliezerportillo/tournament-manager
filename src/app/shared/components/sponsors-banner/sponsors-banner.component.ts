@@ -3,6 +3,7 @@ import { ISponsor } from '@app-core/models/sponsor';
 import { SponsorService } from '@app-core/services/sponsor.service';
 import { firstValueFrom, tap } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { EventEmitterService } from '@app-core/services/event-emitter.service';
 
 @Component({
   selector: 'app-sponsors-banner',
@@ -19,6 +20,7 @@ export class SponsorsBannerComponent implements OnInit, OnDestroy {
   sponsors: ISponsor[] = [];
 
   private breakpointObserver: BreakpointObserver = inject(BreakpointObserver);
+  private eventEmitterService: EventEmitterService = inject(EventEmitterService);
   sponsorService: SponsorService = inject(SponsorService);
   private renderer: Renderer2 = inject(Renderer2);
   @ViewChild('logoCarousel', { static: true }) logoCarouselRef!: ElementRef;
@@ -127,6 +129,10 @@ export class SponsorsBannerComponent implements OnInit, OnDestroy {
     const startIdx = this.currentPage * this.itemsPerPage;
     const endIdx = startIdx + this.itemsPerPage;
     return this.sponsors.slice(startIdx, endIdx);
+  }
+
+  sponsorClicked(sponsor: ISponsor) {
+    this.eventEmitterService.emitSponsorClickedEvent(sponsor.name);
   }
 
 }

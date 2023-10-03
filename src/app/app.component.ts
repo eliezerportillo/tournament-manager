@@ -7,7 +7,8 @@ import { AccountService } from './core/services/account.service';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { environment } from '@app-environments/environment';
-import { Analytics } from '@angular/fire/analytics';
+import { Analytics, logEvent } from '@angular/fire/analytics';
+import { EventEmitterService } from '@app-core/services/event-emitter.service';
 
 @Component({
   selector: 'app-root',
@@ -20,31 +21,33 @@ export class AppComponent implements OnInit {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
   private titleService: Title = inject(Title);
+  private eventEmitterService: EventEmitterService = inject(EventEmitterService);
   private accountService: AccountService = inject(AccountService);
   tounamentName: string;
 
   constructor() {
     this.tounamentName = this.accountService.getTournamentName();
-
   }
 
   ngOnInit(): void {
 
-
+    // Subscribe to app events
+    this.eventEmitterService.sponsorClicked.subscribe(sponsorName => this.handleSponsorClicked(sponsorName));
     // Alternatively, you can also subscribe to NavigationEnd event
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.updateTitle();
-      // this.analytics();
     });
     const app = initializeApp(environment.firebaseConfig);
     this.analytics = getAnalytics(app);
 
-    // logEvent(analytics, 'screen_view', {
-    //   firebase_screen: screenName, 
-    //   firebase_screen_class: screenClass
-    // });
+  }
+
+  handleSponsorClicked(sponsorName: string): void {
+    if (this.analytics) {
+      logEvent(this.analytics, `sponsor_clicked: ${sponsorName}`);
+    }
   }
 
   // private analytics() {
