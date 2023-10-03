@@ -7,7 +7,7 @@
         </mat-card-header>
         <div fxLayout="row" fxLayoutAlign="space-evenly center" class="images">
             <ng-container *ngFor="let sponsor of getVisibleLogos() as sponsors">
-                <a [href]="sponsor.website" target="_blank">
+                <a [href]="sponsor.website" target="_blank" (click)="sponsorClicked(sponsor)">
                     <img [src]="sponsor.logoUrl" [alt]="sponsor.name" alt>                    
                 </a>
             </ng-container>
