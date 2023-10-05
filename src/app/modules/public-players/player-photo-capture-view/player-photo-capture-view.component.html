@@ -1,0 +1,102 @@
+<p>
+    <mat-toolbar>
+        <h1>Foto para credencial</h1>
+    </mat-toolbar>
+</p>
+
+
+
+<mat-stepper orientation="vertical" [linear]="true" #stepper>
+    <mat-step [stepControl]="form">
+        <form [formGroup]="form">
+            <ng-template matStepLabel>Seleccione su equipo</ng-template>
+            <mat-form-field>
+                <mat-label>Equipo</mat-label>
+                <mat-select formControlName="teamName">
+                    <mat-option *ngFor="let team of teams" [value]="team.nombre">
+                        {{team.nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Jugador</mat-label>
+                <mat-select formControlName="playerName">
+                    <mat-option *ngFor="let player of players | async" [value]="player.name">
+                        {{player.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div>
+                <button mat-button matStepperNext>Siguiente</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <form>
+            <ng-template matStepLabel>Capturar fotografía</ng-template>
+            <ng-container *ngIf="!webcamImage else capturedPhoto">
+
+                <div fxLayout="column" fxLayoutAlign="center center" *ngIf="screenWidth">
+                    <webcam [width]="screenWidth" [allowCameraSwitch]="allowCameraSwitch" [trigger]="triggerObservable"
+                        [videoOptions]="videoOptions" (imageCapture)="handleImageCapture($event)"
+                        (initError)="handleInitError($event)">
+                    </webcam>
+
+                    <button mat-fab (click)="triggerSnapshot()">
+                        <mat-icon>photo_camera</mat-icon>
+                    </button>
+
+                </div>
+            </ng-container>
+
+
+            <ng-template #capturedPhoto>
+                <ng-container *ngIf="webcamImage && !photoReady">
+                    <div class="photo-wrapper" fxLayout="column" fxLayoutAlign="start stretch">
+
+                        <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+
+                            <button mat-button (click)="webcamImage = undefined" color="accent">
+                                <mat-icon>undo</mat-icon> Tomar de nuevo
+                            </button>
+
+                            <button mat-button (click)="finishCrop()" color="accent">
+                                <mat-icon>check</mat-icon> Listo
+                            </button>
+
+                        </mat-toolbar>
+
+                        <image-cropper 
+                        [output]="'base64'"
+                        [imageBase64]="webcamImage.imageAsBase64" [maintainAspectRatio]="true"
+                            [aspectRatio]="4 / 4" [resizeToWidth]="128" format="png"
+                            (imageCropped)="imageCropped($event)"></image-cropper>
+                            
+
+                    </div>
+                </ng-container>
+            </ng-template>
+
+            <ng-container *ngIf="photoReady">
+
+                <p>Equipo: {{form.value.teamName}}</p>
+                <p>Jugador: {{form.value.playerName}}</p>
+
+                <ng-container *ngIf="!uploaded else uploadedSection">
+                    Enviando...
+                </ng-container>
+                <ng-template #uploadedSection>
+                    <img [src]="uploadedImageUrl" alt="Player image">
+                    <p>Foto enviada con éxito</p>
+                </ng-template>
+
+            </ng-container>
+            <div>
+                <button mat-button matStepperPrevious>Atrás</button>
+            </div>
+        </form>
+    </mat-step>
+
+</mat-stepper>

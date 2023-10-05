@@ -25,6 +25,7 @@ import { NumberInputComponent } from '@app-shared/number-input/number-input.comp
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteButtonComponent } from '@app-shared/components/delete-button/delete-button.component';
 import { BatchCreatorComponent } from './components/batch-creator/batch-creator.component';
+import { PlayerPhotoComponent } from './components/player-photo/player-photo.component';
 
 
 
@@ -53,6 +54,7 @@ import { BatchCreatorComponent } from './components/batch-creator/batch-creator.
     NumberInputComponent,
     DeleteButtonComponent,
     BatchCreatorComponent,
+    PlayerPhotoComponent,
   ],
   imports: [
     CommonModule,
@@ -84,7 +86,8 @@ import { BatchCreatorComponent } from './components/batch-creator/batch-creator.
     ConfirmationDialogComponent,
     NumberInputComponent,
     DeleteButtonComponent,
-    BatchCreatorComponent
+    BatchCreatorComponent,
+    PlayerPhotoComponent
   ],
   providers: [DatePipe]
 })

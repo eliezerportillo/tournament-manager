@@ -3,6 +3,7 @@ import { AngularFirestoreCollection, AngularFirestore, } from '@angular/fire/com
 import { Observable, firstValueFrom, map, of } from 'rxjs';
 import { IPlayer, Player } from '@app-core/models/player';
 import { Stats } from '@app-core/models/stats';
+import { IBadge } from '@app-core/models/bagde';
 
 type WhereFilterOp =
   | '<'
@@ -21,6 +22,8 @@ type WhereFilterOp =
 })
 export class PlayerService {
 
+
+
   playersCollection: AngularFirestoreCollection<IPlayer>;
   stats?: Stats;
 
@@ -28,6 +31,20 @@ export class PlayerService {
 
   constructor(private db: AngularFirestore) {
     this.playersCollection = this.db.collection<IPlayer>('Jugadores');
+
+  }
+
+  async getBadge(player: IPlayer): Promise<IBadge | null> {
+
+    const snapshot = await this.db.collection<IBadge>('badges').ref
+      .where('teamName', '==', player.equipo)
+      .where('playerName', '==', player.name)
+      .get();
+
+    const data = snapshot.docs[0];
+    if (!data) return null;
+    const obj = { id: data.id, ...data.data() } as IBadge;
+    return obj;
   }
 
   async getGoalKeepers(teamName: string): Promise<IPlayer[]> {
