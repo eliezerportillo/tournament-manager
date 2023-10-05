@@ -34,6 +34,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('@app-modules/admin/admin.module').then((m) => m.AdminModule),
   },
+  {
+    path: 'players',
+    loadChildren: () =>
+      import('@app-modules/public-players/public-players.module').then((m) => m.PublicPlayersModule),
+  },
 ];
 
 @NgModule({

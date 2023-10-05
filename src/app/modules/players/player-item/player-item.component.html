@@ -1,5 +1,7 @@
 <ng-container *ngIf="player">
-    <div (click)="$event.preventDefault(); select(player)" tabIndex="0" fxLayout="row" fxLayoutAlign="start center">
+    <div (click)="$event.preventDefault(); select(player)" tabIndex="0" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <app-player-photo [player]="player"></app-player-photo>
+
         <span>
             {{player.name}}
         </span>
