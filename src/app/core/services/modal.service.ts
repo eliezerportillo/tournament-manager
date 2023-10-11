@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
-import { IEditorComponent } from '@app-core/models/editor-component';
+import { IModalComponent } from '@app-core/models/editor-component';
 import { ConfirmationDialogComponent } from '@app-shared/confirmation-dialog/confirmation-dialog.component';
 import { Observable } from 'rxjs';
 
@@ -32,7 +32,7 @@ export class ModalService {
   }
 
 
-  open<ComponentType extends IEditorComponent, TData>(component: new (...args: any[]) => ComponentType, data?: TData): Observable<any> {
+  open<ComponentType extends IModalComponent, TData>(component: new (...args: any[]) => ComponentType, data?: TData): Observable<any> {
     const bottomSheetRef = this.bottomSheet.open(component, { data, disableClose: true });
 
     return bottomSheetRef.afterDismissed();

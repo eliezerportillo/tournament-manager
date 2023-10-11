@@ -1,7 +1,7 @@
 import { Component, Inject, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, FormBuilder, ValidatorFn } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { IEditorComponent } from '@app-core/models/editor-component';
+import { IModalComponent } from '@app-core/models/editor-component';
 import { IMatch } from '@app-core/models/match';
 import { MatchService } from '@app-core/services/match.service';
 import { UpdateScoreCommand } from '@app-core/services/update-score.command';
@@ -12,7 +12,7 @@ import { HourPipe } from '@app-shared/pipes/hour.pipe';
   templateUrl: './score-filler.component.html',
   styleUrls: ['./score-filler.component.scss']
 })
-export class ScoreFillerComponent implements IEditorComponent{
+export class ScoreFillerComponent implements IModalComponent{
   title: string;
   score: string;
   form: FormGroup;

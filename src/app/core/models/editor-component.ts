@@ -1,4 +1,4 @@
-export interface IEditorComponent {
+export interface IModalComponent {
     close(): void;
     data: any;
 }

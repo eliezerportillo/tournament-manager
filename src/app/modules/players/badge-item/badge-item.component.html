@@ -1,0 +1,30 @@
+<div class="badge-wrapper" *ngIf="badge">
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <app-logo></app-logo>
+        <h3>{{componyName}}</h3>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+
+        <img class="player-photo" [src]="badge.photoUrl" alt="Player photo">
+
+        <div>
+            <p>
+                <span class="label">Torneo: </span>
+                <span class="text">{{tournamentName}}</span>
+            </p>
+            <p>
+                <span class="label">Equipo: </span>
+                <span class="text">{{badge.teamName}}</span>
+            </p>
+        
+            <p>
+                <span class="label">Nombre del Jugador: </span>
+                <span class="text">{{badge.playerName}}</span>
+            </p>
+        </div>
+    </div>
+
+    
+</div>

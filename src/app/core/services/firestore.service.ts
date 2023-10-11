@@ -10,8 +10,15 @@ export abstract class FirestoreService<T> {
     this.collection = this.db.collection<T>(collectionName, queryFn);
   }
 
-  get(): Observable<T[]> {
-    return this.collection
+  get(queryFn?: QueryFn): Observable<T[]> {
+    let collection = null;
+    if (queryFn) {
+      collection = this.db.collection<T>(this.collectionName, queryFn);
+    } else {
+      collection = this.collection;
+    }
+
+    return collection
       .snapshotChanges().pipe(
         tap(matches => {
           console.log(`${matches.length} ${this.collectionName} read`);
@@ -23,4 +30,6 @@ export abstract class FirestoreService<T> {
         )
       );
   }
+
+
 }

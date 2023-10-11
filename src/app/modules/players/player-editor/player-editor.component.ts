@@ -2,7 +2,7 @@ import { Component, Inject, inject, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { IEditorComponent } from '@app-core/models/editor-component';
+import { IModalComponent } from '@app-core/models/editor-component';
 import { IPlayer } from '@app-core/models/player';
 import { BatchItemCreatorCommand } from '@app-core/services/batch-item-creator.command';
 import { CreatePlayerCommand } from '@app-core/services/create-player.command';
@@ -15,7 +15,7 @@ import { BatchCreatorComponent } from '@app-shared/components/batch-creator/batc
   templateUrl: './player-editor.component.html',
   styleUrls: ['./player-editor.component.scss']
 })
-export class PlayerEditorComponent implements IEditorComponent {
+export class PlayerEditorComponent implements IModalComponent {
 
   bottomSheetRef = inject(MatBottomSheetRef<PlayerEditorComponent>);
   updatePlayerCommand = inject(UpdatePlayerCommand);

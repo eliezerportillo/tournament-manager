@@ -9,13 +9,17 @@ import { SharedModule } from '@app-shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PlayerEditorComponent } from './player-editor/player-editor.component';
+import { CredentialListComponent } from './credential-list/credential-list.component';
+import { BadgeItemComponent } from './badge-item/badge-item.component';
 
 
 @NgModule({
   declarations: [
     PlayersViewComponent,
     PlayerItemComponent,
-    PlayerEditorComponent
+    PlayerEditorComponent,
+    CredentialListComponent,
+    BadgeItemComponent
   ],
   imports: [
     PlayersRoutingModule,

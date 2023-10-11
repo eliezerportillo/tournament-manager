@@ -11,7 +11,11 @@
     
     <ng-container *ngIf="players | async as p; else noPlayers">
         <button mat-flat-button (click)="newPlayer()" color="accent">Nuevo jugador</button>
-        <h2>{{p.length}} Jugadores</h2>
+        <h2 fxLayout="row" fxLayoutAlign="center space-between">
+            <span>{{p.length}} Jugadores</span>
+            <span class="spacer"></span>
+            <button mat-stroked-button (click)="viewCredentials(p)">Credenciales</button>
+        </h2>
         <mat-list role="list">
 
             <mat-list-item role="listitem" *ngFor="let p of p" matRipple>
