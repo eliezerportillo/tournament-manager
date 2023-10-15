@@ -7,24 +7,32 @@
 
     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
 
-        <img class="player-photo" [src]="badge.photoUrl" alt="Player photo">
+        <div fxLayout="column" fxLayoutAlign="stretch center" *ngIf="playerImage$ | async as photo">
+            <img class="player-photo" [src]="photo" alt="Player photo">
+            <span *ngIf="player?.capitan" class="text">Capitán</span>
+            <span *ngIf="player?.noBautizado" class="text">NB</span>
+            <span *ngIf="player?.portero" class="text">Portero oficial</span>
+        </div>
+
 
         <div>
-            <p>
-                <span class="label">Torneo: </span>
-                <span class="text">{{tournamentName}}</span>
-            </p>
-            <p>
-                <span class="label">Equipo: </span>
-                <span class="text">{{badge.teamName}}</span>
-            </p>
-        
             <p>
                 <span class="label">Nombre del Jugador: </span>
                 <span class="text">{{badge.playerName}}</span>
             </p>
+           
+            <p>
+                <span class="label">Equipo: </span>
+                <span class="text">{{badge.teamName}}</span>
+            </p>
+            <p>
+                <span class="label">Torneo: </span>
+                <span class="text">{{tournamentName}}</span>
+            </p>
+
+           
         </div>
     </div>
 
-    
+
 </div>

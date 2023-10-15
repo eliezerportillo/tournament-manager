@@ -8,6 +8,12 @@
     background-repeat: no-repeat;
     background-position: center top;
     color: whitesmoke;
-    padding: 10px;
+    padding: 8px 32px;
     border-radius: 8px;
+    min-width: 370px;
+}
+
+.player-photo {
+    border: 6px solid var(--accent-color);
+    border-radius: 4px;
 }
