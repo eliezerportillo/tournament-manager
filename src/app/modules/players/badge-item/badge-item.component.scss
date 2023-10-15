@@ -1,0 +1,19 @@
+.label {
+    display: block;
+    font-weight: bold;
+}
+
+.badge-wrapper {
+    background-image: url('/assets/badge-background.jpg');
+    background-repeat: no-repeat;
+    background-position: center top;
+    color: whitesmoke;
+    padding: 8px 32px;
+    border-radius: 8px;
+    min-width: 370px;
+}
+
+.player-photo {
+    border: 6px solid var(--accent-color);
+    border-radius: 4px;
+}

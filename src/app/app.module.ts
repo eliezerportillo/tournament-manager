@@ -11,6 +11,7 @@ import { FirebaseModule } from './firebase/firebase.module';
 import { MaterialModule } from '@app-material/material.module';
 import { SharedModule } from '@app-shared/shared.module';
 import { MatchesModule } from '@app-modules/matches/matches.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -29,6 +30,7 @@ import { MatchesModule } from '@app-modules/matches/matches.module';
     MaterialModule,
     FlexLayoutModule,
     MatchesModule,
+    HttpClientModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-MX' }],
   bootstrap: [AppComponent]

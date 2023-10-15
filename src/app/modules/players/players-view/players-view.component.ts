@@ -9,6 +9,7 @@ import { ModalService } from '@app-core/services/modal.service';
 import { PlayerEditorComponent } from '@app-modules/players/player-editor/player-editor.component';
 import { LocalStorageKeys } from '@app-core/models/local-storage-keys';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { CredentialListComponent } from '../credential-list/credential-list.component';
 
 @Component({
   selector: 'app-players-view',
@@ -96,6 +97,10 @@ export class PlayersViewComponent implements OnInit {
 
       }
     });
+  }
+
+  viewCredentials(players: IPlayer[]){
+    this.modalService.open(CredentialListComponent, { players, teamName: this.teamName })
   }
 }
 
