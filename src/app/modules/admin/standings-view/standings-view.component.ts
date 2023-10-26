@@ -29,9 +29,9 @@ export class StandingsViewComponent implements OnInit {
     return this.processing || !this.hasChanges;
   }
   checkChanges() {
-    const oldPoints = this.teams.reduce((acc, item) => acc += item.Pts, 0);
+    const oldPoints = this.teams.reduce((acc, item) =>  acc += `${item.nombre}-${item.Pts}`, '');
     const kardex = this.updateStandingsCommand.calcKardex(this.data.matches, this.teams);
-    const newPoints = kardex.reduce((acc, item) => acc += item.Pts, 0);
+    const newPoints = kardex.reduce((acc, item) =>  acc += `${item.nombre}-${item.Pts}`, '');
     this.hasChanges = oldPoints != newPoints;
   }
 
