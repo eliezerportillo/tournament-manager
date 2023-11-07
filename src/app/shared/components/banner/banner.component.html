@@ -1,0 +1,15 @@
+<div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
+    <div>
+        <span class="spacer"></span>
+        <button mat-button (click)="close()">
+            Cerrar
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <a [href]="redirectUrl" target="_blank">
+        <img [src]="activeBanner.imageUrl" alt="Publicidad">
+    </a>
+
+    <a [href]="redirectUrl" mat-raised-button target="_blank" color="whatsapp">Quiero más información</a>
+</div>
