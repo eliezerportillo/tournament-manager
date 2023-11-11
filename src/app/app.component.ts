@@ -9,6 +9,9 @@ import { getAnalytics } from "firebase/analytics";
 import { environment } from '@app-environments/environment';
 import { Analytics, logEvent } from '@angular/fire/analytics';
 import { EventEmitterService } from '@app-core/services/event-emitter.service';
+import { ModalService } from '@app-core/services/modal.service';
+import { BannerService } from '@app-core/services/banner.service';
+import { BannerComponent } from '@app-shared/components/banner/banner.component';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +27,9 @@ export class AppComponent implements OnInit {
   private eventEmitterService: EventEmitterService = inject(EventEmitterService);
   private accountService: AccountService = inject(AccountService);
   tounamentName: string;
+
+  modalService = inject(ModalService);
+  bannerService = inject(BannerService);
 
   constructor() {
     this.tounamentName = this.accountService.getTournamentName();
@@ -42,6 +48,17 @@ export class AppComponent implements OnInit {
     const app = initializeApp(environment.firebaseConfig);
     this.analytics = getAnalytics(app);
 
+    this.handleBanner()
+
+  }
+
+
+  handleBanner() {
+    this.bannerService.getActiveBanners().subscribe(banners => {
+      if (banners.length > 0) {
+        this.modalService.open(BannerComponent, {banners});
+      }
+    })
   }
 
   handleSponsorClicked(sponsorName: string): void {
