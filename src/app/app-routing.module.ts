@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ShellComponent } from './shell/shell.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/matches', pathMatch: 'full' },
+  { path: '', redirectTo: '/export', pathMatch: 'full' },
   {
     path: '',
     component: ShellComponent,
@@ -20,6 +20,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('@app-modules/import/import.module').then(
             (m) => m.ImportModule
+          ),
+      },
+      {
+        path: 'export',
+        loadChildren: () =>
+          import('@app-modules/export/export.module').then(
+            (m) => m.ExportModule
           ),
       },
     ],

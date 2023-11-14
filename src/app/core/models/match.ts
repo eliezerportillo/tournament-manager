@@ -4,6 +4,7 @@ export interface IMatch extends IEntity {
     [key: string]: unknown | null;   
     esClasificacion: boolean; 
     etapa: string;
+    ordenEtapa: number;
     numero: number;
     local: string;
     marcadorLocal: number | null;
