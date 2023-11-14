@@ -1,1 +1,10 @@
-<p>export-excel works!</p>
+<mat-toolbar>
+    <button mat-raised-button color="primary" [disabled]="loading" (click)="handleExport()">Exportar a Excel</button>
+</mat-toolbar>
+
+<ng-container *ngIf="statusItems.length > 0">
+    <mat-list role="list">
+        <div mat-subheader>Exportando</div>
+        <mat-list-item role="listitem" *ngFor="let state of statusItems">{{state}}</mat-list-item>
+    </mat-list>
+</ng-container>
