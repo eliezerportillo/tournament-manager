@@ -36,7 +36,7 @@ export class SponsorsBannerComponent implements OnInit, OnDestroy {
   }
 
   get canShowProgressBar() {
-    return this.sponsors.length > this.itemsPerPage;
+    return this.sponsors.length > this.itemsPerPage && false;
   }
 
   checkBreakpoint() {
