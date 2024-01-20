@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { ShellComponent } from './shell/shell.component';
 import { FirebaseModule } from './firebase/firebase.module';
@@ -12,6 +12,7 @@ import { MaterialModule } from '@app-material/material.module';
 import { SharedModule } from '@app-shared/shared.module';
 import { MatchesModule } from '@app-modules/matches/matches.module';
 import { HttpClientModule } from '@angular/common/http';
+import { CustomErrorHandler } from '@app-core/handlers/error-handler.service';
 
 
 
@@ -19,9 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    ShellComponent,        
+    ShellComponent,
   ],
-  imports: [    
+  imports: [
     SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -32,13 +33,16 @@ import { HttpClientModule } from '@angular/common/http';
     MatchesModule,
     HttpClientModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es-MX' }],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es-MX' },
+    { provide: ErrorHandler, useClass: CustomErrorHandler }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  
+
   constructor() {
-    
+
     registerLocaleData(localeEsMx, 'es-MX');
   }
 }
