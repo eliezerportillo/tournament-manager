@@ -39,8 +39,8 @@ export class TournamentComponent implements AfterViewInit {
   activateTab(labelName: string) {
     if (this.tabGroup) {
       const tabToActivate = this.tabGroup._tabs.find(tab => tab.textLabel === labelName);
-      if (tabToActivate) {
-        this.tabGroup.selectedIndex = tabToActivate.position;
+      if (tabToActivate && this.tabGroup) {
+        this.tabGroup.selectedIndex = tabToActivate.position as number;
       }
     }
   }
