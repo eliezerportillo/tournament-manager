@@ -1,23 +1,6 @@
-.mat-toolbar, .mat-toolbar.mat-accent {
+.title {
     color: var(--primary-color);
-    font-weight: bold;    
-  }
-
-  .menu {
-    position: sticky;
-    bottom: 0;
-
-    height: 64px;
-
-    a {
-        span {
-            line-height: 24px;
-        }
-    }
-}
-
-.active-link {
-    color: var(primary);
+    font-weight: 600;
 }
 
 mat-toolbar {

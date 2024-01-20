@@ -1,12 +1,12 @@
-<mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center" color="accent">
+<mat-toolbar color="accent" fxLayout="row" fxLayoutAlign="space-between center">
 
     <div fxLayout="row" fxLayoutAlign="space-around center" >
 
         <app-logo></app-logo>
-        <span class="text-white">{{titulo}}</span>
+        <span class="title">{{titulo}}</span>
         
     </div>
-    <button mat-button [matMenuTriggerFor]="menu">
+    <button mat-button [matMenuTriggerFor]="menu" color="primary">
         Menú            
     </button>
     <mat-menu #menu="matMenu">
