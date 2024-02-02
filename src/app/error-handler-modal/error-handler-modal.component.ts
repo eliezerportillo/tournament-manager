@@ -10,7 +10,7 @@ import { IModalComponent } from '@app-core/models/editor-component';
   standalone: true,
   imports: [MatIconModule, MatButtonModule, MatToolbarModule],
   templateUrl: './error-handler-modal.component.html',
-  styleUrl: './error-handler-modal.component.scss'
+  styleUrls: ['./error-handler-modal.component.scss']
 })
 export class ErrorHandlerModalComponent implements IModalComponent {
   bottomSheetRef: MatBottomSheetRef<ErrorHandlerModalComponent> = inject(MatBottomSheetRef<ErrorHandlerModalComponent>);
