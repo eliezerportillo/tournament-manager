@@ -10,7 +10,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router: Router = inject(Router);
 
   return auth.authState.pipe(map(user => {
-    if (!environment.production) return true;
+    // if (!environment.production) return true;
     
     const queryParams = {
       redirectTo: state.url

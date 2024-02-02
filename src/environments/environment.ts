@@ -7,6 +7,7 @@ export const environment = {
         storageBucket: "afc-torneo.appspot.com",
         messagingSenderId: "902258956020",
         appId: "1:902258956020:web:056031d3b6d48c500ff0a1",
-        measurementId: "G-4TVD0D4JHN"
+        measurementId: "G-4TVD0D4JHN",
+        locationId: "us-central"
     }
 };

@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
+import { ErrorHandler, LOCALE_ID, NgModule, importProvidersFrom } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { ShellComponent } from './shell/shell.component';
 import { FirebaseModule } from './firebase/firebase.module';
@@ -13,6 +13,13 @@ import { SharedModule } from '@app-shared/shared.module';
 import { MatchesModule } from '@app-modules/matches/matches.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomErrorHandler } from '@app-core/handlers/error-handler.service';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { environment } from '@app-environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
 
 
 
@@ -23,19 +30,32 @@ import { CustomErrorHandler } from '@app-core/handlers/error-handler.service';
     ShellComponent,
   ],
   imports: [
+    
+    // FirebaseModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+
     SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    FirebaseModule,
     MaterialModule,
     FlexLayoutModule,
     MatchesModule,
-    HttpClientModule
+    HttpClientModule,
+    
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },
-    { provide: ErrorHandler, useClass: CustomErrorHandler }
+    { provide: ErrorHandler, useClass: CustomErrorHandler },
+    // ScreenTrackingService,
+    // UserTrackingService
+    importProvidersFrom([
+      provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+      provideAuth(() => getAuth()),
+      provideFirestore(() => getFirestore()),
+      provideStorage(() => getStorage()),
+      provideAnalytics(() => getAnalytics()),
+    ]),
   ],
   bootstrap: [AppComponent]
 })

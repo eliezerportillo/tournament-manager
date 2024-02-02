@@ -107,9 +107,19 @@
         "deploy": {
           "builder": "@angular/fire:deploy",
           "options": {
-            "version": 2,
-            "browserTarget": "tournament-manager:build:production"
-          }
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "tournament-manager:build:production",
+              "serveTarget": "tournament-manager:serve:production"
+            },
+            "development": {
+              "buildTarget": "tournament-manager:build:development",
+              "serveTarget": "tournament-manager:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",

@@ -1,0 +1,17 @@
+<div fxLayout="column" fxLayoutAlign="start stretch">
+    <h1>Equipos</h1>
+    <button mat-raised-button color="accent">Nuevo equipo</button>
+    @if (teams$ | async; as teams) {
+    <mat-list role="list" style="overflow-y: auto;">
+
+        <mat-list-item role="listitem" *ngFor="let t of teams" matRipple>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                <img [src]="getTeamImageUrl(t)" alt="team image" class="profile-photo" />
+                <span>{{t.nombre}}</span>
+            </div>
+        </mat-list-item>
+
+
+    </mat-list>
+    }
+</div>
