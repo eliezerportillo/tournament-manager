@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Formation } from '@app-core/models/formation';
 import { FormControl } from '@angular/forms';
 import { FormationPickerComponent } from '@app-modules/matches/formation-picker/formation-picker.component';
+import { TeamService } from '@app-core/services/team.service';
 
 @Component({
   selector: 'app-upload-lineup',
@@ -26,8 +27,10 @@ export class UploadLineupComponent implements OnInit {
   bottomSheet: MatBottomSheet = inject(MatBottomSheet);
   uploadCommand: UploadLineupCommand = inject(UploadLineupCommand);
   snackBar: MatSnackBar = inject(MatSnackBar);
+  teamService = inject(TeamService);
 
   captain?: IPlayer;
+  localImageUrl: string = '';
 
   team: IPlayer[] = [];
   loading = false;
@@ -57,9 +60,7 @@ export class UploadLineupComponent implements OnInit {
   get selectedFormation() {
     return this.selectedFormationControl.value as Formation;
   }
-  get localImageUrl(): string {
-    return Team.createImageUrl(this.captain?.equipo ?? '');
-  }
+
 
   get startings() {
     return this.formationPicker?.builder?.players ?? [];
@@ -112,7 +113,7 @@ export class UploadLineupComponent implements OnInit {
     firstValueFrom(this.auth.authState).then(async (user) => {
       if (user && user.email) {
         this.captain = await this.playerService.getPlayerByEmail(user.email);
-
+        this.localImageUrl = await this.teamService.getTeamImageUrl(this.captain.equipo);
         if (!this.captain) {
           return;
         }

@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { LineUp } from '@app-core/models/lineup';
 import { Team } from '@app-core/models/team';
 import { MatchService } from '@app-core/services/match.service';
 import { LineupBase } from '../LineupBase';
+import { TeamService } from '@app-core/services/team.service';
 
 @Component({
   selector: 'app-lineup-viewer',
@@ -10,6 +11,10 @@ import { LineupBase } from '../LineupBase';
   styleUrls: ['./lineup-viewer.component.scss']
 })
 export class LineupViewerComponent extends LineupBase implements OnInit {
+
+  private teamService = inject(TeamService);
+  localImageUrl: string = '';
+  visitaImageUrl: string = '';
 
   constructor(matchService: MatchService) {
     super(matchService);
@@ -25,13 +30,7 @@ export class LineupViewerComponent extends LineupBase implements OnInit {
   @Input() local: string;
   @Input() visita: string;
 
-  get localImageUrl(): string {
-    return Team.createImageUrl(this.local)
-  }
-
-  get visitaImageUrl(): string {
-    return Team.createImageUrl(this.visita)
-  }
+  
 
   getPortero(lineup: LineUp[]) {
     return lineup.find(x => x.playerType == 'portero');
@@ -62,6 +61,12 @@ export class LineupViewerComponent extends LineupBase implements OnInit {
 
   ngOnInit(): void {
     super.loadLineups(this.local, this.visita);
+    this.loadTeamImages();
+  }
+
+  async loadTeamImages(){
+    this.localImageUrl = await this.teamService.getTeamImageUrl(this.local)
+    this.visitaImageUrl = await this.teamService.getTeamImageUrl(this.visita)
   }
 
   group<T>(key: string, dataArray: T[], sort?: (a: T, b: T) => number) {

@@ -28,7 +28,7 @@
                             <ng-container *ngFor="let p of item.values">
                                 <span class="lrvl-pd" [ngStyle]="{width: 100 / item.values.length +'%'} ">
                                     <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                                        <app-starting-player [player]="p"></app-starting-player>
+                                        <app-starting-player [player]="p" [playerImageUrl]="localImageUrl" ></app-starting-player>
                                     </div>
                                 </span>
                             </ng-container>
@@ -64,7 +64,7 @@
                             <ng-container *ngFor="let p of item.values">
                                 <span class="lrvl-pd" [ngStyle]="{width: 100 / item.values.length +'%'} ">
                                     <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                                        <app-starting-player [home]="false" [player]="p"></app-starting-player>
+                                        <app-starting-player [home]="false" [player]="p" [playerImageUrl]="visitaImageUrl" ></app-starting-player>
                                     </div>
                                 </span>
                             </ng-container>

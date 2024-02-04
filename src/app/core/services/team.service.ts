@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, CollectionReference, Query, DocumentData } from '@angular/fire/compat/firestore';
-import { Observable, filter, firstValueFrom, map, of, shareReplay, tap } from 'rxjs';
+import { Observable, filter, firstValueFrom, from, map, of, shareReplay, take, tap } from 'rxjs';
 
-import { ITeam } from '@app-core/models/team';
+import { ITeam, Team } from '@app-core/models/team';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,8 @@ export class TeamService {
   teams?: ITeam[];
   teams$?: Observable<ITeam[]>;
   ranked$?: Observable<ITeam[]>;
+  private storage = inject(AngularFireStorage)
+
 
 
   constructor(private db: AngularFirestore) {
@@ -64,6 +67,25 @@ export class TeamService {
 
     return this.teams$;
   }
+
+  private teamImagesCache: { [teamName: string]: string } = {}
+
+  async getTeamImageUrl(teamName: string): Promise<string> {
+    if (this.teamImagesCache[teamName]) {
+      // console.log('getTeamImageUrl from cache');
+      return this.teamImagesCache[teamName];
+    }
+  
+    console.log('getTeamImageUrl');
+    const imagePath = Team.createImageUrl(teamName);
+    const storageRef = this.storage.ref(imagePath);
+    const imageUrl = await firstValueFrom(storageRef.getDownloadURL());
+  
+    // Actualizar la caché con la nueva URL
+    this.teamImagesCache[teamName] = imageUrl;
+    return imageUrl;
+  }
+
 
 
 

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IMatch, Match } from '@app-core/models/match';
+import { AccountService } from '@app-core/services/account.service';
 import { MatchService } from '@app-core/services/match.service';
 
 @Component({
@@ -14,13 +15,15 @@ export class LineupComponent implements OnInit {
   visita: string;
 
   match?: IMatch;
-  
+  accountService = inject(AccountService)
 
   constructor(private route: ActivatedRoute, private matchService: MatchService) {
 
     this.local = '';
     this.visita = '';
   }
+
+  get title() { return this.accountService.getTournamentName() }
 
   ngOnInit(): void {
     // Access the URL parameters here
