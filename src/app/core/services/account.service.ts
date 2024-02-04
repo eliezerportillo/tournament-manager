@@ -11,6 +11,6 @@ export class AccountService {
   }
 
   getTournamentName(): string {
-    return '1er Torneo de Fut7 Cristiano';
+    return '2do Torneo de Fut7 Cristiano';
   }
 }
