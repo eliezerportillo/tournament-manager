@@ -19,10 +19,13 @@ export class StartingPlayerComponent {
   
   _player!: LineUp;
 
+  playerModel!: IPlayer;
+
   @Input()
   set player(value: LineUp | undefined) {
     if (value === undefined) return;
     this._player = value;
+    this.playerModel = (value as unknown) as IPlayer
   }
 
   get player() {
