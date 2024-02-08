@@ -38,7 +38,7 @@ export class PlayerService {
 
     const snapshot = await this.db.collection<IBadge>('badges').ref
       .where('teamName', '==', player.equipo)
-      .where('playerName', '==', player.name)
+      .where('playerName', '==', player.name || player.jugador)
       .get();
 
     const data = snapshot.docs[0];

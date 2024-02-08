@@ -11,11 +11,12 @@ export interface ITeam extends IEntity {
     GC: number;
     DG: number;
     Pts: number;
+    imageUrl: string;
 }
 
 export class Team {
     static createImageUrl(teamName: string) {
-        return `assets/${teamName}.png`;
+        return `images/teams/${teamName}.png`;
     }
 }
 
