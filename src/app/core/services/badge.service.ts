@@ -10,4 +10,15 @@ export class BadgeService extends FirestoreService<IBadge> {
   constructor() { 
     super('badges');
   }
+
+  async deleteBadges(badges: IBadge[]) {
+    const batch = this.db.firestore.batch();
+    for (const badge of badges) {
+      const ref = this.db.firestore.collection('badges').doc(badge.id);
+      batch.delete(ref);
+    }
+
+    return batch.commit();
+
+  }
 }
