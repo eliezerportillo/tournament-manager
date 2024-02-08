@@ -11,6 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { StandingsViewComponent } from './standings-view/standings-view.component';
 import { HourPipe } from '@app-shared/pipes/hour.pipe';
+import { AdminOperationsViewComponent } from './admin-operations-view/admin-operations-view.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { HourPipe } from '@app-shared/pipes/hour.pipe';
     AdminShellComponent,
     ScoresViewComponent,
     ScoreFillerComponent,
-    StandingsViewComponent,    
+    StandingsViewComponent,
+    AdminOperationsViewComponent,    
   ],
   imports: [
     AdminRoutingModule,

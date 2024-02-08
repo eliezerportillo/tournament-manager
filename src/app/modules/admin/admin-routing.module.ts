@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminShellComponent } from './admin-shell/admin-shell.component';
 import { ScoresViewComponent } from './scores-view/scores-view.component';
 import { authGuard } from '@app-core/guards/auth.guard';
+import { AdminOperationsViewComponent } from './admin-operations-view/admin-operations-view.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
       {
         path: 'scores',
         component: ScoresViewComponent
+      },
+      {
+        path: 'operations',
+        component: AdminOperationsViewComponent
       },
       {
         path: 'sponsors',
