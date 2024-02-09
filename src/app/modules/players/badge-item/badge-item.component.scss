@@ -17,3 +17,11 @@
     border: 6px solid var(--accent-color);
     border-radius: 4px;
 }
+
+.text {
+    white-space: nowrap; /* Evita el salto de línea */
+    overflow: hidden; /* Oculta cualquier contenido que desborde */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos (...) si el texto es demasiado largo */
+    font-size: 14px; /* Ajusta el tamaño de la fuente según sea necesario */
+    /* Puedes ajustar el tamaño de la fuente según tus necesidades */
+}
