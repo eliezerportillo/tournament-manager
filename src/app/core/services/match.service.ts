@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { IMatch } from '@app-core/models/match';
 import { Observable, firstValueFrom, forkJoin, of } from 'rxjs';
 import { Team } from '@app-core/models/team';
@@ -16,7 +16,8 @@ export class MatchService {
 
 
   private matchesCollection: AngularFirestoreCollection<IMatch>;
-  private matchesCache?: IMatch[];
+  private matchesCache$?: Observable<IMatch[]>;
+  private bracketCache$?: Observable<IMatch[]>;
   private standingsCollection: AngularFirestoreCollection<LineUp>;
   bracketCollection: AngularFirestoreCollection<IMatch>;
   private teamService = inject(TeamService);
@@ -28,14 +29,16 @@ export class MatchService {
   }
 
   getMatches(): Observable<IMatch[]> {
-    if (this.matchesCache) {
-      return of(this.matchesCache);
+    if (this.matchesCache$) {
+      return this.matchesCache$;
     }
 
-    return this.getMatchesFromCollection(this.matchesCollection).pipe(
-      map((matches) => matches.filter(match => match.esClasificacion == undefined || match.esClasificacion == false)),
-      tap(matches => this.matchesCache = matches)
+    this.matchesCache$ = this.getMatchesFromCollection(this.matchesCollection).pipe(
+      map((matches) => matches.filter(match => match.esClasificacion == undefined || match.esClasificacion == false)),     
+      shareReplay(1) 
     );
+
+    return this.matchesCache$;
   }
 
   getMatchesGroupedByDate() {
@@ -49,7 +52,14 @@ export class MatchService {
   }
 
   getBracket(): Observable<IMatch[]> {
-    return this.getMatchesFromCollection(this.bracketCollection);
+    if (this.bracketCache$) {
+      return this.bracketCache$;
+    }
+    this.bracketCache$ = this.getMatchesFromCollection(this.bracketCollection).pipe(
+      shareReplay(1)
+    );
+
+    return this.bracketCache$;
   }
 
   private getMatchesFromCollection(collection: AngularFirestoreCollection<IMatch>) {
@@ -69,7 +79,7 @@ export class MatchService {
         })) as IMatch[]
       }),
       map((matches: IMatch[]) => matches.sort((a, b) => a.fecha - b.fecha)),
-      switchMap(matches => this.getTeamImages(matches)),
+      switchMap(matches => this.getTeamImages(matches))      
     );
   }
 
