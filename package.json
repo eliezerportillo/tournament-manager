@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "postinstall": "patch-package",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "update-deps": "npm audit fix"
   },
   "private": true,
   "dependencies": {
