@@ -2,25 +2,24 @@ import { Injectable, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IBadge } from '@app-core/models/bagde';
 import { IPlayer } from '@app-core/models/player';
-import { Observable, firstValueFrom, forkJoin, from, of } from 'rxjs';
-import { catchError, concatMap, map, take, tap } from 'rxjs/operators';
+import { Observable, firstValueFrom } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BadgeService } from './badge.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CleanOldBadgesCommand {
-
   db = inject(AngularFirestore);
   badgeService = inject(BadgeService);
-  constructor() { }
+  constructor() {}
 
   execute() {
     return this.deleteBadgesWithoutPlayer();
   }
 
   async deleteBadgesWithoutPlayer() {
-    let badgesToDelete: IBadge[] = [];
+    const badgesToDelete: IBadge[] = [];
     // Get all badges
 
     for (const badge of await firstValueFrom(this.badgeService.get())) {
@@ -34,20 +33,20 @@ export class CleanOldBadgesCommand {
     }
 
     await this.badgeService.deleteBadges(badgesToDelete);
-    console.log(`${badgesToDelete.length} badges deleted`)
+    console.log(`${badgesToDelete.length} badges deleted`);
 
     return badgesToDelete.length;
-
   }
-
-  
 
   private checkPlayer(badge: IBadge): Observable<boolean> {
     // Perform a query to check if there is a corresponding player
-    return this.db.collection<IPlayer>('Jugadores', ref =>
-      ref.where('equipo', '==', badge.teamName).where('jugador', '==', badge.playerName)
-    ).valueChanges().pipe(
-      map(players => players.length > 0)
-    );
+    return this.db
+      .collection<IPlayer>('Jugadores', (ref) =>
+        ref
+          .where('equipo', '==', badge.teamName)
+          .where('jugador', '==', badge.playerName),
+      )
+      .valueChanges()
+      .pipe(map((players) => players.length > 0));
   }
 }
