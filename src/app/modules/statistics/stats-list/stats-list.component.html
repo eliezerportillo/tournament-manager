@@ -12,7 +12,8 @@
 
         <mat-list-item role="listitem" *ngFor="let p of players">
             <!-- Image with icon size (left side) -->
-            <app-team-image matListItemIcon [team]="p.equipo"></app-team-image>
+            <!-- <app-team-image matListItemIcon [team]="p.equipo"></app-team-image> -->
+            <app-player-photo matListItemIcon [player]="p"></app-player-photo>
 
             <!-- Title and number (right side) -->
             <div matListItemTitle fxLayout fxLayoutAlign="space-between center">
