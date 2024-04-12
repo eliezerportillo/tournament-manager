@@ -31,11 +31,12 @@ th.mat-column-position,
 td.mat-column-position {
     padding-left: 8px;
 }
+
 .table {
     .mat-mdc-table-sticky-border-elem-right {
         border-left: 1px solid #e0e0e0;
     }
-    
+
     .mat-mdc-table-sticky-border-elem-left {
         border-right: 1px solid #e0e0e0;
     }
@@ -44,9 +45,11 @@ td.mat-column-position {
 
 .widget {
     border-radius: 8px;
+
     table {
         background-color: var(--base-color);
     }
+
     .mat-mdc-row,
     .mat-mdc-header-row,
     .mat-mdc-cell,
@@ -57,16 +60,21 @@ td.mat-column-position {
         font-weight: lighter;
     }
 
-    td.mat-cell{
-        border-bottom-style: none;
-    }
-    
-    th.mat-header-cell{
+    td.mat-cell {
         border-bottom-style: none;
     }
 
-   
+    th.mat-header-cell {
+        border-bottom-style: none;
+    }
+
+
     th {
         font-weight: lighter;
     }
+}
+
+.highlighted-row {
+    border-left: 4px solid var(--accent-color);    
+    // border-radius: 0 5px 5px 0;    
 }

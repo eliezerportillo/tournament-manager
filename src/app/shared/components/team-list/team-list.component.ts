@@ -57,6 +57,12 @@ export class TeamListComponent implements OnInit {
   getImage(team: ITeam) {
     return this.teamImages[team.nombre];
   }
+
+   // Función para determinar si una fila debe ser resaltada
+   isHighlighted(element: ITeam): boolean {
+    // Cambia este código según tus criterios para resaltar las primeras 8 filas
+    return this.teams.indexOf(element) < 8;
+  }
 }
 
 export enum MatchDisplayType {
