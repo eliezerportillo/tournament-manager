@@ -74,7 +74,10 @@ td.mat-column-position {
     }
 }
 
-.highlighted-row {
-    border-left: 4px solid var(--accent-color);    
-    // border-radius: 0 5px 5px 0;    
+.highlighted-passed {
+    border-left: 4px solid var(--primary-color);        
+}
+
+.highlighted-not-passed {
+    border-left: 4px solid var(--warn-color);        
 }
