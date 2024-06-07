@@ -15,7 +15,7 @@
                     Posiciones
                 </ng-container>
             </th>
-            <td mat-cell *matCellDef="let element, let index = index" class="team-name">
+            <td mat-cell *matCellDef="let element, let index = index" class="team-name"  [ngClass]="{'highlighted-passed': isHighlighted(element), 'highlighted-not-passed': !isHighlighted(element)}">
 
 
 
