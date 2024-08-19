@@ -74,12 +74,18 @@ export class TeamService {
       // console.log('getTeamImageUrl from cache');
       return this.teamImagesCache[teamName];
     }
-
+  
     console.log('getTeamImageUrl');
     const imagePath = Team.createImageUrl(teamName);
     const storageRef = this.storage.ref(imagePath);
-    const imageUrl = await firstValueFrom(storageRef.getDownloadURL());
-
+    let imageUrl: string;
+    try {
+      imageUrl = await firstValueFrom(storageRef.getDownloadURL());
+    } catch (error) {
+      // Handle the exception and provide a default URL
+      imageUrl = 'assets/default_team_image.png';
+    }
+  
     // Actualizar la caché con la nueva URL
     this.teamImagesCache[teamName] = imageUrl;
     return imageUrl;
