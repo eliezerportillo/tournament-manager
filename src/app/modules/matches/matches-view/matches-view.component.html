@@ -4,11 +4,15 @@
         <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
 
             <ng-container *ngFor="let match of group.values">
+                <ng-container *ngIf="isSame(match) else notSame ">
+                    <app-match [match]="match" (selected)="onSelected($event)"
+                        [attr.data-date]="match.dateTime.toISOString()"></app-match>
+                </ng-container>
+                <ng-template #notSame>
+                    <app-match-standing [match]="match" (selected)="onSelected($event)"
+                        [attr.data-date]="match.dateTime.toISOString()"></app-match-standing>
+                </ng-template>
 
-                <!-- <app-match [match]="match" (selected)="onSelected($event)"
-                    [attr.data-date]="match.dateTime.toISOString()"></app-match> -->
-
-                <app-match-standing  [match]="match" (selected)="onSelected($event)" [attr.data-date]="match.dateTime.toISOString()"></app-match-standing>
             </ng-container>
         </div>
 

@@ -36,4 +36,8 @@ export class MatchesViewComponent implements AfterViewInit {
     if (Match.noPlay(match)) return;
     this.router.navigate(['view'], { relativeTo: this.route, queryParams: { local: match.local, visita: match.visita } });
   }
+
+  isSame(match: IMatch): boolean {    
+    return Match.isSame(match);
+  }
 }

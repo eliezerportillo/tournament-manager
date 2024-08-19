@@ -17,16 +17,18 @@
                             [class.winner]="(match.marcadorLocal ?? 0) > (match.marcadorVisita?? 0)">{{match.marcadorLocal}}</span>
                     </div>
                     <!-- away -->
-                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+                    <ng-container *ngIf="match.local !== match.visita">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
 
-                        <app-team-image [src]="match.imageUrlVisita"></app-team-image>
-                        <p>{{ match.visita }}</p>
+                            <app-team-image [src]="match.imageUrlVisita"></app-team-image>
+                            <p>{{ match.visita }}</p>
 
-                        <span class="spacer"></span>
+                            <span class="spacer"></span>
 
-                        <span *ngIf="(match.marcadorVisita ?? 0) >= 0"
-                            [class.winner]="(match.marcadorVisita ?? 0) > (match.marcadorLocal ?? 0)">{{match.marcadorVisita}}</span>
-                    </div>
+                            <span *ngIf="(match.marcadorVisita ?? 0) >= 0"
+                                [class.winner]="(match.marcadorVisita ?? 0) > (match.marcadorLocal ?? 0)">{{match.marcadorVisita}}</span>
+                        </div>
+                    </ng-container>
 
                 </div>
                 <ng-container *ngIf="!noPlay(match)">

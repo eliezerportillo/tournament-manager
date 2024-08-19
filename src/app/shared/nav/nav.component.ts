@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AccountService } from '@app-core/services/account.service';
 
 @Component({
   selector: 'app-nav',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
-  titulo = "AFC | Asociación de Futbol Cristiana";
+  accountService = inject(AccountService);
+  titulo = this.accountService.getTournamentName();
 }
