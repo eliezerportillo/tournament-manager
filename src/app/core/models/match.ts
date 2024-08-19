@@ -28,6 +28,10 @@ export class Match {
         today.setHours(today.getHours() + 1);
         return matchDateTime < today;
     }
+    // is same match
+    static isSame(match: IMatch): boolean {
+        return match.local === match.visita;
+    }
 
 }
 
