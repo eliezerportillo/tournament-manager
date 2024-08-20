@@ -1,6 +1,14 @@
-<mat-toolbar>Tabla general</mat-toolbar>
 <ng-container *ngIf="teams$ | async as teams">
-    <app-team-list [teams]="teams"></app-team-list>
+    <ng-container *ngIf="groupKeys.length === 1; else multipleGroups">
+        <mat-toolbar>Tabla general</mat-toolbar>
+        <app-team-list [teams]="groupedTeams[groupKeys[0]]"></app-team-list>
+    </ng-container>
+    <ng-template #multipleGroups>
+        <ng-container *ngFor="let group of groupKeys">
+            <mat-toolbar>Grupo {{ group }}</mat-toolbar>
+            <app-team-list [teams]="groupedTeams[group]"></app-team-list>
+        </ng-container>
+    </ng-template>
     <mat-card class="legend">
         <mat-card-content>
     

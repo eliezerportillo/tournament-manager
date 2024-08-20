@@ -12,6 +12,7 @@ export interface ITeam extends IEntity {
     DG: number;
     Pts: number;
     imageUrl: string;
+    grupo: string;
 }
 
 export class Team {
