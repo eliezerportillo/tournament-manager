@@ -40,10 +40,10 @@
 
                         <p>{{match.etapa}} {{match.numero}}</p>
                         <ng-container>
-                            <ng-container *ngIf="!isFinished(match) else finished;">
+                            <ng-container>
                                 <p>{{ match.dateTime | dateStatus }}</p>
                                 <app-match-hour [match]="match"></app-match-hour>
-                                <div fxLayout="row" fxLayoutAlign="center center" *ngIf="match.campo">
+                                <div fxLayout="row" fxLayoutAlign="center center" *ngIf="match.campo" class="center">
                                     <mat-icon>flag</mat-icon> {{match.campo}}
                                 </div>
                             </ng-container>
