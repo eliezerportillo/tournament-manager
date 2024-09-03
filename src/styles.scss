@@ -89,13 +89,14 @@ $tournament-manager-theme: mat.define-light-theme((color: (primary: $tournament-
 
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --primary-color: #112660;
-  --accent-color: #c6ad18;
+  --primary-color: #0c113c;
+  --accent-color: #f6ca0a;
   --warn-color: #c17200;
   --ok-color: green;
   --base-color: whitesmoke;
-  --yellow-card-color: #c6ad18;
+  --yellow-card-color: #f6ca0a;
   --red-card-color: red;
+  --white: white;
 }
 
 html,

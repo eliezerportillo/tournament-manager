@@ -27,6 +27,7 @@ import { DeleteButtonComponent } from '@app-shared/components/delete-button/dele
 import { BatchCreatorComponent } from './components/batch-creator/batch-creator.component';
 import { PlayerPhotoComponent } from './components/player-photo/player-photo.component';
 import { BannerComponent } from './components/banner/banner.component';
+import { AgePipe } from './pipes/age.pipe';
 
 
 
@@ -57,6 +58,7 @@ import { BannerComponent } from './components/banner/banner.component';
     BatchCreatorComponent,
     PlayerPhotoComponent,
     BannerComponent,
+    AgePipe,
   ],
   imports: [
     CommonModule,
@@ -91,7 +93,8 @@ import { BannerComponent } from './components/banner/banner.component';
     BatchCreatorComponent,
     PlayerPhotoComponent,
     BannerComponent,
+    AgePipe
   ],
-  providers: [DatePipe]
+  providers: [DatePipe, AgePipe]
 })
 export class SharedModule { }
