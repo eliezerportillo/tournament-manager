@@ -1,19 +1,19 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
-import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import {  map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { IMatch } from '@app-core/models/match';
 import { Observable, firstValueFrom, forkJoin, of } from 'rxjs';
-import { Team } from '@app-core/models/team';
 import { LineUp } from '@app-core/models/lineup';
 import { Group, Grouper } from '@app-core/models/group';
 import { TeamService } from './team.service';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { ExcelService } from './excel.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchService {
 
+  private excelService = inject(ExcelService);
 
   private matchesCollection: AngularFirestoreCollection<IMatch>;
   private matchesCache$?: Observable<IMatch[]>;
@@ -184,17 +184,7 @@ export class MatchService {
 
   private parseDate(excelDate: number): Date | null {
 
-    if (!excelDate) {
-      return null;
-    }
-    // Adjust the number of days between Excel epoch (January 1, 1900) and JavaScript's epoch (January 1, 1970)
-    const excelEpochDiff = 25568; // for Windows (1900) or 24107 for Mac (1904)
-
-    // Convert the Excel date to JavaScript timestamp (milliseconds since January 1, 1970)
-    const javascriptTimestamp = (excelDate - excelEpochDiff) * 86400 * 1000;
-
-    // Create a new Date object with the JavaScript timestamp
-    return new Date(javascriptTimestamp);
+    return this.excelService.parseDate(excelDate);
   }
 
   private parseHour(excelHour: number): string {

@@ -1,9 +1,10 @@
-import { Injectable, } from '@angular/core';
+import { inject, Injectable, } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, } from '@angular/fire/compat/firestore';
 import { Observable, firstValueFrom, map, of } from 'rxjs';
 import { IPlayer, Player } from '@app-core/models/player';
 import { Stats } from '@app-core/models/stats';
 import { IBadge } from '@app-core/models/bagde';
+import { ExcelService } from './excel.service';
 
 type WhereFilterOp =
   | '<'
@@ -22,7 +23,7 @@ type WhereFilterOp =
 })
 export class PlayerService {
 
-
+  private excelService = inject(ExcelService);
 
   playersCollection: AngularFirestoreCollection<IPlayer>;
   stats?: Stats;
@@ -59,6 +60,7 @@ export class PlayerService {
         map(actions =>
           actions.map(action => {
             const obj = { id: action.payload.doc.id, ...action.payload.doc.data() } as IPlayer;
+            obj.dateBirth = this.excelService.parseDate(obj.fechaNacimiento);
             return new Player(obj);
           })
         )

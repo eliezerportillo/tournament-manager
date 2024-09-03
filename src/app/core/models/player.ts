@@ -11,7 +11,8 @@ export interface IPlayer extends INamedObject {
     portero?: number;
     noBautizado?: boolean;
     correo?: string;
-    fechaNacimiento?: string;
+    fechaNacimiento?: number;
+    dateBirth: Date | null;
 }
 
 export enum PlayerType {
@@ -22,7 +23,7 @@ export enum PlayerType {
 }
 
 
-export class Player implements IPlayer{
+export class Player implements IPlayer {
     constructor(player: IPlayer) {
         this.equipo = player.equipo;
         this.jugador = player.jugador ?? '';
@@ -36,8 +37,9 @@ export class Player implements IPlayer{
         this.correo = player.correo;
         this.id = player.id;
         this.fechaNacimiento = player.fechaNacimiento;
+        this.dateBirth = player.dateBirth;
     }
-    
+
     jugador: string;
     equipo: string;
     name: string;
@@ -49,5 +51,6 @@ export class Player implements IPlayer{
     noBautizado?: boolean | undefined;
     correo?: string | undefined;
     id?: any;
-    fechaNacimiento: string | undefined;
+    fechaNacimiento: number | undefined;
+    dateBirth: Date | null;
 }

@@ -139,7 +139,8 @@ export class PlayerEditorComponent implements IModalComponent {
       equipo: this.data.team,
       capitan: this.form.value?.isCap,
       portero: this.form.value?.isGoalkeeper,
-      noBautizado: this.form.value?.isListener
+      noBautizado: this.form.value?.isListener,
+      dateBirth: null,
     };
 
     if (player.capitan) {

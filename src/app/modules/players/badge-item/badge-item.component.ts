@@ -45,7 +45,7 @@ export class BadgeItemComponent implements OnInit {
     }
 
     if(this.player){
-      this.age = this.agePipe.transform(this.player.fechaNacimiento ?? '');
+      this.age = this.agePipe.transform(this.player.dateBirth ?? '');
     }
   }
 
