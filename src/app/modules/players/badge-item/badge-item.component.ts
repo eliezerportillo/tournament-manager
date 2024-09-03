@@ -5,6 +5,7 @@ import { IPlayer } from '@app-core/models/player';
 import { AccountService } from '@app-core/services/account.service';
 import { ImageService } from '@app-core/services/image.service';
 import { environment } from '@app-environments/environment';
+import { AgePipe } from '@app-shared/pipes/age.pipe';
 
 @Component({
   selector: 'app-badge-item',
@@ -13,6 +14,10 @@ import { environment } from '@app-environments/environment';
 })
 export class BadgeItemComponent implements OnInit {
 
+  // inject agepipe
+
+  agePipe = inject(AgePipe);
+  
 
   @Input()
   badge?: IBadge;
@@ -26,7 +31,8 @@ export class BadgeItemComponent implements OnInit {
   tournamentName: string;
   componyName: string;
   playerImage$: any;
-  
+  age: number = 0;
+
 
   constructor(private elementRef: ElementRef) {
     this.componyName = this.accountService.getComponyName();
@@ -34,8 +40,12 @@ export class BadgeItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.badge){
+    if (this.badge) {
       this.playerImage$ = this.imageService.getImageBlob(this.badge?.photoUrl)
+    }
+
+    if(this.player){
+      this.age = this.agePipe.transform(this.player.fechaNacimiento ?? '');
     }
   }
 
@@ -46,4 +56,5 @@ export class BadgeItemComponent implements OnInit {
   getImage(url: string) {
     return this.imageService.getImageBlob(url);
   }
+  
 }

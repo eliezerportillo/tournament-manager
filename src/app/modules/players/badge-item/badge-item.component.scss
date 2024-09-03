@@ -1,27 +1,143 @@
-.label {
-    display: block;
-    font-weight: bold;
+.badge-age {
+    color: var(--warn-color);
+}
+.badge {
+    width: 550px;
+    height: 350px;
+    background-color: #fff;
+    // border-radius: 10px;
+    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
-.badge-wrapper {
-    background-image: url('/assets/badge-background.jpg');
+.badge-content-wrapper {
+    width: 550px;
+    height: 350px;
+    position: relative;
+    top: -1050px;
+    z-index: 100;
+
+}
+
+.badge-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.badge-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+
+    width: 100%;
+    height: 350px;
+    position: relative;
+}
+
+.badge-player-info {
+    position: relative;
+    top: 100px;
+    left: 14px;
+    width: 55%;
+}
+
+.badge-season {
+    font-size: 12px;
+    color: var(--primary-color);
+}
+
+.badge-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center
+}
+
+.badge-mark-water {
+    width: 100%;
+    height: 100%;
+    background-image: url('/assets/Logo_AFC_water.png');
+
+    position: relative;
+    z-index: 10;
+}
+
+.badge-figures {
+    width: 100%;
+    height: 100%;
+    background-image: url('/assets/figures.png');
     background-repeat: no-repeat;
-    background-position: center top;
-    color: whitesmoke;
-    padding: 8px 32px;
-    border-radius: 8px;
-    min-width: 370px;
+    top: -350px;
+    position: relative;
+    z-index: 110;
+}
+
+.badge-figures-title {
+    width: 100%;
+    height: 100%;
+    background-image: url('/assets/afc_title.png');
+    background-repeat: no-repeat;
+    top: -700px;
+    position: relative;
+    z-index: 50;
+}
+
+p {
+    text-transform: uppercase;
+    font-style: italic;
+    font-size: 16px;
+    margin: 0;
+}
+
+h1 {
+    font-size: 14px;
+    margin: 0;
+    margin-bottom: 16px;
+    color: var(--accent-color);
+    font-style: italic;
+}
+
+h2 {
+    font-size: 12px;
+    margin-top: 2px;
+    color: var(--primary-color);
+    font-style: italic;
+}
+
+.edition-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 350px;
+    background-color: var(--accent-color);
+    width: 55px;
+    z-index: 49;
+}
+
+.vertical-text {
+    transform: rotate(90deg);    
+    white-space: nowrap;
+    text-orientation: sideways;
+    font-size: calc(12px + 80%);
+    font-weight: 900;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px
 }
 
 .player-photo {
-    border: 6px solid var(--accent-color);
-    border-radius: 4px;
+    width: 293px;
+    height: auto;
+    border-radius: 50%;
+    margin: 10px 0;
+    bottom: -51px;
+    right: -54px;
+    position: absolute;
 }
 
-.text {
-    white-space: nowrap; /* Evita el salto de línea */
-    overflow: hidden; /* Oculta cualquier contenido que desborde */
-    text-overflow: ellipsis; /* Agrega puntos suspensivos (...) si el texto es demasiado largo */
-    font-size: 14px; /* Ajusta el tamaño de la fuente según sea necesario */
-    /* Puedes ajustar el tamaño de la fuente según tus necesidades */
+p {
+    font-weight: bold;
+    color: #6d6d6f;
 }
