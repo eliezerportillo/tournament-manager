@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AgePipe implements PipeTransform {
 
-  transform(value: Date | string): number {
+  transform(value: Date | string | null): number {
     if (!value) return 0;
     const birthDate = new Date(value);
     const today = new Date();

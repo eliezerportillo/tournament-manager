@@ -18,6 +18,8 @@ type WhereFilterOp =
   | 'array-contains-any'
   | 'not-in';
 
+type OrderByDirection = 'asc' | 'desc';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -81,7 +83,7 @@ export class PlayerService {
     }
 
     const promises = [
-      this.getFiltered('goles'),
+      this.getFiltered('goles', undefined, undefined, 3, 'desc'),
       this.getFiltered('amarillas'),
       this.getFiltered('rojas')
     ];
@@ -98,9 +100,17 @@ export class PlayerService {
     return stats;
   }
 
-  private async getFiltered(filterBy: string, op: WhereFilterOp = '>', value: unknown = 0) {
-    const snapshot = await this.playersCollection.ref.orderBy(filterBy).orderBy('jugador').where(filterBy, op, value).get();
-    const data = snapshot.docs.map(doc => doc.data());
+  private async getFiltered(filterBy: string, op: WhereFilterOp = '>', value: unknown = 0, limit?: number, orderByDirection: OrderByDirection = 'asc') {
+    let query = this.playersCollection.ref.orderBy(filterBy, orderByDirection).orderBy('jugador').where(filterBy, op, value);
+    if (limit) {
+      query = query.limit(limit);
+    }
+    const snapshot = await query.get();
+    const data = snapshot.docs.map(doc => {
+      const obj = { id: doc.id, ...doc.data() } as IPlayer;
+      obj.dateBirth = this.excelService.parseDate(obj.fechaNacimiento);
+      return new Player(obj);
+    });
     console.log(`${data.length} Players read filtered by ${filterBy} ${op} ${value}`);
     return data;
   }

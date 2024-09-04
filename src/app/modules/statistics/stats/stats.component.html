@@ -1,5 +1,11 @@
-<app-stats-list name="Goles" [players]="goals" statName="goles"></app-stats-list>
+<app-stats-list name="Top 3 Goleadores" [players]="goals" statName="goles">
+    <mat-icon>sports_soccer</mat-icon>
+</app-stats-list>
 
-<app-stats-list name="Tarjetas Amarillas" [players]="yellows" statName="amarillas"></app-stats-list>
+<app-stats-list name="Tarjetas Amarillas" [players]="yellows" statName="amarillas">
+    <mat-icon class="yellow-cards">crop_portrait</mat-icon>
+</app-stats-list>
 
-<app-stats-list name="Tarjetas Rojas" [players]="reds" statName="rojas"></app-stats-list>
+<app-stats-list name="Tarjetas Rojas" [players]="reds" statName="rojas">
+    <mat-icon class="red-cards">crop_portrait</mat-icon>
+</app-stats-list>

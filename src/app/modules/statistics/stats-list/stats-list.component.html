@@ -1,14 +1,15 @@
 <!-- <mat-toolbar>{{name}}</mat-toolbar> -->
 <mat-list role="list" *ngIf="players.length > 0">
     <div mat-subheader>
-        <div fxLayout fxLayoutAlign="space-between center">
+        <div fxLayout fxLayoutAlign="space-between center" fxLayoutGap="8px">
             <p>Jugador</p>
             <span class="spacer"></span>
+            <ng-content></ng-content>
             <p>{{name}}</p>
         </div>
     </div>
     <mat-divider></mat-divider>
-    <ng-container >
+    <ng-container>
 
         <mat-list-item role="listitem" *ngFor="let p of players">
             <!-- Image with icon size (left side) -->
@@ -22,6 +23,9 @@
                 <p>{{getStatValue(p)}}</p>
             </div>
             <span matListItemLine>{{p.equipo}}</span>
+            <span matListItemLine>
+                {{p.dateBirth | age}} años
+            </span>
         </mat-list-item>
     </ng-container>
 </mat-list>
