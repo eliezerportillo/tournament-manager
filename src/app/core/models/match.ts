@@ -17,6 +17,7 @@ export interface IMatch extends IEntity {
     dateTime: Date;
 
     campo: string;
+    comisionado: string;
 }
 
 export class Match {
