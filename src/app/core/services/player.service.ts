@@ -83,9 +83,9 @@ export class PlayerService {
     }
 
     const promises = [
-      this.getFiltered('goles', undefined, undefined, 3, 'desc'),
-      this.getFiltered('amarillas'),
-      this.getFiltered('rojas')
+      this.getFiltered('goles', undefined, undefined, undefined, 'desc'),
+      this.getFiltered('amarillas', undefined, undefined, undefined, 'desc'), 
+      this.getFiltered('rojas', undefined, undefined, undefined, 'desc')
     ];
     const responses = await Promise.all(promises);
 
