@@ -19,6 +19,9 @@ export class SponsorsBannerComponent implements OnInit, OnDestroy {
   @Input()
   sponsors: ISponsor[] = [];
 
+  @Input()
+  styles: any = {};
+
   private breakpointObserver: BreakpointObserver = inject(BreakpointObserver);
   private eventEmitterService: EventEmitterService = inject(EventEmitterService);
   sponsorService: SponsorService = inject(SponsorService);
@@ -33,6 +36,10 @@ export class SponsorsBannerComponent implements OnInit, OnDestroy {
     this.checkBreakpoint();
     this.load();
     this.startTimer();
+  }
+
+  get isWidget() {
+    return this.styles !== undefined && this.styles !== null;
   }
 
   get canShowProgressBar() {

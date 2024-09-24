@@ -46,10 +46,15 @@ const routes: Routes = [
     loadChildren: () =>
       import('@app-modules/public-players/public-players.module').then((m) => m.PublicPlayersModule),
   },
+  {
+    path: 'widget',
+    loadChildren: () =>
+      import('@app-modules/widgets/widgets.module').then((m) => m.WidgetsModule),
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

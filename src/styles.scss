@@ -107,7 +107,7 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: whitesmoke;
+  // background-color: whitesmoke;
   color: var(--primary-color);
 }
 
@@ -137,7 +137,7 @@ body {
   margin: 16px 0px;
   border: 2px solid var(--accent-color);
   border-radius: 8px;
-  padding: 16px;
+  padding: 16px; 
 }
 
 .pointer-cursor {

@@ -1,11 +1,11 @@
 <ng-container *ngIf="hasSponsors">
-    <mat-card>
-        <mat-card-header>
+    <mat-card [ngStyle]="styles">
+        <mat-card-header *ngIf="!isWidget">
             <mat-card-subtitle>
                 Patrocinadores
             </mat-card-subtitle>
         </mat-card-header>
-        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="images">
+        <div fxLayout="row" [fxLayoutAlign]="isWidget ? 'center center' : 'space-evenly center'" class="images">
             <ng-container *ngFor="let sponsor of getVisibleLogos() as sponsors">
                 <a [href]="sponsor.website" target="_blank" (click)="sponsorClicked(sponsor)">
                     <img [src]="sponsor.logoUrl" [alt]="sponsor.name" alt>                    
