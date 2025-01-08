@@ -1,4 +1,6 @@
 import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { IMenu } from '@app-core/models/menu';
 import { AccountService } from '@app-core/services/account.service';
 
 @Component({
@@ -8,11 +10,18 @@ import { AccountService } from '@app-core/services/account.service';
 })
 export class AdminShellComponent {
   accountService: AccountService = inject(AccountService);
+  route: ActivatedRoute = inject(ActivatedRoute);
+  zone: string;
+  menus: IMenu[];
+  
 
-  menus = [
-    { text: 'EQUIPOS', path: '#', disabled: true },    
-    { text: 'PARTIDOS', path: 'scores', disabled: false },
-    { text: 'JUGADORES', path: 'players', disabled: false },
-    { text: 'PATROCINADORES', path: 'sponsors', disabled: false },
-  ];
+  constructor() {
+    this.zone = this.route.snapshot.paramMap.get('zone') || '';
+    this.menus = [
+      { text: 'EQUIPOS', path: '#', disabled: true },    
+      { text: 'PARTIDOS', path:  `/${this.zone}/scores`, disabled: false },
+      { text: 'JUGADORES', path:  `/${this.zone}/players`, disabled: false },
+      { text: 'PATROCINADORES', path:  `/${this.zone}/sponsors`, disabled: false },
+    ];
+  }
 }
