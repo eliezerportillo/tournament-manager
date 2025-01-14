@@ -8,5 +8,5 @@ import { AccountService } from '@app-core/services/account.service';
 })
 export class NavComponent {
   accountService = inject(AccountService);
-  titulo = this.accountService.getTournamentName();
+  
 }

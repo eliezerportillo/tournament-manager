@@ -1,16 +1,16 @@
 <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center" color="accent">
 
-    <div fxFlex fxLayout="row" fxLayoutAlign="start center" >
+    <div fxFlex fxLayout="row" fxLayoutAlign="start center">
 
         <app-logo></app-logo>
-        <span class="tournament-name text-white">{{titulo}}</span>
-        
+        <span class="tournament-name text-white">{{ accountService.companyName }}</span>
+
     </div>
     <button mat-button [matMenuTriggerFor]="menu">
-        Menú            
+        Menú
     </button>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item routerLink="/matches/lineup">Subir alineación</button>            
+        <button mat-menu-item routerLink="matches/lineup">Subir alineación</button>
     </mat-menu>
 
 </mat-toolbar>

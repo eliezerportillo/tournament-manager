@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SponsorsViewComponent } from './sponsors-view/sponsors-view.component';
+import { CleanTournamentComponent } from './clean-tournament/clean-tournament.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: SponsorsViewComponent,
-    data: { title: 'Administrar Patrocinadores' }
+    component: CleanTournamentComponent,
+    data: { title: 'Limpiar datos del torneo' }
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SponsorsRoutingModule { }
+export class ResetRoutingModule { }

@@ -1,0 +1,11 @@
+<p>Colecciones</p>
+
+<div *ngIf="!isLoading">
+    <ul>
+        <li *ngFor="let collection of collections">            
+            <span>{{collection.size}} {{ collection.name }}</span>
+            <button (click)="createCollection(collection)" [disabled]="collection.exists">Crear</button>
+            <button (click)="cleanCollection(collection.name)">Limpiar</button>
+        </li>
+    </ul>
+</div>

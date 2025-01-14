@@ -26,13 +26,13 @@ export class AppComponent implements OnInit {
   private titleService: Title = inject(Title);
   private eventEmitterService: EventEmitterService = inject(EventEmitterService);
   private accountService: AccountService = inject(AccountService);
-  tounamentName: string;
+  
 
   modalService = inject(ModalService);
   bannerService = inject(BannerService);
 
   constructor() {
-    this.tounamentName = this.accountService.getTournamentName();
+    
   }
 
   ngOnInit(): void {
@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
   private updateTitle() {
     const pageTitle = this.getTitle(this.route);
     if (pageTitle) {
-      this.titleService.setTitle(`${pageTitle} | ${this.tounamentName}`);
+      this.titleService.setTitle(`${pageTitle} | ${this.accountService.companyName}`);
     }
   }
 

@@ -16,13 +16,11 @@ import { CustomErrorHandler } from '@app-core/handlers/error-handler.service';
 import { EmptyShellComponent } from './empty-shell/empty-shell.component';
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
     ShellComponent,
-    EmptyShellComponent,
+    EmptyShellComponent
   ],
   imports: [
     SharedModule,

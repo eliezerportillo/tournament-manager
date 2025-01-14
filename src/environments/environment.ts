@@ -10,11 +10,19 @@ export const environment = {
         measurementId: "G-4TVD0D4JHN"
     },
     firebaseConfigColima: {
-        apiKey: "AIzaSyALmYk-IxQfyf2e3qylKiE8gxoTJ-TTcT0",
-        authDomain: "afc-torneo-dev.firebaseapp.com",
-        projectId: "afc-torneo-dev",
-        storageBucket: "afc-torneo-dev.appspot.com",
-        messagingSenderId: "1043948768857",
-        appId: "1:1043948768857:web:d944d90de2f7152742eb48"
+        apiKey: "AIzaSyAdtOgELXJR9MgsEtG-WfU9zn3r6IMI3j4",
+        authDomain: "afc-colima.firebaseapp.com",
+        projectId: "afc-colima",
+        storageBucket: "afc-colima.firebasestorage.app",
+        messagingSenderId: "1005560546360",
+        appId: "1:1005560546360:web:4923a97b2f94500e6712cd"
+    },
+    firebaseConfigTijuana: {
+        apiKey: "AIzaSyDieLlWNmOeO2WMJoOJFHNQBwKsDtejycM",
+        authDomain: "afc-tijuana.firebaseapp.com",
+        projectId: "afc-tijuana",
+        storageBucket: "afc-tijuana.firebasestorage.app",
+        messagingSenderId: "935482865598",
+        appId: "1:935482865598:web:bdb8644262e2ad4920abef"
     }
 };

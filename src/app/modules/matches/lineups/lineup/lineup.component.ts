@@ -27,9 +27,7 @@ export class LineupComponent implements OnInit {
 
     this.local = '';
     this.visita = '';
-  }
-
-  get title() { return this.accountService.getTournamentName() }
+  }  
 
   ngOnInit(): void {
     // Access the URL parameters here

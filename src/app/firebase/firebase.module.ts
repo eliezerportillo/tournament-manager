@@ -6,14 +6,16 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '@app-environments/environment';
 import { AnalyticsModule } from '@angular/fire/analytics';
-import { FirebaseApp, initializeApp as firebaseInitializeApp, getApps } from 'firebase/app';
 
 export function initializeApp(): ModuleWithProviders<AngularFireModule> {
   let config = null;
   const browserRrl = window.location.href.split('/')[3].split('.')[0];
   switch (browserRrl) {
     case 'colima':
-      config = environment.firebaseConfigColima;      
+      config = environment.firebaseConfigColima;
+      break;
+    case 'tijuana':
+      config = environment.firebaseConfigTijuana;
       break;
     default:
       config = environment.firebaseConfig;

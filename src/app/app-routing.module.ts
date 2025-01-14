@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: ':zone',
     component: EmptyShellComponent,
-    children: [      
+    children: [
       {
         path: '',
         component: ShellComponent,
@@ -33,6 +33,13 @@ const routes: Routes = [
                 (m) => m.ExportModule
               ),
           },
+          {
+            path: 'reset',
+            loadChildren: () =>
+              import('@app-modules/reset/reset.module').then(
+                (m) => m.ResetModule
+              ),
+          }
         ],
       },
       {
@@ -57,6 +64,12 @@ const routes: Routes = [
           import('@app-modules/widgets/widgets.module').then((m) => m.WidgetsModule),
       }
     ]
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    loadChildren: () =>
+      import('@app-modules/home/home.module').then((m) => m.HomeModule),
   }
 ];
 
