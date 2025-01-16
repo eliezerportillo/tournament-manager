@@ -1,0 +1,55 @@
+<mat-sidenav-container class="example-container" [hasBackdrop]="!isLargeScreen">
+    <mat-sidenav mode="side" [opened]="isLargeScreen" #sidenav>
+        <mat-toolbar>
+            <img src="assets/Logo_AFC_1024px.png" alt="Logo" class="logo">
+            <p>Asociación de Futbol Cristiana</p>            
+        </mat-toolbar>
+        <mat-nav-list>
+            <a mat-list-item href="#home-section" id="home" (click)="sidenav.toggle()">Inicio</a>
+            <a mat-list-item href="#leagues-section" id="leagues" (click)="sidenav.toggle()">Ligas y Torneos</a>
+            <a mat-list-item href="#contact-section" id="contact" (click)="sidenav.toggle()">Contacto</a>
+            <!-- <a mat-list-item href="#store-section" id="store">Tienda Virtual</a> -->
+            <a mat-list-item href="#sponsors-section" id="sponsors" (click)="sidenav.toggle()">Patrocinadores</a>
+            
+            <!-- <a mat-list-item href="#resources-section" id="resources">Recursos para Equipos</a>
+            <a mat-list-item href="#community-section" id="community">Nuestra Comunidad</a> -->
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content style="height: 100vh;">
+        <!-- Add your main content here -->
+        <mat-toolbar class="sticky-toolbar">
+            <button mat-icon-button (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span>Asociación de Futbol Cristiana</span>
+        </mat-toolbar>
+        <section id="home-section">
+            <!-- Content for Página de Inicio -->
+            <app-gradient-section>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <p style="text-align: center; font-style: italic;">La AFC tiene como objetivo promover la
+                        convivencia entre las Iglesias Apostólicas a través del fútbol.</p>
+                </div>
+            </app-gradient-section>
+            <app-carousel [images]="images"></app-carousel>
+        </section>
+        <section id="leagues-section" style="padding-bottom: 2rem;">
+            <!-- Content for Ligas y Torneos -->
+            <app-afc-zones></app-afc-zones>
+        </section>
+        <!-- <section id="store-section">
+            
+        </section> -->
+        <section id="sponsors-section">
+            <app-afc-sponsors></app-afc-sponsors>
+        </section>
+        <section id="contact-section" style="padding: 0px;">
+            <!-- Content for Contacto -->
+            <app-afc-footer></app-afc-footer>
+        </section>
+        <!-- <section id="resources-section">
+        </section>
+        <section id="community-section">
+        </section> -->
+    </mat-sidenav-content>
+</mat-sidenav-container>

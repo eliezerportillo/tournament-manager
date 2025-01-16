@@ -4,7 +4,8 @@ import { PlayersViewComponent } from '@app-modules/players/players-view/players-
 const routes: Routes = [
   {
     path: '',
-    component: PlayersViewComponent
+    component: PlayersViewComponent,
+    data: { title: 'Administrar Jugadores' }
   }
 ];
 

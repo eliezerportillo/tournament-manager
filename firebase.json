@@ -19,5 +19,8 @@
       "source": ".",
       "frameworksBackend": {}
     }
-  ]
+  ],
+  "firestore": {
+    "indexes": "firebase/firestore.indexes.json"
+  }
 }

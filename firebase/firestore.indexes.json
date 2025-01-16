@@ -1,0 +1,358 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "Alineaciones",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "equipo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Alineaciones",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "equipo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "order",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Alineaciones",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "equipo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "titular",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Equipos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Pts",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "DG",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "GF",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "GC",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "grupo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "nombre",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Equipos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Pts",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "DG",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "GF",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "GC",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "nombre",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Equipos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Pts",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "DG",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "GF",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "nombre",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "amarillas",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "amarillas",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "capitan",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "correo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "equipo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "equipo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "portero",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "goles",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "goles",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "rojas",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "rojas",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Partidos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "esClasificacion",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fecha",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Partidos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "esClasificacion",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ordenEtapa",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "numero",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Partidos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "fecha",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "hora",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Partidos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "local",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "marcadorLocal",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fecha",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "hora",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Partidos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "visita",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "marcadorVisita",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fecha",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "hora",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ]
+}

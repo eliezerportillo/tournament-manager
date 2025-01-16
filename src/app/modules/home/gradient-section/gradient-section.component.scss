@@ -1,0 +1,31 @@
+$penn-blue-palette: (
+    50: #e3e5ed,
+    100: #b9bed3,
+    200: #8c94b5,
+    300: #616c97,
+    400: #414f84,
+    500: #203472,
+    600: #1a2e6a,
+    700: #112660,
+    800: #081d54,
+    900: #000d3e
+);
+
+$satin-sheen-gold-palette: (
+    50: #f7fae5,
+    100: #ebf2c0,
+    200: #dfe996,
+    300: #d3e06e,
+    400: #ccda50,
+    500: #c6d432,
+    600: #c6c327,
+    700: #c6ad18,
+    800: #c59700,
+    900: #c17200
+);
+
+section {
+    padding: 3rem 0;
+    color: white;
+    background: radial-gradient( #0e163d, #0e163d);
+}

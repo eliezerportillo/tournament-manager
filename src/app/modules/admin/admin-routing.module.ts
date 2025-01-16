@@ -17,7 +17,8 @@ const routes: Routes = [
       },
       {
         path: 'operations',
-        component: AdminOperationsViewComponent
+        component: AdminOperationsViewComponent,
+        data: { title: 'Operaciones de Administrador' }
       },
       {
         path: 'sponsors',

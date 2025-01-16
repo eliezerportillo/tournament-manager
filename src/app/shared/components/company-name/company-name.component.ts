@@ -12,6 +12,6 @@ export class CompanyNameComponent implements OnInit {
   name = '';
 
   ngOnInit(): void {
-    this.name = this.accountService.getComponyName();
+    
   }
 }

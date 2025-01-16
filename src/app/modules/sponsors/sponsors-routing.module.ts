@@ -5,7 +5,8 @@ import { SponsorsViewComponent } from './sponsors-view/sponsors-view.component';
 const routes: Routes = [
   {
     path: '',
-    component: SponsorsViewComponent
+    component: SponsorsViewComponent,
+    data: { title: 'Administrar Patrocinadores' }
   }
 ];
 

@@ -1,0 +1,15 @@
+
+html {
+    scroll-behavior: smooth;
+}
+
+.sticky-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Asegúrate de que la barra de herramientas esté por encima de otros elementos */
+}
+
+.logo {
+    width: 50px;
+}
+

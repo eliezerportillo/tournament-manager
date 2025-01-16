@@ -11,13 +11,17 @@ import { IMenu } from '@app-core/models/menu';
 export class TournamentComponent implements AfterViewInit {
   section: string;
   menus: IMenu[];
+  zone: string;
+
   constructor(private route: ActivatedRoute) {
     this.section = '';
+    this.zone = this.route.snapshot.paramMap.get('zone') || '';
+
     this.menus = [
-      { text: 'PARTIDOS', path: '/matches' },
-      { text: 'POSICIONES', path: '/ranking' },
-      { text: 'FASE FINAL', path: '/bracket' },
-      { text: 'ESTADÍSTICAS', path: '/stats' },      
+      { text: 'PARTIDOS', path: `/${this.zone}/matches` },
+      { text: 'POSICIONES', path: `/${this.zone}/ranking` },
+      { text: 'FASE FINAL', path: `/${this.zone}/bracket` },
+      { text: 'ESTADÍSTICAS', path: `/${this.zone}/stats` },
     ];
   }
 
@@ -25,15 +29,13 @@ export class TournamentComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     // Access the URL parameters here
+    this.route.queryParams.subscribe(params => {
+      // Get the value of a specific parameter by its name
+      this.section = params['section'] ?? '';
 
-    // this.route.queryParams.subscribe(params => {
-    //   // Get the value of a specific parameter by its name
-    //   this.section = params['section'] ?? '';
-
-    //   this.activateTab(this.section);
-    // });
+      this.activateTab(this.section);
+    });
   }
-
 
   // Function to activate a specific tab based on the label name
   activateTab(labelName: string) {

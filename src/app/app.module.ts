@@ -13,14 +13,14 @@ import { SharedModule } from '@app-shared/shared.module';
 import { MatchesModule } from '@app-modules/matches/matches.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomErrorHandler } from '@app-core/handlers/error-handler.service';
-
-
+import { EmptyShellComponent } from './empty-shell/empty-shell.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ShellComponent,
+    EmptyShellComponent
   ],
   imports: [
     SharedModule,

@@ -70,7 +70,7 @@ export class ExportExcelComponent {
     }
     // Save the workbook to a file
     this.progressReporter.emit(`Descargando archivo.`)
-    XLSX.writeFile(workbook, this.accountService.getTournamentName() + '.xlsx');
+    XLSX.writeFile(workbook, this.accountService.tournamentName + '.xlsx');
   }
 }
 

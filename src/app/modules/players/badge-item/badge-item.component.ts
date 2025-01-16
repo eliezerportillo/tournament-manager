@@ -27,16 +27,21 @@ export class BadgeItemComponent implements OnInit {
 
 
   accountService = inject(AccountService);
-  imageService = inject(ImageService);
-  tournamentName: string;
-  componyName: string;
+  imageService = inject(ImageService);    
   playerImage$: any;
   age: number = 0;
 
 
   constructor(private elementRef: ElementRef) {
-    this.componyName = this.accountService.getComponyName();
-    this.tournamentName = this.accountService.getTournamentName();
+    
+  }
+
+  get componyName(): string {
+    return this.accountService.companyName;
+  }
+
+  get tournamentName(): string {
+    return this.accountService.tournamentName;
   }
 
   ngOnInit(): void {
