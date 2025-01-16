@@ -70,6 +70,10 @@ const routes: Routes = [
     pathMatch: 'full',
     loadChildren: () =>
       import('@app-modules/home/home.module').then((m) => m.HomeModule),
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];
 

@@ -1,0 +1,47 @@
+.sponsor-container {
+    background-color: var(--accent-color);
+    min-height: 300px;
+}
+mat-toolbar {
+    font-weight: lighter;
+    background: transparent;
+}
+
+.join-us {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem 0;    
+    color: #fff;
+}
+
+.sponsor-carousel {
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.sponsor-track {
+    display: inline-block;
+    animation: scroll 20s linear infinite;
+}
+
+.sponsor-item {
+    display: inline-block;
+    padding: 0 10px;
+}
+
+@keyframes scroll {
+    0% { transform: translateX(25%); }
+    100% { transform: translateX(-50%); }
+}
+
+a {
+    text-decoration: none;
+    
+}
+
+h3 {
+    font-weight: 400;
+}

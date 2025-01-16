@@ -1,0 +1,15 @@
+<div class="sponsor-container">
+    <mat-toolbar>Patrocinadores</mat-toolbar>
+
+    <ng-container *ngIf="sponsors$ | async as sponsors">
+        <app-carousel [images]="logos" [for]="'logos'"></app-carousel>
+    </ng-container>
+
+    <section class="join-us">
+        <h3>Únete a nuestra misión</h3>
+        <a mat-raised-button color="primary"
+            href="https://wa.me/523331842986?text=Estoy%20interesado%20en%20ser%20patrocinador">QUIERO SER
+            PATRCOINADOR</a>
+
+    </section>
+</div>
