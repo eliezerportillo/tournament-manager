@@ -64,6 +64,7 @@ export class PlayerEditorComponent implements IModalComponent {
 
   initForm(data: { player: IPlayer, isNew: boolean, team: string }): FormGroup {
     let form = this.fb.group({
+      number: [data.isNew ? '' : data.player.numero ?? '', Validators.required],
       name: [data.isNew ? '' : (data.player.name || data.player.jugador) ?? '', Validators.required],
       team: [data.team, Validators.required],
       yellowCards: [data.isNew ? 0 : data.player.amarillas ?? 0, Validators.min(0)],
@@ -73,6 +74,7 @@ export class PlayerEditorComponent implements IModalComponent {
       isGoalkeeper: [data.isNew ? false : data.player.portero ?? false],
       isListener: [data.isNew ? false : data.player.noBautizado ?? false],
       email: [data.isNew ? '' : data.player.correo ?? '', Validators.email],
+      cannotPlay: [data.isNew ? false : data.player.noAlinea ?? false],
     },
       {
         validators: [PlayerValidators.captainValidator()]
@@ -134,6 +136,7 @@ export class PlayerEditorComponent implements IModalComponent {
 
   private async createPlayer() {
     const player: IPlayer = {
+      numero: this.form.value?.number,
       name: this.form.value?.name,
       jugador: this.form.value?.name,
       equipo: this.data.team,
@@ -141,6 +144,7 @@ export class PlayerEditorComponent implements IModalComponent {
       portero: this.form.value?.isGoalkeeper,
       noBautizado: this.form.value?.isListener,
       dateBirth: null,
+      noAlinea: this.form.value?.cannotPlay,
     };
 
     if (player.capitan) {

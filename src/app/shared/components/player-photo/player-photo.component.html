@@ -1,4 +1,4 @@
 <ng-container *ngIf="badge">
 
-    <img class="profile-photo" [src]="badge.photoUrl" alt="Player Photo">
+    <img class="profile-photo" [ngClass]="{'small': size === 'small', 'large': size === 'large'}" [src]="badge.photoUrl" alt="Player Photo" >
 </ng-container>

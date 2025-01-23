@@ -21,6 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatSortModule } from '@angular/material/sort';
 
 
 
@@ -35,6 +36,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTabsModule,
     MatSnackBarModule,
     MatTableModule,
+    MatSortModule,
     MatCardModule,
     MatRippleModule,
     MatButtonModule,
@@ -50,7 +52,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTooltipModule,
     MatInputModule,
     MatDialogModule,
-    
     MatCheckboxModule
   ]
 })

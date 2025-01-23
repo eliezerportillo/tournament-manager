@@ -1,0 +1,5 @@
+<mat-toolbar>Cedulas deportivas</mat-toolbar>
+
+<div fxLayout="row wrap" fxLayoutGap="10px" *ngIf="nextMatches$ | async as matches">
+    <app-match *ngFor="let match of matches" [match]="match" (selected)="onMatchSelected($event)"></app-match>
+</div>

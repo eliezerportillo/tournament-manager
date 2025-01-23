@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
-import {  map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { IMatch } from '@app-core/models/match';
 import { Observable, firstValueFrom, forkJoin, of } from 'rxjs';
 import { LineUp } from '@app-core/models/lineup';
@@ -19,8 +19,10 @@ export class MatchService {
   private matchesCache$?: Observable<IMatch[]>;
   private bracketCache$?: Observable<IMatch[]>;
   private standingsCollection: AngularFirestoreCollection<LineUp>;
+  private nextMatchesCache$?: Observable<IMatch[]>;
   bracketCollection: AngularFirestoreCollection<IMatch>;
   private teamService = inject(TeamService);
+
 
   constructor(private db: AngularFirestore) {
     this.matchesCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('fecha').where('esClasificacion', '==', 0));
@@ -34,12 +36,24 @@ export class MatchService {
     }
 
     this.matchesCache$ = this.getMatchesFromCollection(this.matchesCollection).pipe(
-      map((matches) => matches.filter(match => match.esClasificacion == undefined || match.esClasificacion == false)),     
-      shareReplay(1) 
+      map((matches) => matches.filter(match => match.esClasificacion == undefined || match.esClasificacion == false)),
+      shareReplay(1)
     );
 
     return this.matchesCache$;
   }
+
+  getNextMatches(): Observable<IMatch[]> {
+    if (this.nextMatchesCache$) {
+      return this.nextMatchesCache$;
+    }
+    const number = this.excelService.convertDateToExcel(new Date());
+    const collection = this.db.collection<IMatch>('Partidos', ref => ref.where('fecha', '>=', number).orderBy('fecha', 'desc'));
+    this.nextMatchesCache$ = this.getMatchesFromCollection(collection).pipe(shareReplay(1));
+    return this.nextMatchesCache$;
+
+  }
+
 
   getMatchesGroupedByDate() {
     return this.getMatchesGroupedBy('fecha');
@@ -79,7 +93,7 @@ export class MatchService {
         })) as IMatch[]
       }),
       map((matches: IMatch[]) => matches.sort((a, b) => a.fecha - b.fecha)),
-      switchMap(matches => this.getTeamImages(matches))      
+      switchMap(matches => this.getTeamImages(matches))
     );
   }
 
@@ -88,10 +102,10 @@ export class MatchService {
   private getTeamImages(matches: IMatch[]): Observable<IMatch[]> {
     // Obtener todos los nombres únicos de equipos
     const uniqueTeamNames = Array.from(new Set([...matches.map(match => match.local), ...matches.map(match => match.visita)]));
-  
+
     // Map each team to an observable that fetches the image URL
     const imageUrlObservables = uniqueTeamNames.map(teamName => this.teamService.getTeamImageUrl(teamName));
-  
+
     // Combine the observables into a single observable
     return forkJoin(imageUrlObservables).pipe(
       map(imageUrls => {
@@ -100,7 +114,7 @@ export class MatchService {
           match.imageUrlLocal = imageUrls[uniqueTeamNames.indexOf(match.local)];
           match.imageUrlVisita = imageUrls[uniqueTeamNames.indexOf(match.visita)];
         });
-  
+
         return matches;
       })
     );
@@ -127,26 +141,26 @@ export class MatchService {
 
 
 
- 
+
 
   async getMatch(local: string, visita: string): Promise<IMatch> {
     const snapshot = await this.matchesCollection.ref.where('local', '==', local).where('visita', '==', visita).get();
     const matches = snapshot.docs.map(this.parseDoc);
-  
+
     if (matches.length === 0) {
       return {} as IMatch; // Handle the case of no matches found according to your logic
     }
-  
+
     // Use getTeamImages to handle image URLs and cache logic
     const matchesWithUrls = await firstValueFrom(this.getTeamImages(matches));
-  
+
     // Return the first match in the set with assigned URLs
     return {
       ...matchesWithUrls[0],
       dateTime: this.parseDateTime(matchesWithUrls[0].fecha, matchesWithUrls[0].hora),
     } as IMatch;
   }
-  
+
 
 
   private async getFiltered(filterBy: string, value: string): Promise<IMatch[]> {
@@ -184,7 +198,7 @@ export class MatchService {
 
   private parseDate(excelDate: number): Date | null {
 
-    return this.excelService.parseDate(excelDate);
+    return this.excelService.convertExcelDateToJSDate(excelDate);
   }
 
   private parseHour(excelHour: number): string {
