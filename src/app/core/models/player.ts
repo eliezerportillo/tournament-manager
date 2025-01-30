@@ -7,6 +7,7 @@ export interface IPlayer extends INamedObject {
     amarillas?: number;
     rojas?: number;
     goles?: number;
+    asistencias?: number;
 
     capitan?: boolean;
     portero?: number;

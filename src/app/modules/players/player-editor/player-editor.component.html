@@ -35,6 +35,13 @@
                         <mat-checkbox formControlName="isListener" color="primary">Es no bautizado</mat-checkbox>
 
                     </div>
+
+                    <!-- name -->
+                    <mat-form-field>
+                        <mat-label>Número</mat-label>
+                        <input matInput placeholder="Número de playera" formControlName="number">
+                    </mat-form-field>
+
                     <!-- name -->
                     <mat-form-field>
                         <mat-label>Nombre</mat-label>
@@ -62,10 +69,28 @@
     </ng-container>
 
     <ng-template #updatePlayer>
-        <h4>{{data.player.name}}</h4>
-        <div>
-            Equipo: <span>{{data.team}}</span>
-        </div>
+
+        <mat-list>
+            <mat-list-item>
+                <div matListItemTitle>{{data.player.name}}</div>
+                <div matListItemLine>Nombre</div>
+            </mat-list-item>
+            <mat-list-item>
+                <div matListItemTitle>{{data.player.numero}}</div>
+                <div matListItemLine>Número de playera</div>
+            </mat-list-item>
+            <mat-list-item>
+                <div matListItemTitle>{{data.team}}</div>
+                <div matListItemLine>Equipo</div>
+            </mat-list-item>
+        </mat-list>
+
+        <mat-toolbar>
+            <span class="spacer"></span>
+            <!-- Cannot Play -->
+            <mat-slide-toggle formControlName="cannotPlay" color="primary">No puede jugar</mat-slide-toggle>
+        </mat-toolbar>
+
         <!-- Goals -->
         <app-number-input controlName="Goles" [control]="goals" />
         <!-- Yellow cards -->

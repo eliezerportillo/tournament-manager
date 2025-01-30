@@ -1,9 +1,18 @@
-import { IMatch } from "./match";
-import { SheetPlayer } from "./sheet-player";
 
-export interface MatchSheet {
-    match: IMatch,
-    localPlayers: SheetPlayer[],
-    awayPlayers: SheetPlayer[],
+
+
+export interface MatchSheet {    
+    matchId: string,    
+    homeScore: number,
+    awayScore: number,
+    players: {
+        playerId: string,
+        team: string,
+        attended: boolean,
+        goals: number,
+        assists: number,
+        yellowCards: number,
+        redCards: number
+    }[],
     comments: string
 }

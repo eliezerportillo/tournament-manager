@@ -19,6 +19,7 @@ export class UpdatePlayerCommand {
       portero: player.portero,
       noBautizado: player.noBautizado,
       correo: player.correo,
+      noAlinea: player.noAlinea,
     });  
   }
 }

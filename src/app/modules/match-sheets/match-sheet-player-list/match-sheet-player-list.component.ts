@@ -33,7 +33,11 @@ export class MatchSheetPlayerListComponent implements AfterViewInit {
     this.dataSource.data = value;
   }
 
-  @Output() onChange = new EventEmitter<{ player: SheetPlayer, value: number, field: keyof SheetPlayer }>();
+  @Output() onGoalEvent = new EventEmitter<{ player: SheetPlayer, value: number }>();
+  @Output() onAssistEvent = new EventEmitter<{ player: SheetPlayer, value: number }>();
+  @Output() onYellowCardEvent = new EventEmitter<{ player: SheetPlayer, value: number }>();
+  @Output() onRedCardEvent = new EventEmitter<{ player: SheetPlayer, value: number }>();
+  @Output() onAttendanceEvent = new EventEmitter<{ player: SheetPlayer, value: boolean }>();
 
   ngAfterViewInit() {
     if (this.sort)
@@ -44,15 +48,31 @@ export class MatchSheetPlayerListComponent implements AfterViewInit {
     return player[field] > 0;
   }
 
-  increment(player: SheetPlayer, field: keyof SheetPlayer) {
-    player[field]++;
-    this.onChange.emit({ player, value: 1, field });
+  onAttendance(player: SheetPlayer, value: boolean) {
+    this.onAttendanceEvent.emit({ player, value });
   }
 
-  decrement(player: SheetPlayer, field: keyof SheetPlayer) {
-    if (this.canDecrement(player, field)) {
-      player[field]--;
-      this.onChange.emit({ player, value: -1, field });
+  onGoal(player: SheetPlayer, value: number) {
+    if (value >= 0 || this.canDecrement(player, 'goles')) {
+      this.onGoalEvent.emit({ player, value });
     }
-}
+  }
+
+  onAssist(player: SheetPlayer, value: number) {
+    if (value >= 0 || this.canDecrement(player, 'asistencias')) {
+      this.onAssistEvent.emit({ player, value });
+    }
+  }
+
+  onYellowCard(player: SheetPlayer, value: number) {
+    if (value >= 0 || this.canDecrement(player, 'amarillas')) {
+      this.onYellowCardEvent.emit({ player, value });
+    }
+  }
+
+  onRedCard(player: SheetPlayer, value: number) {
+    if (value >= 0 || this.canDecrement(player, 'rojas')) {
+      this.onRedCardEvent.emit({ player, value });
+    }
+  }
 }

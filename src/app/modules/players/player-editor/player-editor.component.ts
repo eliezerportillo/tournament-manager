@@ -70,6 +70,7 @@ export class PlayerEditorComponent implements IModalComponent {
       yellowCards: [data.isNew ? 0 : data.player.amarillas ?? 0, Validators.min(0)],
       redCards: [data.isNew ? 0 : data.player.rojas ?? 0, Validators.min(0)],
       goals: [data.isNew ? 0 : data.player.goles ?? 0, Validators.min(0)],
+      assists: [data.isNew ? 0 : data.player.asistencias ?? 0, Validators.min(0)],
       isCap: [data.isNew ? false : data.player.capitan ?? false],
       isGoalkeeper: [data.isNew ? false : data.player.portero ?? false],
       isListener: [data.isNew ? false : data.player.noBautizado ?? false],
@@ -124,6 +125,10 @@ export class PlayerEditorComponent implements IModalComponent {
   }
 
   private async updatePlayer() {
+    this.data.player.numero = this.form.value?.number;
+    this.data.player.name = this.form.value?.name;
+    this.data.player.jugador = this.form.value?.name;
+    this.data.player.equipo = this.form.value?.team;
     this.data.player.amarillas = this.form.value?.yellowCards;
     this.data.player.rojas = this.form.value?.redCards;
     this.data.player.goles = this.form.value?.goals;
@@ -131,6 +136,7 @@ export class PlayerEditorComponent implements IModalComponent {
     this.data.player.portero = this.form.value?.isGoalkeeper;
     this.data.player.noBautizado = this.form.value?.isListener;
     this.data.player.correo = this.form.value?.email;
+    this.data.player.noAlinea = this.form.value?.cannotPlay;
     await this.updatePlayerCommand.execute(this.data.player);
   }
 

@@ -24,7 +24,7 @@
     <ng-container matColumnDef="attended">
         <mat-header-cell *matHeaderCellDef> Asistió </mat-header-cell>
         <mat-cell *matCellDef="let row">
-            <mat-select [(value)]="row.attended" [(ngModel)]="row.attended">
+            <mat-select [(value)]="row.attended" [(ngModel)]="row.attended" (selectionChange)="onAttendance(row, $event.value)">
                 <mat-option [value]="true">Sí</mat-option>
                 <mat-option [value]="false">No</mat-option>
             </mat-select>
@@ -43,16 +43,18 @@
     <ng-container matColumnDef="expandedDetail">
         <mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
             <div class="player-detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px"
-                [class.disabled-row]="row.noAlinea" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+                [class.disabled-row]="row.noAlinea || !row.attended" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
 
                 <app-player-photo [player]="row" size="large"></app-player-photo>
+                
+                <!-- Goles -->
                 <div class="player-controls" fxFlex fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="8px">
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                        <button mat-icon-button (click)="decrement(row, 'goles')">
+                        <button mat-icon-button (click)="onGoal(row, -1)">
                             <mat-icon>remove</mat-icon>
                         </button>
                         {{row.goles}}
-                        <button mat-icon-button (click)="increment(row, 'goles')">
+                        <button mat-icon-button (click)="onGoal(row, 1)">
                             <mat-icon>add</mat-icon>
                         </button>
 
@@ -63,27 +65,44 @@
 
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                        <button mat-icon-button (click)="decrement(row, 'amarillas')">
+                        <button mat-icon-button (click)="onAssist(row, -1)">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                        {{row.asistencias}}
+                        <button mat-icon-button (click)="onAssist(row, 1)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <mat-icon class="assists">sports_handball</mat-icon>
+                        <span>Asistencias</span>
+                    </div>
+
+                    <!-- Amarillas -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                        <button mat-icon-button (click)="onYellowCard(row, -1)">
                             <mat-icon>remove</mat-icon>
                         </button>
                         {{row.amarillas}}
-                        <button mat-icon-button (click)="increment(row, 'amarillas')">
+                        <button mat-icon-button (click)="onYellowCard(row, 1)">
                             <mat-icon>add</mat-icon>
                         </button>
                         <mat-icon class="yellow-cards">crop_portrait</mat-icon>
                         <span>Tarjetas Amarillas</span>
                     </div>
+
+                    <!-- Rojas -->
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                        <button mat-icon-button (click)="decrement(row, 'rojas')">
+                        <button mat-icon-button (click)="onRedCard(row, -1)">
                             <mat-icon>remove</mat-icon>
                         </button>
                         {{row.rojas}}
-                        <button mat-icon-button (click)="increment(row, 'rojas')">
+                        <button mat-icon-button (click)="onRedCard(row, 1)">
                             <mat-icon>add</mat-icon>
                         </button>
                         <mat-icon class="red-cards">crop_portrait</mat-icon>
                         <span>Tarjetas Rojas</span>
                     </div>
+
+                   
                 </div>
             </div>
         </mat-cell>

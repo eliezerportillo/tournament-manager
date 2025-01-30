@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { IMatch } from '@app-core/models/match';
 import { MatchSheet } from '@app-core/models/match-sheet';
@@ -6,7 +7,13 @@ import { IPlayer } from '@app-core/models/player';
 import { SheetPlayer } from '@app-core/models/sheet-player';
 import { MatchService } from '@app-core/services/match.service';
 import { PlayerService } from '@app-core/services/player.service';
-import { firstValueFrom, map, Observable, shareReplay } from 'rxjs';
+import { PublishMatchResultsCommand } from '@app-core/services/publish-match-results.command';
+import { RegisterPlayerAttendanceCommand } from '@app-core/services/register-player-attendance.command';
+import { UpdatePlayerAssistsCommand } from '@app-core/services/update-player-assits.commad';
+import { UpdatePlayerRedCardCommand } from '@app-core/services/update-player-red-cards.command';
+import { UpdatePlayerYellowCardCommand } from '@app-core/services/update-player-yellow-card.command';
+import { UpdateScoreOnGoalEventCommand } from '@app-core/services/update-score-on-goal-event.command';
+import { combineLatest, concat, firstValueFrom, map, Observable, shareReplay } from 'rxjs';
 
 
 
@@ -20,23 +27,32 @@ export class SheetComponent implements OnInit {
   visita: string = '';
   matchSheet?: MatchSheet;
   loading = false;
+  snackBar = inject(MatSnackBar);
 
+  updateScoreOnGoalEventCommand = inject(UpdateScoreOnGoalEventCommand);
+  updatePlayerYellowCardCommand = inject(UpdatePlayerYellowCardCommand);
+  updatePlayerRedCardCommand = inject(UpdatePlayerRedCardCommand);
+  updatePlayerAssistsCommand = inject(UpdatePlayerAssistsCommand);
+  registerPlayerAttendanceCommand = inject(RegisterPlayerAttendanceCommand);
+  publishResultsCommand = inject(PublishMatchResultsCommand);
 
   playerService = inject(PlayerService);
+  homePlayers: SheetPlayer[] = [];
+  awayPlayers: SheetPlayer[] = [];
+  match?: IMatch;
 
-  get match() {
-    return this.matchSheet?.match;
-  }
 
-  get localPlayers() {
-    return this.matchSheet?.localPlayers;
-  }
 
-  get awayPlayers() {
-    return this.matchSheet?.awayPlayers;
-  }
 
   constructor(private activatedRoute: ActivatedRoute, private matchService: MatchService) { }
+
+  get totalYellowCards() {
+    return this.matchSheet?.players.map(p => p.yellowCards).reduce((acc, curr) => acc + curr, 0) ?? 0;
+  }
+
+  get totalRedCards() {
+    return this.matchSheet?.players.map(p => p.redCards).reduce((acc, curr) => acc + curr, 0) ?? 0;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -48,38 +64,56 @@ export class SheetComponent implements OnInit {
 
   async loadMatchSheet() {
     this.loading = true;
-    const localPlayers = await firstValueFrom(this.playerService.getPlayersByTeam(this.local).pipe(map(createSheetPlayer)));
-    const visitaPlayers = await firstValueFrom(this.playerService.getPlayersByTeam(this.visita).pipe(map(createSheetPlayer)));
-    const match = await this.matchService.getMatch(this.local, this.visita);
-    const matchSheet: MatchSheet = {
-      match,
-      localPlayers: localPlayers,
-      awayPlayers: visitaPlayers,
-      comments: '',
-    }
+    this.match = await this.matchService.getMatch(this.local, this.visita);
+    this.matchSheet = await this.matchService.getMatchSheet(this.match.id);
 
-    this.matchSheet = matchSheet;
+    this.homePlayers = await firstValueFrom(this.playerService.getPlayersByTeam(this.local).pipe(map((players) => this.createSheetPlayer(players, this.matchSheet?.players ?? []))));
+    this.awayPlayers = await firstValueFrom(this.playerService.getPlayersByTeam(this.visita).pipe(map((players) => this.createSheetPlayer(players, this.matchSheet?.players ?? []))));
+
+
     this.loading = false;
   }
 
-  handleOnChange(event: { player: SheetPlayer, value: number, field: keyof SheetPlayer }) {
+  attendanceNumber(players: SheetPlayer[]) {
+    return players.filter(p => p.attended).length;
+  }
 
 
-    switch (event.field) {
-      case 'goles':
-        this.onGoalEvent(event);
-        break;
-      case 'amarillas':
+  onYellowCardEvent(event: { player: SheetPlayer, value: number }) {
+    if (!this.matchSheet) {
+      return;
+    }
+    this.updatePlayerYellowCardCommand.execute(event.player, this.matchSheet.matchId, event.value);
+    this.modifyValue(event.player, 'amarillas', event.value);
+    const playerIndex = this.matchSheet.players.findIndex(p => p.playerId === event.player.id);
+    this.matchSheet.players[playerIndex].yellowCards += event.value;
 
-        break;
-      case 'rojas':
+  }
 
-        break;
-      default:
-        return;
+  onRedCardEvent(event: { player: SheetPlayer, value: number }) {
+    if (!this.matchSheet) {
+      return;
+    }
+    this.updatePlayerRedCardCommand.execute(event.player, this.matchSheet.matchId, event.value);
+    this.modifyValue(event.player, 'rojas', event.value);
+    const playerIndex = this.matchSheet.players.findIndex(p => p.playerId === event.player.id);
+    this.matchSheet.players[playerIndex].redCards += event.value;
+  }
+
+  onAttendedEvent(event: { player: SheetPlayer, value: boolean }) {
+    if (!this.matchSheet) {
+      return;
     }
 
+    this.registerPlayerAttendanceCommand.execute(event.player, this.matchSheet.matchId, event.value);
+  }
 
+  onAssistEvent(event: { player: SheetPlayer, value: number }) {
+    if (!this.matchSheet) {
+      return;
+    }
+    this.updatePlayerAssistsCommand.execute(event.player, this.matchSheet.matchId, event.value);
+    this.modifyValue(event.player, 'asistencias', event.value);
   }
 
   onGoalEvent(event: { player: SheetPlayer, value: number }) {
@@ -87,41 +121,64 @@ export class SheetComponent implements OnInit {
       return;
     }
 
-    const player = event.player;
-    const value = event.value;
-
-    if (player.equipo === this.local) {
-      if (this.matchSheet.match.marcadorLocal) {
-        this.matchSheet.match.marcadorLocal += value;
-      } else {
-        this.matchSheet.match.marcadorLocal = value;
-      }
-
-    } else {
-      if (this.matchSheet.match.marcadorVisita) {
-        this.matchSheet.match.marcadorVisita += value;
-      } else {
-        this.matchSheet.match.marcadorVisita = value;
-      }
-
+    if (!this.match) {
+      return;
     }
 
+
+    this.updateScoreOnGoalEventCommand.execute(event.player, this.match, event.value);
+    this.modifyValue(event.player, 'goles', event.value);
+    this.matchSheet.homeScore += event.player.equipo === this.local ? event.value : 0;
+    this.matchSheet.awayScore += event.player.equipo === this.visita ? event.value : 0;
+
+  }
+
+  modifyValue(player: SheetPlayer, key: 'goles' | 'asistencias' | 'amarillas' | 'rojas', value: number) {
+    if (player && player[key] !== undefined) {
+      player[key] = (player[key] ?? 0) + value;
+    }
+  }
+
+
+  createSheetPlayer(players: IPlayer[], sheetPlayers: {
+    playerId: string,
+    team: string,
+    attended: boolean,
+    goals: number,
+    assists: number,
+    yellowCards: number,
+    redCards: number
+  }[]): SheetPlayer[] {
+    const mappedPlayers = players.map(player => {
+      const existingPlayer = sheetPlayers.find(p => p.playerId === player.id);
+      return {
+        ...player,
+        goles: existingPlayer?.goals ?? 0,
+        asistencias: existingPlayer?.assists ?? 0,
+        amarillas: existingPlayer?.yellowCards ?? 0,
+        rojas: existingPlayer?.redCards ?? 0,
+        attended: existingPlayer?.attended ?? false,
+      } as SheetPlayer;
+    });
+
+    return mappedPlayers;
+
+  }
+
+  async publishResults() {
+    if (!this.matchSheet || !this.match) {
+      return;
+    }
+    this.loading = true;
+    await this.publishResultsCommand.execute(this.matchSheet, this.match);
+    this.loading = false;
+    // Assuming you have a MatSnackBar injected in your component
+    this.snackBar.open('Resultados publicados existósamente', 'Cerrar', {
+      duration: 3000,
+    });
   }
 
 }
 
-function createSheetPlayer(players: IPlayer[], index: number): SheetPlayer[] {
-  const sheetPlayers = players.map(player => {
-    return {
-      ...player,
-      goles: 0,
-      amarillas: 0,
-      rojas: 0,
-      attended: false,
-    } as SheetPlayer;
-  });
 
-  return sheetPlayers;
-
-}
 

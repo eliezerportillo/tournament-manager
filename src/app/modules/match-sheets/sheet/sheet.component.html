@@ -3,6 +3,11 @@
         <mat-icon>menu</mat-icon>
     </button>
     Cédula Deportiva
+
+    <span class="spacer"></span>
+    <button mat-raised-button color="accent" (click)="publishResults()" [disabled]="loading">
+        Publicar Resultados
+    </button>
 </mat-toolbar>
 
 <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
@@ -17,12 +22,12 @@
                         <div mat-subheader>Información del partido</div>
 
                         <mat-list-item>
-                            <mat-icon matListItemIcon>home</mat-icon>
+                            <app-team-image matListItemIcon [src]="match.imageUrlLocal"></app-team-image>
                             <div matListItemLine>Local</div>
                             <div matListItemTitle>{{local}}</div>
                         </mat-list-item>
                         <mat-list-item>
-                            <mat-icon matListItemIcon>flight</mat-icon>
+                            <app-team-image matListItemIcon [src]="match.imageUrlVisita"></app-team-image>
                             <div matListItemLine>Visitante</div>
                             <div matListItemTitle>{{visita}}</div>
                         </mat-list-item>
@@ -34,7 +39,7 @@
                         <mat-list-item>
                             <mat-icon matListItemIcon>event</mat-icon>
                             <div matListItemLine>Fecha</div>
-                            <div matListItemTitle>{{match.dateTime | dateStatus}}</div>
+                            <div matListItemTitle>{{match.dateTime | date:'dd \'de\' MMMM, yyyy'}}</div>
                         </mat-list-item>
                         <mat-list-item>
                             <mat-icon matListItemIcon>access_time</mat-icon>
@@ -51,12 +56,30 @@
                         <mat-list-item>
                             <mat-icon matListItemIcon>scoreboard</mat-icon>
                             <div matListItemLine>{{ match.local}}</div>
-                            <div matListItemTitle>{{match.marcadorLocal ?? 0}}</div>
+                            <div matListItemTitle>{{matchSheet.homeScore}}</div>
                         </mat-list-item>
                         <mat-list-item>
                             <mat-icon matListItemIcon>scoreboard</mat-icon>
                             <div matListItemLine>{{ match.visita }}</div>
-                            <div matListItemTitle>{{match.marcadorVisita ?? 0}}</div>
+                            <div matListItemTitle>{{matchSheet.awayScore}}</div>
+                        </mat-list-item>
+
+                        <div mat-subheader>Tarjetas</div>
+                        <mat-list-item>
+
+                            <div matListItemIcon>
+                                <mat-icon class="yellow-cards">crop_portrait</mat-icon>
+                            </div>
+
+                            <div matListItemTitle>{{ totalYellowCards }}</div>
+                            <div matListItemLine>Tarjetas amarillas</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <div matListItemIcon>
+                                <mat-icon class="red-cards">crop_portrait</mat-icon>
+                            </div>
+                            <div matListItemTitle>{{ totalRedCards }}</div>
+                            <div matListItemLine>Tarjetas rojas</div>
                         </mat-list-item>
 
                     </mat-list>
@@ -88,14 +111,18 @@
 
                         <div class="tab-label">
                             <span>{{local}}</span>
-                            <span>7/10 jugadores</span>
+                            <span class="attendance-number">{{ attendanceNumber(homePlayers) }}/{{ homePlayers.length }}
+                                jugadores</span>
                         </div>
 
                     </ng-container>
                 </ng-template>
                 <ng-template matTabContent>
-                    <ng-container *ngIf="localPlayers">
-                        <app-match-sheet-player-list [players]="localPlayers" (onChange)="handleOnChange($event)"></app-match-sheet-player-list>
+                    <ng-container *ngIf="homePlayers">
+                        <app-match-sheet-player-list [players]="homePlayers" (onGoalEvent)="onGoalEvent($event)"
+                            (onAssistEvent)="onAssistEvent($event)" (onYellowCardEvent)="onYellowCardEvent($event)"
+                            (onRedCardEvent)="onRedCardEvent($event)"
+                            (onAttendanceEvent)="onAttendedEvent($event)"></app-match-sheet-player-list>
                     </ng-container>
                 </ng-template>
 
@@ -107,7 +134,8 @@
 
                         <div class="tab-label">
                             <span>{{visita}}</span>
-                            <span>7/10 jugadores</span>
+                            <span class="attendance-number">{{ attendanceNumber(awayPlayers) }}/{{ awayPlayers.length }}
+                                jugadores</span>
                         </div>
 
                     </ng-container>
@@ -116,7 +144,10 @@
                 <ng-template matTabContent>
 
                     <ng-container *ngIf="awayPlayers">
-                        <app-match-sheet-player-list [players]="awayPlayers"></app-match-sheet-player-list>
+                        <app-match-sheet-player-list [players]="awayPlayers" (onGoalEvent)="onGoalEvent($event)"
+                            (onAssistEvent)="onAssistEvent($event)" (onYellowCardEvent)="onYellowCardEvent($event)"
+                            (onRedCardEvent)="onRedCardEvent($event)"
+                            (onAttendanceEvent)="onAttendedEvent($event)"></app-match-sheet-player-list>
                     </ng-container>
                 </ng-template>
 

@@ -7,6 +7,7 @@ import { LineUp } from '@app-core/models/lineup';
 import { Group, Grouper } from '@app-core/models/group';
 import { TeamService } from './team.service';
 import { ExcelService } from './excel.service';
+import { MatchSheet } from '@app-core/models/match-sheet';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class MatchService {
   private excelService = inject(ExcelService);
 
   private matchesCollection: AngularFirestoreCollection<IMatch>;
+  private sheetsCollection: AngularFirestoreCollection<MatchSheet>;
   private matchesCache$?: Observable<IMatch[]>;
   private bracketCache$?: Observable<IMatch[]>;
   private standingsCollection: AngularFirestoreCollection<LineUp>;
@@ -26,6 +28,7 @@ export class MatchService {
 
   constructor(private db: AngularFirestore) {
     this.matchesCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('fecha').where('esClasificacion', '==', 0));
+    this.sheetsCollection = this.db.collection<MatchSheet>('sheets');
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
     this.bracketCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('ordenEtapa').orderBy('numero').where('esClasificacion', '==', 1));
   }
@@ -138,7 +141,21 @@ export class MatchService {
   }
 
 
+  async getMatchSheet(matchId: string): Promise<MatchSheet> {
+    const snapshot = await this.sheetsCollection.ref.where('matchId', '==', matchId).get();
+    const sheets = snapshot.docs.map(this.parseDoc);
+    if(sheets.length === 0) {
+      return {
+        matchId: matchId,
+        homeScore: 0,
+        awayScore: 0,
+        players: [],
+        comments: ''
+      } as MatchSheet;
+    }
 
+    return sheets[0];
+  }
 
 
 
