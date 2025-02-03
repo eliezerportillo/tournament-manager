@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatchSheetPlayerListComponent } from './match-sheet-player-list/match-sheet-player-list.component';
-
+import { PlayerCardReaderComponent } from '@app-shared/components/player-card-reader/player-card-reader.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,8 @@ import { MatchSheetPlayerListComponent } from './match-sheet-player-list/match-s
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
-    MatSidenavModule
+    MatSidenavModule,
+    PlayerCardReaderComponent
   ]
 })
 export class MatchSheetsModule { }

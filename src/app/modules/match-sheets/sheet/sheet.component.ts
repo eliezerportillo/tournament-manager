@@ -74,6 +74,14 @@ export class SheetComponent implements OnInit {
     this.loading = false;
   }
 
+  onAttendedEventScanner(playerId: string) {
+    const player = this.homePlayers.find(p => p.id === playerId) ?? this.awayPlayers.find(p => p.id === playerId);
+    if (!player) {
+      return;
+    }
+    this.onAttendedEvent({ player, value: true });
+  }
+
   attendanceNumber(players: SheetPlayer[]) {
     return players.filter(p => p.attended).length;
   }
