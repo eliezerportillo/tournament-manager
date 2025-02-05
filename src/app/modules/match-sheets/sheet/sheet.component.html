@@ -1,10 +1,10 @@
 <mat-toolbar color="primary">
     <button mat-icon-button (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
+        <mat-icon>info</mat-icon>
     </button>
     Cédula Deportiva
 
-    <span class="spacer"></span>
+    <span class="spacer"></span>    
     <button mat-raised-button color="accent" (click)="publishResults()" [disabled]="loading">
         Publicar Resultados
     </button>
@@ -13,7 +13,7 @@
 <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 
 <mat-drawer-container class="example-container" autosize>
-    <mat-drawer mode="side" opened #drawer>
+    <mat-drawer mode="side" [opened]="opened" #drawer>
         <ng-container *ngIf="matchSheet">
             <!-- Column 1: Match and Team Information -->
             <div fxLayout="column">
@@ -90,6 +90,14 @@
                     <textarea matInput placeholder="Escribe comentarios finales del partido." rows="10"
                         [(ngModel)]="matchSheet.comments"></textarea>
                 </mat-form-field>
+                
+
+                <mat-nav-list>
+                    <a mat-list-item [routerLink]="['/' + zone + '/sheets']">
+                        <mat-icon matListItemIcon>list</mat-icon>
+                        <span>Ver todas las cédulas</span>
+                    </a>                    
+                </mat-nav-list>
             </div>
         </ng-container>
     </mat-drawer>

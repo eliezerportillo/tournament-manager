@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "afc-tijuana"
+    "default": "afc-torneo"
   },
   "targets": {
-    "afc-tijuana": {
+    "afc-torneo": {
       "hosting": {
         "tournament-manager": [
-          "afc-tijuana"
+          "afc-torneo"
         ]
       }
     }

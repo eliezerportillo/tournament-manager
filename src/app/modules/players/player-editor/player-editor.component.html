@@ -85,11 +85,7 @@
             </mat-list-item>
         </mat-list>
 
-        <mat-toolbar>
-            <span class="spacer"></span>
-            <!-- Cannot Play -->
-            <mat-slide-toggle formControlName="cannotPlay" color="primary">No puede jugar</mat-slide-toggle>
-        </mat-toolbar>
+      
 
         <!-- Goals -->
         <app-number-input controlName="Goles" [control]="goals" />
@@ -97,6 +93,11 @@
         <app-number-input controlName="Tarjetas Amarillas" [control]="yCards" />
         <!-- Red  Cards -->
         <app-number-input controlName="Tarjetas Rojas" [control]="rCards" />
+        <mat-toolbar>
+            <span class="spacer"></span>
+            <!-- Cannot Play -->
+            <mat-slide-toggle formControlName="cannotPlay" color="primary">No puede jugar</mat-slide-toggle>
+        </mat-toolbar>
         <div fxLayout="row wrap">
 
             <!-- Cap -->

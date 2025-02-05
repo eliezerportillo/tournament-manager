@@ -9,14 +9,14 @@ export interface IPlayer extends INamedObject {
     goles?: number;
     asistencias?: number;
 
-    capitan?: boolean;
+    capitan?: boolean | number;
     portero?: number;
-    noBautizado?: boolean;
+    noBautizado?: boolean | number;
     correo?: string;
     fechaNacimiento?: number;
     dateBirth: Date | null;
 
-    noAlinea: boolean;
+    noAlinea: boolean | number;
 }
 
 export enum PlayerType {
@@ -47,7 +47,7 @@ export class Player implements IPlayer {
     }
 
     numero: string;
-    noAlinea: boolean;
+    noAlinea: boolean | number;
 
     jugador: string;
     equipo: string;
@@ -55,9 +55,9 @@ export class Player implements IPlayer {
     amarillas?: number | undefined;
     rojas?: number | undefined;
     goles?: number | undefined;
-    capitan?: boolean | undefined;
+    capitan?: boolean | number | undefined;
     portero?: number | undefined;
-    noBautizado?: boolean | undefined;
+    noBautizado?: boolean | undefined | number;;
     correo?: string | undefined;
     id?: any;
     fechaNacimiento: number | undefined;

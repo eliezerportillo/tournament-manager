@@ -1,4 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { MatDrawer } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { IMatch } from '@app-core/models/match';
@@ -9,11 +11,12 @@ import { MatchService } from '@app-core/services/match.service';
 import { PlayerService } from '@app-core/services/player.service';
 import { PublishMatchResultsCommand } from '@app-core/services/publish-match-results.command';
 import { RegisterPlayerAttendanceCommand } from '@app-core/services/register-player-attendance.command';
+import { RouteService } from '@app-core/services/route.service';
 import { UpdatePlayerAssistsCommand } from '@app-core/services/update-player-assits.commad';
 import { UpdatePlayerRedCardCommand } from '@app-core/services/update-player-red-cards.command';
 import { UpdatePlayerYellowCardCommand } from '@app-core/services/update-player-yellow-card.command';
 import { UpdateScoreOnGoalEventCommand } from '@app-core/services/update-score-on-goal-event.command';
-import { combineLatest, concat, firstValueFrom, map, Observable, shareReplay } from 'rxjs';
+import { combineLatest, concat, firstValueFrom, map, Observable, of, shareReplay } from 'rxjs';
 
 
 
@@ -23,6 +26,7 @@ import { combineLatest, concat, firstValueFrom, map, Observable, shareReplay } f
   styleUrls: ['./sheet.component.scss']
 })
 export class SheetComponent implements OnInit {
+
   local: string = '';
   visita: string = '';
   matchSheet?: MatchSheet;
@@ -35,16 +39,23 @@ export class SheetComponent implements OnInit {
   updatePlayerAssistsCommand = inject(UpdatePlayerAssistsCommand);
   registerPlayerAttendanceCommand = inject(RegisterPlayerAttendanceCommand);
   publishResultsCommand = inject(PublishMatchResultsCommand);
+  breakpointObserver = inject(BreakpointObserver);
+  routeService = inject(RouteService);
 
   playerService = inject(PlayerService);
   homePlayers: SheetPlayer[] = [];
   awayPlayers: SheetPlayer[] = [];
   match?: IMatch;
+  opened = true;
+  zone = '';
 
 
 
 
   constructor(private activatedRoute: ActivatedRoute, private matchService: MatchService) { }
+
+
+
 
   get totalYellowCards() {
     return this.matchSheet?.players.map(p => p.yellowCards).reduce((acc, curr) => acc + curr, 0) ?? 0;
@@ -55,12 +66,26 @@ export class SheetComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.activatedRoute.queryParams.subscribe(params => {
       this.local = params['local'] ?? '';
       this.visita = params['visita'] ?? '';
       this.loadMatchSheet();
     });
+
+    // Access grandparent route's params
+    this.zone = this.routeService.findZoneRouteParam(this.activatedRoute.snapshot);
+
+    this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.Medium, Breakpoints.Handset, Breakpoints.TabletPortrait])
+      .subscribe(result => {
+        if (result.matches) {
+          this.opened = false;
+        }
+      });
   }
+  
+
+
 
   async loadMatchSheet() {
     this.loading = true;

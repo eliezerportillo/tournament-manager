@@ -16,29 +16,24 @@ table {
     padding: 0 8px 0 0;
 }
 
-.mat-column-name {
+.mat-column-name1 {
     word-wrap: break-word !important;
     white-space: unset !important;
-    flex: 0 0 250px !important;    
+    // flex: 0 0 250px !important;    
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;    
     
 }
 
-.mat-column-attended {
+.mat-column-attended1 {
     flex: 0 0 150px !important;
     width: 150px !important;
 }
 
-.mat-column-noAlinea  {
+.mat-column-noAlinea1  {
     flex: 0 0 150px !important;
     width: 150px !important;
-}
-
-.mat-column-comments {
-    flex: 0 0 250px !important;
-    width: 250px !important;
 }
 
 .mat-mdc-table-sticky-border-elem-right {

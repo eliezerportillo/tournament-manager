@@ -23,17 +23,16 @@
     <!-- Name Column -->
     <ng-container matColumnDef="attended">
         <mat-header-cell *matHeaderCellDef> Asistió </mat-header-cell>
-        <mat-cell *matCellDef="let row">
-            <mat-select [(value)]="row.attended" [(ngModel)]="row.attended" (selectionChange)="onAttendance(row, $event.value)">
-                <mat-option [value]="true">Sí</mat-option>
-                <mat-option [value]="false">No</mat-option>
-            </mat-select>
+        <mat-cell *matCellDef="let row"  (click)="$event.stopPropagation()">
+            <mat-checkbox [(ngModel)]="row.attended" (change)="onAttendance(row, $event.checked)">
+                
+            </mat-checkbox>
         </mat-cell>
     </ng-container>
 
     <!-- Fruit Column -->
     <ng-container matColumnDef="noAlinea">
-        <mat-header-cell *matHeaderCellDef> ¿Puede alinear? </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Alinea </mat-header-cell>
         <mat-cell *matCellDef="let row">
             {{ !row.noAlinea ? 'Sí' : 'No' }}
         </mat-cell>
@@ -111,7 +110,8 @@
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;" class="player-row"
-        [class.example-expanded-row]="expandedElement === row"></mat-row>
+        [class.example-expanded-row]="expandedElement === row"
+        (click)="(expandedElement = expandedElement === row ? null : row); $event.stopPropagation()"></mat-row>
 
     <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="player-detail-row"></mat-row>
 </table>

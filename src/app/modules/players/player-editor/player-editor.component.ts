@@ -132,11 +132,11 @@ export class PlayerEditorComponent implements IModalComponent {
     this.data.player.amarillas = this.form.value?.yellowCards;
     this.data.player.rojas = this.form.value?.redCards;
     this.data.player.goles = this.form.value?.goals;
-    this.data.player.capitan = this.form.value?.isCap;
-    this.data.player.portero = this.form.value?.isGoalkeeper;
-    this.data.player.noBautizado = this.form.value?.isListener;
+    this.data.player.capitan = this.form.value?.isCap ? 1 : 0;
+    this.data.player.portero = this.form.value?.isGoalkeeper ? 1 : 0;
+    this.data.player.noBautizado = this.form.value?.isListener ? 1 : 0;
+    this.data.player.noAlinea = this.form.value?.cannotPlay ? 1 : 0;
     this.data.player.correo = this.form.value?.email;
-    this.data.player.noAlinea = this.form.value?.cannotPlay;
     await this.updatePlayerCommand.execute(this.data.player);
   }
 
