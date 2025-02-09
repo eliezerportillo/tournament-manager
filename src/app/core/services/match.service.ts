@@ -146,11 +146,13 @@ export class MatchService {
     const sheets = snapshot.docs.map(this.parseDoc);
     if(sheets.length === 0) {
       return {
+        id: '',
         matchId: matchId,
         homeScore: 0,
         awayScore: 0,
         players: [],
-        comments: ''
+        comments: '',
+        status: 'pending'
       } as MatchSheet;
     }
 

@@ -22,8 +22,14 @@ export class PublishMatchResultsCommand {
         });
 
         // Update player stats
-        sheet.players.forEach(player => {
+        const playerUpdatePromises = sheet.players.map(async player => {
             const playerRef = this.firestore.collection('Jugadores').doc(player.playerId).ref;
+            const playerDoc = await playerRef.get();
+            const playerData = playerDoc.data() as IPlayer;
+            player.goals += playerData.goles || 0;
+            player.assists += playerData.asistencias || 0;
+            player.yellowCards += playerData.amarillas || 0;
+            player.redCards += playerData.rojas || 0;
             batch.update(playerRef, {
                 goles: player.goals,
                 asistencias: player.assists,
@@ -31,6 +37,12 @@ export class PublishMatchResultsCommand {
                 rojas: player.redCards
             });
         });
+
+        await Promise.all(playerUpdatePromises);
+
+        // Update match status
+        const matchSheetRef = this.firestore.collection('sheets').doc(sheet.id).ref;
+        batch.update(matchSheetRef, { status: 'published' });
 
         await batch.commit();
     }

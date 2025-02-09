@@ -65,6 +65,10 @@ export class SheetComponent implements OnInit {
     return this.matchSheet?.players.map(p => p.redCards).reduce((acc, curr) => acc + curr, 0) ?? 0;
   }
 
+  get canPublish() {  
+    return this.matchSheet?.status !== 'published' && this.matchSheet?.homeScore !== undefined && this.matchSheet?.awayScore !== undefined;
+  }
+
   ngOnInit(): void {
 
     this.activatedRoute.queryParams.subscribe(params => {
@@ -204,6 +208,7 @@ export class SheetComponent implements OnInit {
     }
     this.loading = true;
     await this.publishResultsCommand.execute(this.matchSheet, this.match);
+    this.matchSheet.status = 'published';
     this.loading = false;
     // Assuming you have a MatSnackBar injected in your component
     this.snackBar.open('Resultados publicados existósamente', 'Cerrar', {

@@ -2,6 +2,7 @@
 
 
 export interface MatchSheet {    
+    id: string,
     matchId: string,    
     homeScore: number,
     awayScore: number,
@@ -15,4 +16,5 @@ export interface MatchSheet {
         redCards: number
     }[],
     comments: string
+    status: 'pending' | 'published'
 }

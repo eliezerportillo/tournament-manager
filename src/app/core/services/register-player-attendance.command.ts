@@ -45,6 +45,7 @@ export class RegisterPlayerAttendanceCommand {
                 
 
                 const newMatchSheet: MatchSheet = {
+                    id: matchId,
                     matchId: matchId,
                     homeScore: 0,
                     awayScore: 0,
@@ -57,7 +58,8 @@ export class RegisterPlayerAttendanceCommand {
                         yellowCards: 0,
                         redCards: 0
                     }],
-                    comments: ''
+                    comments: '',
+                    status: 'pending'
                 };
 
                 transaction.set(matchSheetRef.ref, newMatchSheet);

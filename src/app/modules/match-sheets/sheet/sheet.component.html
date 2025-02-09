@@ -5,7 +5,7 @@
     Cédula Deportiva
 
     <span class="spacer"></span>    
-    <button mat-raised-button color="accent" (click)="publishResults()" [disabled]="loading">
+    <button mat-raised-button color="accent" (click)="publishResults()" [disabled]="!canPublish || loading">
         Publicar Resultados
     </button>
 </mat-toolbar>
