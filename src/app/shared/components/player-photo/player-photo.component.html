@@ -1,4 +1,10 @@
-<ng-container *ngIf="badge">
+<ng-container *ngIf="badge; else noBadge">
 
-    <img class="profile-photo" [ngClass]="{'small': size === 'small', 'large': size === 'large'}" [src]="badge.photoUrl" alt="Player Photo" >
+    <img class="profile-photo" [ngClass]="{'small': size === 'small', 'large': size === 'large'}" [src]="badge.photoUrl"
+        alt="Player Photo">
 </ng-container>
+
+<ng-template #noBadge>
+    <img class="profile-photo" [ngClass]="{'small': size === 'small', 'large': size === 'large'}"
+        src="assets/no-photo.png" alt="Player Photo">
+</ng-template>

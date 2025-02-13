@@ -49,7 +49,7 @@
                     </mat-form-field>
 
                     <!-- email -->
-                    <mat-form-field *ngIf="isCap?.value">
+                    <mat-form-field>
                         <mat-label>Correo electrónico</mat-label>
                         <input matInput placeholder="Correo electrónico" formControlName="email">
                         <mat-icon matSuffix>
@@ -75,28 +75,42 @@
                 <div matListItemTitle>{{data.player.name}}</div>
                 <div matListItemLine>Nombre</div>
             </mat-list-item>
-            <mat-list-item>
+            <!-- <mat-list-item>
                 <div matListItemTitle>{{data.player.numero}}</div>
                 <div matListItemLine>Número de playera</div>
-            </mat-list-item>
+            </mat-list-item> -->
             <mat-list-item>
                 <div matListItemTitle>{{data.team}}</div>
                 <div matListItemLine>Equipo</div>
             </mat-list-item>
         </mat-list>
 
-      
+
 
         <!-- Goals -->
         <app-number-input controlName="Goles" [control]="goals" />
+
+        <!-- own Goals -->
+        <app-number-input controlName="Auto Goles" [control]="ownGoals" />
+
         <!-- Yellow cards -->
         <app-number-input controlName="Tarjetas Amarillas" [control]="yCards" />
         <!-- Red  Cards -->
         <app-number-input controlName="Tarjetas Rojas" [control]="rCards" />
+        <!-- Player Number -->
+        <app-number-input controlName="Número del jugador" [control]="playerNumber" />
+        <!-- email -->
+        <mat-form-field>
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput placeholder="Correo electrónico" formControlName="email">
+            <mat-icon matSuffix>
+                alternate_email
+            </mat-icon>
+        </mat-form-field>
         <mat-toolbar>
             <span class="spacer"></span>
             <!-- Cannot Play -->
-            <mat-slide-toggle formControlName="cannotPlay" color="primary">No puede jugar</mat-slide-toggle>
+            <mat-slide-toggle formControlName="cannotPlay" color="primary">No puede alinear</mat-slide-toggle>
         </mat-toolbar>
         <div fxLayout="row wrap">
 
@@ -109,14 +123,7 @@
 
         </div>
 
-        <!-- email -->
-        <mat-form-field *ngIf="isCap?.value">
-            <mat-label>Correo electrónico</mat-label>
-            <input matInput placeholder="Correo electrónico" formControlName="email">
-            <mat-icon matSuffix>
-                alternate_email
-            </mat-icon>
-        </mat-form-field>
+
     </ng-template>
 
 

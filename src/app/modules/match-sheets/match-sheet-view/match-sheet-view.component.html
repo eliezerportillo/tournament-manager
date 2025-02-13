@@ -1,5 +1,21 @@
-<mat-toolbar>Cedulas deportivas</mat-toolbar>
+<mat-toolbar>
+    Cedulas deportivas
 
-<div fxLayout="row wrap" fxLayoutGap="10px" *ngIf="nextMatches$ | async as matches">
+    <span class="spacer"></span>
+    <mat-form-field appearance="fill">
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="dp3" [formControl]="dateControl">
+        <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+    </mat-form-field>
+</mat-toolbar>
+
+
+
+<div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutAlign.gt-xs="start start" fxLayoutGap="10px" *ngIf="matches">
     <app-match *ngFor="let match of matches" [match]="match" (selected)="onMatchSelected($event)"></app-match>
+</div>
+
+<div *ngIf="matches.length === 0">
+    <p class="no-data">Sin resultados</p>
 </div>

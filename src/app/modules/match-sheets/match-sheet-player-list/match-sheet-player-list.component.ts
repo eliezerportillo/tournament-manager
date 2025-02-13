@@ -1,6 +1,19 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { SheetPlayer } from '@app-core/models/sheet-player';
 
@@ -12,13 +25,15 @@ import { SheetPlayer } from '@app-core/models/sheet-player';
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
       state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
     ]),
   ],
 })
 export class MatchSheetPlayerListComponent implements AfterViewInit {
-
-  displayedColumns: string[] = ['expand', 'number', 'name', 'attended', 'noAlinea'];
+  displayedColumns: string[] = ['expand', 'number', 'name', 'attended', 'info'];
   dataSource: MatTableDataSource<SheetPlayer>;
   @ViewChild(MatSort) sort?: MatSort;
   expandedElement: SheetPlayer | null;
@@ -33,15 +48,35 @@ export class MatchSheetPlayerListComponent implements AfterViewInit {
     this.dataSource.data = value;
   }
 
-  @Output() onGoalEvent = new EventEmitter<{ player: SheetPlayer, value: number }>();
-  @Output() onAssistEvent = new EventEmitter<{ player: SheetPlayer, value: number }>();
-  @Output() onYellowCardEvent = new EventEmitter<{ player: SheetPlayer, value: number }>();
-  @Output() onRedCardEvent = new EventEmitter<{ player: SheetPlayer, value: number }>();
-  @Output() onAttendanceEvent = new EventEmitter<{ player: SheetPlayer, value: boolean }>();
+  @Output() onGoalEvent = new EventEmitter<{
+    player: SheetPlayer;
+    value: number;
+  }>();
+
+  @Output() onOwnGoalEvent = new EventEmitter<{
+    player: SheetPlayer;
+    value: number;
+  }>();
+
+  @Output() onAssistEvent = new EventEmitter<{
+    player: SheetPlayer;
+    value: number;
+  }>();
+  @Output() onYellowCardEvent = new EventEmitter<{
+    player: SheetPlayer;
+    value: number;
+  }>();
+  @Output() onRedCardEvent = new EventEmitter<{
+    player: SheetPlayer;
+    value: number;
+  }>();
+  @Output() onAttendanceEvent = new EventEmitter<{
+    player: SheetPlayer;
+    value: boolean;
+  }>();
 
   ngAfterViewInit() {
-    if (this.sort)
-      this.dataSource.sort = this.sort;
+    if (this.sort) this.dataSource.sort = this.sort;
   }
 
   canDecrement(player: SheetPlayer, field: keyof SheetPlayer): boolean {
@@ -55,6 +90,12 @@ export class MatchSheetPlayerListComponent implements AfterViewInit {
   onGoal(player: SheetPlayer, value: number) {
     if (value >= 0 || this.canDecrement(player, 'goles')) {
       this.onGoalEvent.emit({ player, value });
+    }
+  }
+
+  onOwnGoal(player: SheetPlayer, value: number) {
+    if (value >= 0 || this.canDecrement(player, 'autogoles')) {
+      this.onOwnGoalEvent.emit({ player, value });
     }
   }
 

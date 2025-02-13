@@ -1,5 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  QueryDocumentSnapshot,
+} from '@angular/fire/compat/firestore';
 import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { IMatch } from '@app-core/models/match';
 import { Observable, firstValueFrom, forkJoin, of } from 'rxjs';
@@ -10,10 +14,9 @@ import { ExcelService } from './excel.service';
 import { MatchSheet } from '@app-core/models/match-sheet';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MatchService {
-
   private excelService = inject(ExcelService);
 
   private matchesCollection: AngularFirestoreCollection<IMatch>;
@@ -25,12 +28,18 @@ export class MatchService {
   bracketCollection: AngularFirestoreCollection<IMatch>;
   private teamService = inject(TeamService);
 
-
   constructor(private db: AngularFirestore) {
-    this.matchesCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('fecha').where('esClasificacion', '==', 0));
+    this.matchesCollection = this.db.collection<IMatch>('Partidos', (ref) =>
+      ref.orderBy('fecha').where('esClasificacion', '==', 0)
+    );
     this.sheetsCollection = this.db.collection<MatchSheet>('sheets');
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
-    this.bracketCollection = this.db.collection<IMatch>('Partidos', ref => ref.orderBy('ordenEtapa').orderBy('numero').where('esClasificacion', '==', 1));
+    this.bracketCollection = this.db.collection<IMatch>('Partidos', (ref) =>
+      ref
+        .orderBy('ordenEtapa')
+        .orderBy('numero')
+        .where('esClasificacion', '==', 1)
+    );
   }
 
   getMatches(): Observable<IMatch[]> {
@@ -38,25 +47,31 @@ export class MatchService {
       return this.matchesCache$;
     }
 
-    this.matchesCache$ = this.getMatchesFromCollection(this.matchesCollection).pipe(
-      map((matches) => matches.filter(match => match.esClasificacion == undefined || match.esClasificacion == false)),
+    this.matchesCache$ = this.getMatchesFromCollection(
+      this.matchesCollection
+    ).pipe(
+      map((matches) =>
+        matches.filter(
+          (match) =>
+            match.esClasificacion == undefined || match.esClasificacion == false
+        )
+      ),
       shareReplay(1)
     );
 
     return this.matchesCache$;
   }
 
-  getNextMatches(): Observable<IMatch[]> {
-    if (this.nextMatchesCache$) {
-      return this.nextMatchesCache$;
+  async getMatchesByDate(date: Date): Promise<IMatch[]> {
+    const excelDate = this.excelService.convertJavascriptDateToExcel(date);
+    if (excelDate === null) {
+      throw new Error('Invalid date');
     }
-    const number = this.excelService.convertDateToExcel(new Date());
-    const collection = this.db.collection<IMatch>('Partidos', ref => ref.where('fecha', '>=', number).orderBy('fecha', 'desc'));
-    this.nextMatchesCache$ = this.getMatchesFromCollection(collection).pipe(shareReplay(1));
-    return this.nextMatchesCache$;
-
+    const collection = this.db.collection<IMatch>('Partidos', (ref) =>
+      ref.orderBy('fecha').orderBy('hora').where('fecha', '==', excelDate)
+    );
+    return await firstValueFrom(this.getMatchesFromCollection(collection));
   }
-
 
   getMatchesGroupedByDate() {
     return this.getMatchesGroupedBy('fecha');
@@ -64,58 +79,75 @@ export class MatchService {
 
   private getMatchesGroupedBy(groupKey: string): Observable<Group<IMatch>[]> {
     return this.getMatches().pipe(
-      map((array => Grouper.groupBy(array, groupKey, (a, b) => a.dateTime.getTime() - b.dateTime.getTime())))
-    )
+      map((array) =>
+        Grouper.groupBy(
+          array,
+          groupKey,
+          (a, b) => a.dateTime.getTime() - b.dateTime.getTime()
+        )
+      )
+    );
   }
 
   getBracket(): Observable<IMatch[]> {
     if (this.bracketCache$) {
       return this.bracketCache$;
     }
-    this.bracketCache$ = this.getMatchesFromCollection(this.bracketCollection).pipe(
-      shareReplay(1)
-    );
+    this.bracketCache$ = this.getMatchesFromCollection(
+      this.bracketCollection
+    ).pipe(shareReplay(1));
 
     return this.bracketCache$;
   }
 
-  private getMatchesFromCollection(collection: AngularFirestoreCollection<IMatch>) {
+  private getMatchesFromCollection(
+    collection: AngularFirestoreCollection<IMatch>
+  ) {
     return collection.snapshotChanges().pipe(
-      tap(matches => {
+      tap((matches) => {
         console.log(`${matches.length} Matches read`);
       }),
-      map(actions =>
-        actions.map(action => {
-          return { id: action.payload.doc.id, ...action.payload.doc.data() } as IMatch;
+      map((actions) =>
+        actions.map((action) => {
+          return {
+            id: action.payload.doc.id,
+            ...action.payload.doc.data(),
+          } as IMatch;
         })
       ),
       map((matches: IMatch[]) => {
-        return matches.map(match => ({
+        return matches.map((match) => ({
           ...match,
-          dateTime: this.parseDateTime(match.fecha, match.hora)
-        })) as IMatch[]
+          dateTime: this.parseDateTime(match.fecha, match.hora),
+        })) as IMatch[];
       }),
       map((matches: IMatch[]) => matches.sort((a, b) => a.fecha - b.fecha)),
-      switchMap(matches => this.getTeamImages(matches))
+      switchMap((matches) => this.getTeamImages(matches))
     );
   }
 
-
-
   private getTeamImages(matches: IMatch[]): Observable<IMatch[]> {
     // Obtener todos los nombres únicos de equipos
-    const uniqueTeamNames = Array.from(new Set([...matches.map(match => match.local), ...matches.map(match => match.visita)]));
+    const uniqueTeamNames = Array.from(
+      new Set([
+        ...matches.map((match) => match.local),
+        ...matches.map((match) => match.visita),
+      ])
+    );
 
     // Map each team to an observable that fetches the image URL
-    const imageUrlObservables = uniqueTeamNames.map(teamName => this.teamService.getTeamImageUrl(teamName));
+    const imageUrlObservables = uniqueTeamNames.map((teamName) =>
+      this.teamService.getTeamImageUrl(teamName)
+    );
 
     // Combine the observables into a single observable
     return forkJoin(imageUrlObservables).pipe(
-      map(imageUrls => {
+      map((imageUrls) => {
         // Assign the image URLs to the corresponding models
-        matches.forEach(match => {
+        matches.forEach((match) => {
           match.imageUrlLocal = imageUrls[uniqueTeamNames.indexOf(match.local)];
-          match.imageUrlVisita = imageUrls[uniqueTeamNames.indexOf(match.visita)];
+          match.imageUrlVisita =
+            imageUrls[uniqueTeamNames.indexOf(match.visita)];
         });
 
         return matches;
@@ -125,45 +157,62 @@ export class MatchService {
 
   async getLastMatchesByTeam(team: string, limit: number): Promise<IMatch[]> {
     const promises = [
-      this.matchesCollection.ref.where('local', '==', team).where('marcadorLocal', '>=', 0).orderBy('marcadorLocal').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(limit).get(),
-      this.matchesCollection.ref.where('visita', '==', team).where('marcadorVisita', '>=', 0).orderBy('marcadorVisita').orderBy('fecha', 'desc').orderBy('hora', 'desc').limit(limit).get()
+      this.matchesCollection.ref
+        .where('local', '==', team)
+        .where('marcadorLocal', '>=', 0)
+        .orderBy('marcadorLocal')
+        .orderBy('fecha', 'desc')
+        .orderBy('hora', 'desc')
+        .limit(limit)
+        .get(),
+      this.matchesCollection.ref
+        .where('visita', '==', team)
+        .where('marcadorVisita', '>=', 0)
+        .orderBy('marcadorVisita')
+        .orderBy('fecha', 'desc')
+        .orderBy('hora', 'desc')
+        .limit(limit)
+        .get(),
     ];
     const responses = await Promise.all(promises);
-    const teamMatches = responses[0].docs.map(this.parseDoc).concat(responses[1].docs.map(this.parseDoc));
+    const teamMatches = responses[0].docs
+      .map(this.parseDoc)
+      .concat(responses[1].docs.map(this.parseDoc));
 
     return teamMatches.sort((a, b) => {
       if (b.fecha !== a.fecha) {
         return b.fecha - a.fecha;
       } else {
-        return b.hora - a.hora
+        return b.hora - a.hora;
       }
     });
   }
 
-
   async getMatchSheet(matchId: string): Promise<MatchSheet> {
-    const snapshot = await this.sheetsCollection.ref.where('matchId', '==', matchId).get();
+    const snapshot = await this.sheetsCollection.ref
+      .where('matchId', '==', matchId)
+      .get();
     const sheets = snapshot.docs.map(this.parseDoc);
-    if(sheets.length === 0) {
+    if (sheets.length === 0) {
       return {
-        id: '',
+        id: matchId,
         matchId: matchId,
         homeScore: 0,
         awayScore: 0,
         players: [],
         comments: '',
-        status: 'pending'
+        status: 'pending',
       } as MatchSheet;
     }
 
     return sheets[0];
   }
 
-
-
-
   async getMatch(local: string, visita: string): Promise<IMatch> {
-    const snapshot = await this.matchesCollection.ref.where('local', '==', local).where('visita', '==', visita).get();
+    const snapshot = await this.matchesCollection.ref
+      .where('local', '==', local)
+      .where('visita', '==', visita)
+      .get();
     const matches = snapshot.docs.map(this.parseDoc);
 
     if (matches.length === 0) {
@@ -176,14 +225,20 @@ export class MatchService {
     // Return the first match in the set with assigned URLs
     return {
       ...matchesWithUrls[0],
-      dateTime: this.parseDateTime(matchesWithUrls[0].fecha, matchesWithUrls[0].hora),
+      dateTime: this.parseDateTime(
+        matchesWithUrls[0].fecha,
+        matchesWithUrls[0].hora
+      ),
     } as IMatch;
   }
 
-
-
-  private async getFiltered(filterBy: string, value: string): Promise<IMatch[]> {
-    const snapshot = await this.matchesCollection.ref.where(filterBy, '==', value).get();
+  private async getFiltered(
+    filterBy: string,
+    value: string
+  ): Promise<IMatch[]> {
+    const snapshot = await this.matchesCollection.ref
+      .where(filterBy, '==', value)
+      .get();
     return snapshot.docs.map(this.parseDoc);
   }
 
@@ -205,18 +260,19 @@ export class MatchService {
   }
 
   async getLineup(teamName: string) {
-    const snapshot = await this.standingsCollection.ref.where('equipo', '==', teamName).orderBy('order').get();
+    const snapshot = await this.standingsCollection.ref
+      .where('equipo', '==', teamName)
+      .orderBy('order')
+      .get();
     const players = snapshot.docs.map(this.parseDoc);
     return players;
   }
 
   private parseDoc<T>(doc: QueryDocumentSnapshot<T>) {
-    return { id: doc.id, ...doc.data() }
+    return { id: doc.id, ...doc.data() };
   }
 
-
   private parseDate(excelDate: number): Date | null {
-
     return this.excelService.convertExcelDateToJSDate(excelDate);
   }
 
@@ -239,6 +295,4 @@ export class MatchService {
 
     return `${hourString}:${minuteString}`;
   }
-
-
 }

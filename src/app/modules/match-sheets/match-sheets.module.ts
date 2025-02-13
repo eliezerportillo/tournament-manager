@@ -9,7 +9,7 @@ import { SharedModule } from '@app-shared/shared.module';
 import { SheetComponent } from './sheet/sheet.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatchSheetPlayerListComponent } from './match-sheet-player-list/match-sheet-player-list.component';
@@ -19,10 +19,9 @@ import { PlayerCardReaderComponent } from '@app-shared/components/player-card-re
   declarations: [
     MatchSheetViewComponent,
     SheetComponent,
-    MatchSheetPlayerListComponent
+    MatchSheetPlayerListComponent,
   ],
   imports: [
-    
     SharedModule,
     FlexLayoutModule,
     MaterialModule,
@@ -30,8 +29,9 @@ import { PlayerCardReaderComponent } from '@app-shared/components/player-card-re
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
+    ReactiveFormsModule,
     MatSidenavModule,
-    PlayerCardReaderComponent
-  ]
+    PlayerCardReaderComponent,
+  ],
 })
-export class MatchSheetsModule { }
+export class MatchSheetsModule {}

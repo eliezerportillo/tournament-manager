@@ -56,7 +56,7 @@ export class PlayerService {
   }
 
   getPlayersByTeam(teamName: string): Observable<IPlayer[]> {
-    return this.db.collection<IPlayer>('Jugadores', ref => ref.orderBy('numero').where('equipo', '==', teamName))
+    return this.db.collection<IPlayer>('Jugadores', ref => ref.orderBy('jugador').where('equipo', '==', teamName))
       .snapshotChanges()
       .pipe(
         map(actions =>

@@ -1,10 +1,16 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { IMatch } from '@app-core/models/match';
-import { MatchSheet } from '@app-core/models/match-sheet';
+import { MatchSheet, MatchSheetPlayer } from '@app-core/models/match-sheet';
 import { IPlayer } from '@app-core/models/player';
 import { SheetPlayer } from '@app-core/models/sheet-player';
 import { MatchService } from '@app-core/services/match.service';
@@ -16,24 +22,31 @@ import { UpdatePlayerAssistsCommand } from '@app-core/services/update-player-ass
 import { UpdatePlayerRedCardCommand } from '@app-core/services/update-player-red-cards.command';
 import { UpdatePlayerYellowCardCommand } from '@app-core/services/update-player-yellow-card.command';
 import { UpdateScoreOnGoalEventCommand } from '@app-core/services/update-score-on-goal-event.command';
-import { combineLatest, concat, firstValueFrom, map, Observable, of, shareReplay } from 'rxjs';
-
-
+import { UpdateScoreOnOwnGoalEventCommand } from '@app-core/services/update-score-on-own-goal-event-command.service';
+import {
+  combineLatest,
+  concat,
+  firstValueFrom,
+  map,
+  Observable,
+  of,
+  shareReplay,
+} from 'rxjs';
 
 @Component({
   selector: 'app-sheet',
   templateUrl: './sheet.component.html',
-  styleUrls: ['./sheet.component.scss']
+  styleUrls: ['./sheet.component.scss'],
 })
 export class SheetComponent implements OnInit {
-
-  local: string = '';
-  visita: string = '';
+  local = '';
+  visita = '';
   matchSheet?: MatchSheet;
   loading = false;
   snackBar = inject(MatSnackBar);
 
   updateScoreOnGoalEventCommand = inject(UpdateScoreOnGoalEventCommand);
+  updateScoreOnOwnGoalEventCommand = inject(UpdateScoreOnOwnGoalEventCommand);
   updatePlayerYellowCardCommand = inject(UpdatePlayerYellowCardCommand);
   updatePlayerRedCardCommand = inject(UpdatePlayerRedCardCommand);
   updatePlayerAssistsCommand = inject(UpdatePlayerAssistsCommand);
@@ -49,62 +62,92 @@ export class SheetComponent implements OnInit {
   opened = true;
   zone = '';
 
-
-
-
-  constructor(private activatedRoute: ActivatedRoute, private matchService: MatchService) { }
-
-
-
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private matchService: MatchService
+  ) {}
 
   get totalYellowCards() {
-    return this.matchSheet?.players.map(p => p.yellowCards).reduce((acc, curr) => acc + curr, 0) ?? 0;
+    return (
+      this.matchSheet?.players
+        .map((p) => p.yellowCards)
+        .reduce((acc, curr) => acc + curr, 0) ?? 0
+    );
   }
 
   get totalRedCards() {
-    return this.matchSheet?.players.map(p => p.redCards).reduce((acc, curr) => acc + curr, 0) ?? 0;
+    return (
+      this.matchSheet?.players
+        .map((p) => p.redCards)
+        .reduce((acc, curr) => acc + curr, 0) ?? 0
+    );
   }
 
-  get canPublish() {  
-    return this.matchSheet?.status !== 'published' && this.matchSheet?.homeScore !== undefined && this.matchSheet?.awayScore !== undefined;
+  get canPublish() {
+    return (
+      this.matchSheet?.status !== 'published' &&
+      this.matchSheet?.homeScore !== undefined &&
+      this.matchSheet?.awayScore !== undefined
+    );
   }
 
   ngOnInit(): void {
-
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.subscribe((params) => {
       this.local = params['local'] ?? '';
       this.visita = params['visita'] ?? '';
       this.loadMatchSheet();
     });
 
     // Access grandparent route's params
-    this.zone = this.routeService.findZoneRouteParam(this.activatedRoute.snapshot);
+    this.zone = this.routeService.findZoneRouteParam(
+      this.activatedRoute.snapshot
+    );
 
-    this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.Medium, Breakpoints.Handset, Breakpoints.TabletPortrait])
-      .subscribe(result => {
+    this.breakpointObserver
+      .observe([
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Handset,
+        Breakpoints.TabletPortrait,
+      ])
+      .subscribe((result) => {
         if (result.matches) {
           this.opened = false;
         }
       });
   }
-  
-
-
 
   async loadMatchSheet() {
     this.loading = true;
     this.match = await this.matchService.getMatch(this.local, this.visita);
     this.matchSheet = await this.matchService.getMatchSheet(this.match.id);
 
-    this.homePlayers = await firstValueFrom(this.playerService.getPlayersByTeam(this.local).pipe(map((players) => this.createSheetPlayer(players, this.matchSheet?.players ?? []))));
-    this.awayPlayers = await firstValueFrom(this.playerService.getPlayersByTeam(this.visita).pipe(map((players) => this.createSheetPlayer(players, this.matchSheet?.players ?? []))));
-
+    this.homePlayers = await firstValueFrom(
+      this.playerService
+        .getPlayersByTeam(this.local)
+        .pipe(
+          map((players) =>
+            this.createSheetPlayer(players, this.matchSheet?.players ?? [])
+          )
+        )
+    );
+    this.awayPlayers = await firstValueFrom(
+      this.playerService
+        .getPlayersByTeam(this.visita)
+        .pipe(
+          map((players) =>
+            this.createSheetPlayer(players, this.matchSheet?.players ?? [])
+          )
+        )
+    );
 
     this.loading = false;
   }
 
   onAttendedEventScanner(playerId: string) {
-    const player = this.homePlayers.find(p => p.id === playerId) ?? this.awayPlayers.find(p => p.id === playerId);
+    const player =
+      this.homePlayers.find((p) => p.id === playerId) ??
+      this.awayPlayers.find((p) => p.id === playerId);
     if (!player) {
       return;
     }
@@ -112,48 +155,89 @@ export class SheetComponent implements OnInit {
   }
 
   attendanceNumber(players: SheetPlayer[]) {
-    return players.filter(p => p.attended).length;
+    return players.filter((p) => p.attended).length;
   }
 
-
-  onYellowCardEvent(event: { player: SheetPlayer, value: number }) {
+  onYellowCardEvent(event: { player: SheetPlayer; value: number }) {
     if (!this.matchSheet) {
       return;
     }
-    this.updatePlayerYellowCardCommand.execute(event.player, this.matchSheet.matchId, event.value);
+    this.updatePlayerYellowCardCommand.execute(
+      event.player,
+      this.matchSheet.matchId,
+      event.value
+    );
     this.modifyValue(event.player, 'amarillas', event.value);
-    const playerIndex = this.matchSheet.players.findIndex(p => p.playerId === event.player.id);
+    const playerIndex = this.matchSheet.players.findIndex(
+      (p) => p.playerId === event.player.id
+    );
     this.matchSheet.players[playerIndex].yellowCards += event.value;
-
   }
 
-  onRedCardEvent(event: { player: SheetPlayer, value: number }) {
+  onRedCardEvent(event: { player: SheetPlayer; value: number }) {
     if (!this.matchSheet) {
       return;
     }
-    this.updatePlayerRedCardCommand.execute(event.player, this.matchSheet.matchId, event.value);
+    this.updatePlayerRedCardCommand.execute(
+      event.player,
+      this.matchSheet.matchId,
+      event.value
+    );
     this.modifyValue(event.player, 'rojas', event.value);
-    const playerIndex = this.matchSheet.players.findIndex(p => p.playerId === event.player.id);
+    const playerIndex = this.matchSheet.players.findIndex(
+      (p) => p.playerId === event.player.id
+    );
     this.matchSheet.players[playerIndex].redCards += event.value;
   }
 
-  onAttendedEvent(event: { player: SheetPlayer, value: boolean }) {
+  onAttendedEvent(event: { player: SheetPlayer; value: boolean }) {
     if (!this.matchSheet) {
       return;
     }
 
-    this.registerPlayerAttendanceCommand.execute(event.player, this.matchSheet.matchId, event.value);
+    this.registerPlayerAttendanceCommand.execute(
+      event.player,
+      this.matchSheet.matchId,
+      event.value
+    );
+
+    // add player to the match sheet if not already there when value is true
+    if (event.value) {
+      if (
+        !this.matchSheet.players.find((p) => p.playerId === event.player.id)
+      ) {
+        this.matchSheet.players.push({
+          playerId: event.player.id,
+          team: event.player.equipo,
+          attended: event.value,
+          goals: 0,
+          ownGoals: 0,
+          assists: 0,
+          yellowCards: 0,
+          redCards: 0,
+        });
+      }
+    } else {
+      // remove player from the match sheet when value is false
+      this.matchSheet.players = this.matchSheet.players.filter(
+        (p) => p.playerId !== event.player.id
+      );
+    }
   }
 
-  onAssistEvent(event: { player: SheetPlayer, value: number }) {
+  onAssistEvent(event: { player: SheetPlayer; value: number }) {
     if (!this.matchSheet) {
       return;
     }
-    this.updatePlayerAssistsCommand.execute(event.player, this.matchSheet.matchId, event.value);
+    this.updatePlayerAssistsCommand.execute(
+      event.player,
+      this.matchSheet.matchId,
+      event.value
+    );
     this.modifyValue(event.player, 'asistencias', event.value);
   }
 
-  onGoalEvent(event: { player: SheetPlayer, value: number }) {
+  onGoalEvent(event: { player: SheetPlayer; value: number }) {
     if (!this.matchSheet) {
       return;
     }
@@ -162,35 +246,59 @@ export class SheetComponent implements OnInit {
       return;
     }
 
-
-    this.updateScoreOnGoalEventCommand.execute(event.player, this.match, event.value);
+    this.updateScoreOnGoalEventCommand.execute(
+      event.player,
+      this.match,
+      event.value
+    );
     this.modifyValue(event.player, 'goles', event.value);
-    this.matchSheet.homeScore += event.player.equipo === this.local ? event.value : 0;
-    this.matchSheet.awayScore += event.player.equipo === this.visita ? event.value : 0;
-
+    this.matchSheet.homeScore +=
+      event.player.equipo === this.local ? event.value : 0;
+    this.matchSheet.awayScore +=
+      event.player.equipo === this.visita ? event.value : 0;
   }
 
-  modifyValue(player: SheetPlayer, key: 'goles' | 'asistencias' | 'amarillas' | 'rojas', value: number) {
+  onOwnGoalEvent(event: { player: SheetPlayer; value: number }) {
+    if (!this.matchSheet) {
+      return;
+    }
+
+    if (!this.match) {
+      return;
+    }
+
+    this.updateScoreOnOwnGoalEventCommand.execute(
+      event.player,
+      this.match,
+      event.value
+    );
+    this.modifyValue(event.player, 'autogoles', event.value);
+    this.matchSheet.homeScore +=
+      event.player.equipo === this.match.visita ? event.value : 0;
+    this.matchSheet.awayScore +=
+      event.player.equipo === this.match.local ? event.value : 0;
+  }
+
+  modifyValue(
+    player: SheetPlayer,
+    key: 'goles' | 'asistencias' | 'amarillas' | 'rojas' | 'autogoles',
+    value: number
+  ) {
     if (player && player[key] !== undefined) {
       player[key] = (player[key] ?? 0) + value;
     }
   }
 
-
-  createSheetPlayer(players: IPlayer[], sheetPlayers: {
-    playerId: string,
-    team: string,
-    attended: boolean,
-    goals: number,
-    assists: number,
-    yellowCards: number,
-    redCards: number
-  }[]): SheetPlayer[] {
-    const mappedPlayers = players.map(player => {
-      const existingPlayer = sheetPlayers.find(p => p.playerId === player.id);
+  createSheetPlayer(
+    players: IPlayer[],
+    sheetPlayers: MatchSheetPlayer[]
+  ): SheetPlayer[] {
+    const mappedPlayers = players.map((player) => {
+      const existingPlayer = sheetPlayers.find((p) => p.playerId === player.id);
       return {
         ...player,
         goles: existingPlayer?.goals ?? 0,
+        autogoles: existingPlayer?.ownGoals ?? 0,
         asistencias: existingPlayer?.assists ?? 0,
         amarillas: existingPlayer?.yellowCards ?? 0,
         rojas: existingPlayer?.redCards ?? 0,
@@ -199,11 +307,21 @@ export class SheetComponent implements OnInit {
     });
 
     return mappedPlayers;
-
   }
 
   async publishResults() {
     if (!this.matchSheet || !this.match) {
+      return;
+    }
+
+    if (this.matchSheet.players.length === 0) {
+      this.snackBar.open(
+        'No hay asistencia de jugadores para publicar resultados',
+        'Cerrar',
+        {
+          duration: 3000,
+        }
+      );
       return;
     }
     this.loading = true;
@@ -215,8 +333,4 @@ export class SheetComponent implements OnInit {
       duration: 3000,
     });
   }
-
 }
-
-
-

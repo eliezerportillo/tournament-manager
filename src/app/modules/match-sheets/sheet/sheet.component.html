@@ -4,7 +4,7 @@
     </button>
     Cédula Deportiva
 
-    <span class="spacer"></span>    
+    <span class="spacer"></span>
     <button mat-raised-button color="accent" (click)="publishResults()" [disabled]="!canPublish || loading">
         Publicar Resultados
     </button>
@@ -90,13 +90,13 @@
                     <textarea matInput placeholder="Escribe comentarios finales del partido." rows="10"
                         [(ngModel)]="matchSheet.comments"></textarea>
                 </mat-form-field>
-                
+
 
                 <mat-nav-list>
                     <a mat-list-item [routerLink]="['/' + zone + '/sheets']">
                         <mat-icon matListItemIcon>list</mat-icon>
                         <span>Ver todas las cédulas</span>
-                    </a>                    
+                    </a>
                 </mat-nav-list>
             </div>
         </ng-container>
@@ -130,8 +130,8 @@
                 <ng-template matTabContent>
                     <ng-container *ngIf="homePlayers">
                         <app-match-sheet-player-list [players]="homePlayers" (onGoalEvent)="onGoalEvent($event)"
-                            (onAssistEvent)="onAssistEvent($event)" (onYellowCardEvent)="onYellowCardEvent($event)"
-                            (onRedCardEvent)="onRedCardEvent($event)"
+                            (onOwnGoalEvent)="onOwnGoalEvent($event)" (onAssistEvent)="onAssistEvent($event)"
+                            (onYellowCardEvent)="onYellowCardEvent($event)" (onRedCardEvent)="onRedCardEvent($event)"
                             (onAttendanceEvent)="onAttendedEvent($event)"></app-match-sheet-player-list>
                     </ng-container>
                 </ng-template>
@@ -155,8 +155,8 @@
 
                     <ng-container *ngIf="awayPlayers">
                         <app-match-sheet-player-list [players]="awayPlayers" (onGoalEvent)="onGoalEvent($event)"
-                            (onAssistEvent)="onAssistEvent($event)" (onYellowCardEvent)="onYellowCardEvent($event)"
-                            (onRedCardEvent)="onRedCardEvent($event)"
+                            (onOwnGoalEvent)="onOwnGoalEvent($event)" (onAssistEvent)="onAssistEvent($event)"
+                            (onYellowCardEvent)="onYellowCardEvent($event)" (onRedCardEvent)="onRedCardEvent($event)"
                             (onAttendanceEvent)="onAttendedEvent($event)"></app-match-sheet-player-list>
                     </ng-container>
                 </ng-template>
@@ -165,7 +165,5 @@
 
 
         </mat-tab-group>
-
-
     </mat-drawer-content>
 </mat-drawer-container>

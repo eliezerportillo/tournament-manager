@@ -23,10 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
-
-
-
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [],
@@ -54,7 +51,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatInputModule,
     MatDialogModule,
     MatCheckboxModule,
-    MatSlideToggleModule
-  ]
+    MatSlideToggleModule,
+    MatBadgeModule,
+  ],
 })
-export class MaterialModule { }
+export class MaterialModule {}
