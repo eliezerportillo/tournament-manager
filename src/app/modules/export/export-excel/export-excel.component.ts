@@ -99,6 +99,7 @@ class TeamExportedCollection extends ExportedCollection<ITeam> {
   override map(x: ITeam): any {
     return {
       nombre: x.nombre,
+      grupo: x.grupo,
       PJ: x.PJ,
       G: x.G,
       E: x.E,
@@ -116,14 +117,19 @@ class PlayerExportedCollection extends ExportedCollection<IPlayer> {
   override map(x: IPlayer): any {
     return {
       equipo: x.equipo,
+      numero: x.numero,
       jugador: x.jugador,
+      fechaNacimiento: x.fechaNacimiento,
       capitan: x.capitan ? 1 : 0,
       portero: x.portero ? 1 : 0,
       noBautizado: x.noBautizado,
       amarillas: x.amarillas,
       rojas: x.rojas,
       goles: x.goles,
+      autogoles: x.autogoles,
+      asistencias: x.asistencias,
       correo: x.correo,
+      celular: x.celular,
     };
   }
 }
@@ -131,6 +137,7 @@ class PlayerExportedCollection extends ExportedCollection<IPlayer> {
 class MatchExportedCollection extends ExportedCollection<IMatch> {
   override map(x: IMatch): any {
     return {
+      fase: x.fase,
       etapa: x.etapa,
       ordenEtapa: x.ordenEtapa,
       esClasificacion: x.esClasificacion,
@@ -142,6 +149,7 @@ class MatchExportedCollection extends ExportedCollection<IMatch> {
       fecha: x.fecha,
       hora: x.hora,
       campo: x.campo,
+      comisionado: x.comisionado,
     };
   }
 }

@@ -18,6 +18,7 @@ export interface IPlayer extends INamedObject {
   dateBirth: Date | null;
 
   noAlinea: boolean | number;
+  celular?: string;
 }
 
 export enum PlayerType {
@@ -46,6 +47,7 @@ export class Player implements IPlayer {
     this.dateBirth = player.dateBirth;
     this.numero = player.numero;
     this.noAlinea = player.noAlinea;
+    this.celular = player.celular;
   }
 
   numero: string;
@@ -66,4 +68,5 @@ export class Player implements IPlayer {
   id?: any;
   fechaNacimiento: number | undefined;
   dateBirth: Date | null;
+  celular?: string | undefined;
 }
