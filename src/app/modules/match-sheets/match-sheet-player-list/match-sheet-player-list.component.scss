@@ -87,9 +87,13 @@ mat-cell {
 }
 
 .cannot-play {
-    border-left: 4px solid var(--warn-color);
+    border-left: 8px solid var(--red-card-color) !important;
 }
 
 .can-play {
     border-left: 4px solid var(--primary-color);
+}
+
+.no-bautizado {
+    border-left: 6px solid var(--accent-color);
 }

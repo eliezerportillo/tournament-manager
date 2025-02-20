@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { MatchSheet } from '@app-core/models/match-sheet';
+import { IMatchSheet, MatchSheetPlayer } from '@app-core/models/match-sheet';
 import { SheetPlayer } from '@app-core/models/sheet-player';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class UpdatePlayerYellowCardCommand {
     newYellowCards: number
   ): Promise<void> {
     const matchSheetRef = this.firestore
-      .collection<MatchSheet>(this.matchSheetsCollectionName)
+      .collection<IMatchSheet>(this.matchSheetsCollectionName)
       .doc(matchId);
 
     await this.firestore.firestore.runTransaction(async (transaction) => {
@@ -27,7 +27,7 @@ export class UpdatePlayerYellowCardCommand {
         throw new Error(`MatchSheet with matchId ${matchId} does not exist.`);
       }
 
-      const matchSheet = matchSheetDoc.data() as MatchSheet;
+      const matchSheet = matchSheetDoc.data() as IMatchSheet;
       const playerIndex = matchSheet.players.findIndex(
         (p) => p.playerId === player.id
       );
@@ -35,16 +35,13 @@ export class UpdatePlayerYellowCardCommand {
       if (playerIndex !== -1) {
         matchSheet.players[playerIndex].yellowCards += newYellowCards;
       } else {
-        matchSheet.players.push({
-          playerId: player.id,
-          team: player.equipo,
-          attended: false,
-          ownGoals: 0,
-          goals: 0,
-          assists: 0,
-          yellowCards: newYellowCards,
-          redCards: 0,
-        });
+        const sheetPlayer = new MatchSheetPlayer(
+          player.id,
+          player.jugador,
+          player.equipo
+        );
+        sheetPlayer.yellowCards = newYellowCards;
+        matchSheet.players.push(sheetPlayer.asPlainObject());
       }
 
       transaction.update(matchSheetRef.ref, { players: matchSheet.players });

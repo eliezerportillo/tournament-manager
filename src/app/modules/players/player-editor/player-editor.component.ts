@@ -63,6 +63,10 @@ export class PlayerEditorComponent implements IModalComponent {
     return this.form.get('goals') as FormControl;
   }
 
+  get assists() {
+    return this.form.get('assists') as FormControl;
+  }
+
   get ownGoals() {
     return this.form.get('ownGoals') as FormControl;
   }
@@ -167,6 +171,7 @@ export class PlayerEditorComponent implements IModalComponent {
 
   private async updatePlayer() {
     this.data.player.goles = this.form.value?.goals;
+    this.data.player.asistencias = this.form.value?.assists;
     this.data.player.autogoles = this.form.value?.ownGoals;
     this.data.player.amarillas = this.form.value?.yellowCards;
     this.data.player.rojas = this.form.value?.redCards;

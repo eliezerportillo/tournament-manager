@@ -35,6 +35,8 @@ export class Player implements IPlayer {
     this.amarillas = player.amarillas;
     this.rojas = player.rojas;
     this.goles = player.goles;
+    this.autogoles = player.autogoles;
+    this.asistencias = player.asistencias;
     this.capitan = player.capitan;
     this.portero = player.portero;
     this.noBautizado = player.noBautizado;
@@ -54,7 +56,9 @@ export class Player implements IPlayer {
   name: string;
   amarillas?: number | undefined;
   rojas?: number | undefined;
-  goles?: number | undefined;
+  goles?: number;
+  autogoles?: number | undefined;
+  asistencias?: number | undefined;
   capitan?: boolean | number | undefined;
   portero?: number | undefined;
   noBautizado?: boolean | undefined | number;

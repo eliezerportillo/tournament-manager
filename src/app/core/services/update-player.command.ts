@@ -12,6 +12,7 @@ export class UpdatePlayerCommand {
     const ref = this.db.firestore.collection('Jugadores').doc(player.id);
     await ref.update({
       goles: player.goles,
+      asistencias: player.asistencias,
       amarillas: player.amarillas,
       rojas: player.rojas,
       numero: player.numero,

@@ -25,9 +25,12 @@ export class MatchSheetViewComponent implements OnInit {
   constructor(private matchesService: MatchService) {}
 
   ngOnInit(): void {
-    const storedMatches = localStorage.getItem('matchesByDate');
-    const matchesByDate = storedMatches ? JSON.parse(storedMatches) : {};
-    this.matchesByDate = matchesByDate;
+    const lastSelectedDate = localStorage.getItem('matches-selectedDate');
+    if (lastSelectedDate) {
+      this.dateControl.setValue(new Date(lastSelectedDate));
+    }
+    // const matchesByDate = storedMatches ? JSON.parse(storedMatches) : {};
+    // this.matchesByDate = matchesByDate;
 
     this.dateControl.valueChanges
       .pipe(tap((date) => this.getMatchesByDate(date)))
@@ -44,12 +47,14 @@ export class MatchSheetViewComponent implements OnInit {
   }
 
   async getMatchesByDate(date: Date) {
-    const dateString = date.toISOString().split('T')[0];
+    const dateString = date.toISOString();
+    localStorage.setItem('matches-selectedDate', dateString);
+    const dateISO = date.toISOString().split('T')[0];
 
-    if (!this.matchesByDate[dateString]) {
+    if (!this.matchesByDate[dateISO]) {
       const matches = await this.matchesService.getMatchesByDate(date);
-      this.matchesByDate[dateString] = matches;
-      localStorage.setItem('matchesByDate', JSON.stringify(this.matchesByDate));
+      this.matchesByDate[dateISO] = matches;
+      // localStorage.setItem('matchesByDate', JSON.stringify(this.matchesByDate));
     }
   }
 

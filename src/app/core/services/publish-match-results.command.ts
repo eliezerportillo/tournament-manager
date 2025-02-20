@@ -1,4 +1,4 @@
-import { MatchSheet } from '@app-core/models/match-sheet';
+import { IMatchSheet } from '@app-core/models/match-sheet';
 import { IPlayer } from '@app-core/models/player';
 import { IMatch } from '@app-core/models/match';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 export class PublishMatchResultsCommand {
   constructor(private firestore: AngularFirestore) {}
 
-  async execute(sheet: MatchSheet, match: IMatch): Promise<void> {
+  async execute(sheet: IMatchSheet, match: IMatch): Promise<void> {
     if (!match.id) {
       throw new Error('Match ID is required');
     }
@@ -35,11 +35,28 @@ export class PublishMatchResultsCommand {
       if (!player.playerId) {
         throw new Error('Player ID is required');
       }
-      const playerRef = this.firestore
+      let playerRef = this.firestore
         .collection('Jugadores')
         .doc(player.playerId).ref;
-      const playerDoc = await playerRef.get();
-      const playerData = playerDoc.data() as IPlayer;
+      let playerDoc = await playerRef.get();
+      let playerData = playerDoc.data() as IPlayer;
+
+      if (!playerDoc.exists) {
+        const playerQuerySnapshot = await this.firestore
+          .collection('Jugadores')
+          .ref.where('jugador', '==', player.playerName)
+          .limit(1)
+          .get();
+
+        if (playerQuerySnapshot.empty) {
+          throw new Error(
+            `Player with ID ${player.playerId} or name ${player.playerName} not found`
+          );
+        }
+
+        playerRef = playerQuerySnapshot.docs[0].ref;
+        playerData = playerQuerySnapshot.docs[0].data() as IPlayer;
+      }
 
       batch.update(playerRef, {
         goles: (playerData.goles || 0) + player.goals,
@@ -50,7 +67,9 @@ export class PublishMatchResultsCommand {
       });
     });
 
-    await Promise.all(playerUpdatePromises);
+    for (const promise of playerUpdatePromises) {
+      await promise;
+    }
 
     // Update match status
     const matchSheetRef = this.firestore.collection('sheets').doc(sheet.id).ref;

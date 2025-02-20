@@ -1,0 +1,42 @@
+<div *ngIf="player" fxFlex fxLayout="row" fxLayoutAlign="end center">
+
+    <ng-container *ngIf="player.rojas">
+        <span *ngIf="showCount">{{player.rojas}}</span>
+        <mat-icon class="red-cards">crop_portrait</mat-icon>
+    </ng-container>
+
+
+    <ng-container *ngIf="player.amarillas">
+        <span *ngIf="showCount">{{player.amarillas}}</span>
+        <mat-icon class="yellow-cards">crop_portrait</mat-icon>
+    </ng-container>
+
+
+    <ng-container *ngIf="player.goles">
+        <span *ngIf="showCount">{{player.goles}}</span>
+        <mat-icon class="goals">sports_soccer</mat-icon>
+    </ng-container>
+
+
+    <ng-container *ngIf="player.autogoles">
+        <span *ngIf="showCount">{{player.autogoles}}</span>
+        <mat-icon color="warn">sports_soccer</mat-icon>
+    </ng-container>
+
+
+    <ng-container *ngIf="player.asistencias">
+        <span *ngIf="showCount">{{player.asistencias}}</span>
+        <mat-icon class="assists">emoji_people</mat-icon>
+    </ng-container>
+
+
+    <ng-container *ngIf="player.portero">
+        <img class="goalkeeper" src="assets/gloves.png" alt="Portero" title="Portero">
+    </ng-container>
+
+
+    <ng-container *ngIf="player.capitan">
+        <mat-icon class="cap">star</mat-icon>
+    </ng-container>
+
+</div>

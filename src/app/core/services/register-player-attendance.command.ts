@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IMatch } from '@app-core/models/match';
-import { MatchSheet } from '@app-core/models/match-sheet';
+import {
+  IMatchSheet,
+  IMatchSheetPlayer,
+  MatchSheet,
+  MatchSheetPlayer,
+} from '@app-core/models/match-sheet';
 import { IPlayer } from '@app-core/models/player';
 import { SheetPlayer } from '@app-core/models/sheet-player';
 
@@ -15,18 +20,19 @@ export class RegisterPlayerAttendanceCommand {
 
   async execute(
     player: SheetPlayer,
-    matchId: string,
+    match: IMatch,
     attended: boolean
   ): Promise<void> {
+    const matchId = match.id;
     const matchSheetRef = this.firestore
-      .collection<MatchSheet>(this.matchSheetsCollectionName)
+      .collection<IMatchSheet>(this.matchSheetsCollectionName)
       .doc(matchId);
 
     await this.firestore.firestore.runTransaction(async (transaction) => {
       const matchSheetDoc = await transaction.get(matchSheetRef.ref);
 
       if (matchSheetDoc.exists) {
-        const matchSheet = matchSheetDoc.data() as MatchSheet;
+        const matchSheet = matchSheetDoc.data() as IMatchSheet;
         const playerIndex = matchSheet.players.findIndex(
           (p) => p.playerId === player.id
         );
@@ -34,42 +40,27 @@ export class RegisterPlayerAttendanceCommand {
         if (playerIndex !== -1) {
           matchSheet.players[playerIndex].attended = attended;
         } else {
-          matchSheet.players.push({
-            playerId: player.id,
-            team: player.equipo,
-            attended: attended,
-            ownGoals: 0,
-            goals: 0,
-            assists: 0,
-            yellowCards: 0,
-            redCards: 0,
-          });
+          const sheetPlayer = new MatchSheetPlayer(
+            player.id,
+            player.jugador,
+            player.equipo,
+            attended
+          );
+          matchSheet.players.push(sheetPlayer.asPlainObject());
         }
 
         transaction.update(matchSheetRef.ref, { players: matchSheet.players });
       } else {
-        const newMatchSheet: MatchSheet = {
-          id: matchId,
-          matchId: matchId,
-          homeScore: 0,
-          awayScore: 0,
-          players: [
-            {
-              playerId: player.id,
-              team: player.equipo,
-              attended: attended,
-              ownGoals: 0,
-              goals: 0,
-              assists: 0,
-              yellowCards: 0,
-              redCards: 0,
-            },
-          ],
-          comments: '',
-          status: 'pending',
-        };
-
-        transaction.set(matchSheetRef.ref, newMatchSheet);
+        const sheetPlayer = new MatchSheetPlayer(
+          player.id,
+          player.jugador,
+          player.equipo,
+          attended
+        );
+        const newMatchSheet = new MatchSheet(matchId, [sheetPlayer]);
+        newMatchSheet.homeTeam = match.local;
+        newMatchSheet.awayTeam = match.visita;
+        transaction.set(matchSheetRef.ref, newMatchSheet.asPlainObject());
       }
     });
   }

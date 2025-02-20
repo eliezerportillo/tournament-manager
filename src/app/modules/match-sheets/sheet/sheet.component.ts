@@ -10,7 +10,11 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { IMatch } from '@app-core/models/match';
-import { MatchSheet, MatchSheetPlayer } from '@app-core/models/match-sheet';
+import {
+  IMatchSheet,
+  IMatchSheetPlayer,
+  MatchSheetPlayer,
+} from '@app-core/models/match-sheet';
 import { IPlayer } from '@app-core/models/player';
 import { SheetPlayer } from '@app-core/models/sheet-player';
 import { MatchService } from '@app-core/services/match.service';
@@ -41,7 +45,7 @@ import {
 export class SheetComponent implements OnInit {
   local = '';
   visita = '';
-  matchSheet?: MatchSheet;
+  matchSheet?: IMatchSheet;
   loading = false;
   snackBar = inject(MatSnackBar);
 
@@ -120,7 +124,7 @@ export class SheetComponent implements OnInit {
   async loadMatchSheet() {
     this.loading = true;
     this.match = await this.matchService.getMatch(this.local, this.visita);
-    this.matchSheet = await this.matchService.getMatchSheet(this.match.id);
+    this.matchSheet = await this.matchService.getMatchSheet(this.match);
 
     this.homePlayers = await firstValueFrom(
       this.playerService
@@ -191,13 +195,13 @@ export class SheetComponent implements OnInit {
   }
 
   onAttendedEvent(event: { player: SheetPlayer; value: boolean }) {
-    if (!this.matchSheet) {
+    if (!this.matchSheet || !this.match) {
       return;
     }
 
     this.registerPlayerAttendanceCommand.execute(
       event.player,
-      this.matchSheet.matchId,
+      this.match,
       event.value
     );
 
@@ -206,16 +210,13 @@ export class SheetComponent implements OnInit {
       if (
         !this.matchSheet.players.find((p) => p.playerId === event.player.id)
       ) {
-        this.matchSheet.players.push({
-          playerId: event.player.id,
-          team: event.player.equipo,
-          attended: event.value,
-          goals: 0,
-          ownGoals: 0,
-          assists: 0,
-          yellowCards: 0,
-          redCards: 0,
-        });
+        const player = new MatchSheetPlayer(
+          event.player.id,
+          event.player.jugador,
+          event.player.equipo,
+          event.value
+        );
+        this.matchSheet.players.push(player);
       }
     } else {
       // remove player from the match sheet when value is false
@@ -291,10 +292,12 @@ export class SheetComponent implements OnInit {
 
   createSheetPlayer(
     players: IPlayer[],
-    sheetPlayers: MatchSheetPlayer[]
+    sheetPlayers: IMatchSheetPlayer[]
   ): SheetPlayer[] {
     const mappedPlayers = players.map((player) => {
-      const existingPlayer = sheetPlayers.find((p) => p.playerId === player.id);
+      const existingPlayer = sheetPlayers.find(
+        (p) => p.playerId === player.id || p.playerName === player.jugador
+      );
       return {
         ...player,
         goles: existingPlayer?.goals ?? 0,

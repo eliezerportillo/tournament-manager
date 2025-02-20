@@ -28,9 +28,8 @@ import { BatchCreatorComponent } from './components/batch-creator/batch-creator.
 import { PlayerPhotoComponent } from './components/player-photo/player-photo.component';
 import { BannerComponent } from './components/banner/banner.component';
 import { AgePipe } from './pipes/age.pipe';
-
-
-
+import { PlayerStatsComponent } from './components/player-stats/player-stats.component';
+import { FormDialogComponent } from './form-dialog/form-dialog.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +58,8 @@ import { AgePipe } from './pipes/age.pipe';
     PlayerPhotoComponent,
     BannerComponent,
     AgePipe,
+    PlayerStatsComponent,
+    FormDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -66,7 +67,7 @@ import { AgePipe } from './pipes/age.pipe';
     MaterialModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports: [
     CommonModule,
@@ -93,8 +94,10 @@ import { AgePipe } from './pipes/age.pipe';
     BatchCreatorComponent,
     PlayerPhotoComponent,
     BannerComponent,
-    AgePipe
+    AgePipe,
+    PlayerStatsComponent,
+    FormDialogComponent,
   ],
-  providers: [DatePipe, AgePipe]
+  providers: [DatePipe, AgePipe],
 })
-export class SharedModule { }
+export class SharedModule {}

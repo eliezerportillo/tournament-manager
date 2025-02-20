@@ -11,7 +11,7 @@ import { LineUp } from '@app-core/models/lineup';
 import { Group, Grouper } from '@app-core/models/group';
 import { TeamService } from './team.service';
 import { ExcelService } from './excel.service';
-import { MatchSheet } from '@app-core/models/match-sheet';
+import { IMatchSheet, MatchSheet } from '@app-core/models/match-sheet';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,7 @@ export class MatchService {
   private excelService = inject(ExcelService);
 
   private matchesCollection: AngularFirestoreCollection<IMatch>;
-  private sheetsCollection: AngularFirestoreCollection<MatchSheet>;
+  private sheetsCollection: AngularFirestoreCollection<IMatchSheet>;
   private matchesCache$?: Observable<IMatch[]>;
   private bracketCache$?: Observable<IMatch[]>;
   private standingsCollection: AngularFirestoreCollection<LineUp>;
@@ -32,7 +32,7 @@ export class MatchService {
     this.matchesCollection = this.db.collection<IMatch>('Partidos', (ref) =>
       ref.orderBy('fecha').where('esClasificacion', '==', 0)
     );
-    this.sheetsCollection = this.db.collection<MatchSheet>('sheets');
+    this.sheetsCollection = this.db.collection<IMatchSheet>('sheets');
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
     this.bracketCollection = this.db.collection<IMatch>('Partidos', (ref) =>
       ref
@@ -188,21 +188,26 @@ export class MatchService {
     });
   }
 
-  async getMatchSheet(matchId: string): Promise<MatchSheet> {
-    const snapshot = await this.sheetsCollection.ref
-      .where('matchId', '==', matchId)
+  async getMatchSheet(match: IMatch): Promise<IMatchSheet> {
+    let snapshot = await this.sheetsCollection.ref
+      .where('matchId', '==', match.id)
       .get();
-    const sheets = snapshot.docs.map(this.parseDoc);
+    let sheets = snapshot.docs.map(this.parseDoc);
+
     if (sheets.length === 0) {
-      return {
-        id: matchId,
-        matchId: matchId,
-        homeScore: 0,
-        awayScore: 0,
-        players: [],
-        comments: '',
-        status: 'pending',
-      } as MatchSheet;
+      snapshot = await this.sheetsCollection.ref
+        .where('homeTeam', '==', match.local)
+        .where('awayTeam', '==', match.visita)
+        .get();
+      sheets = snapshot.docs.map(this.parseDoc);
+    }
+
+    if (sheets.length === 0) {
+      const matchSheet = new MatchSheet(match.id);
+      matchSheet.homeTeam = match.local;
+      matchSheet.awayTeam = match.visita;
+
+      return matchSheet;
     }
 
     return sheets[0];

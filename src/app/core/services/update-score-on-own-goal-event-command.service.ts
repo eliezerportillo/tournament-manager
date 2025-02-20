@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IMatch } from '@app-core/models/match';
-import { MatchSheet } from '@app-core/models/match-sheet';
+import { IMatchSheet } from '@app-core/models/match-sheet';
 import { SheetPlayer } from '@app-core/models/sheet-player';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class UpdateScoreOnOwnGoalEventCommand {
     newOwnGoals: number
   ): Promise<void> {
     const matchSheetRef = this.firestore
-      .collection<MatchSheet>(this.matchSheetsCollectionName)
+      .collection<IMatchSheet>(this.matchSheetsCollectionName)
       .doc(match.id);
 
     await this.firestore.firestore.runTransaction(async (transaction) => {
@@ -27,7 +27,7 @@ export class UpdateScoreOnOwnGoalEventCommand {
         throw new Error(`MatchSheet with matchId ${match} does not exist.`);
       }
 
-      const matchSheet = matchSheetDoc.data() as MatchSheet;
+      const matchSheet = matchSheetDoc.data() as IMatchSheet;
       const playerIndex = matchSheet.players.findIndex(
         (p) => p.playerId === player.id && p.team === player.equipo
       );

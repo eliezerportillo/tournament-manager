@@ -1,0 +1,9 @@
+form {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 1rem;
+}
+mat-toolbar {
+    background-color: var(--base-color);
+}
