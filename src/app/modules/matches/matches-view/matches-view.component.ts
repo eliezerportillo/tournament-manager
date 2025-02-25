@@ -16,7 +16,7 @@ import { MatchStandingComponent } from '../match-standing/match-standing.compone
 })
 export class MatchesViewComponent implements AfterViewInit {
   router: Router = inject(Router);
-  route: ActivatedRoute = inject(ActivatedRoute);
+  activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   scrollService: MatchScrollService = inject(MatchScrollService);
   matches$: Observable<Group<IMatch>[]>;
 
@@ -34,7 +34,7 @@ export class MatchesViewComponent implements AfterViewInit {
 
   onSelected(match: IMatch) {
     if (Match.noPlay(match)) return;
-    this.router.navigate(['view'], { relativeTo: this.route, queryParams: { local: match.local, visita: match.visita } });
+    this.router.navigate(['view'], { relativeTo: this.activatedRoute, queryParams: { local: match.local, visita: match.visita } });
   }
 
   isSame(match: IMatch): boolean {    

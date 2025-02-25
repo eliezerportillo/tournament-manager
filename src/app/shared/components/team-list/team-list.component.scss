@@ -42,7 +42,6 @@ td.mat-column-position {
     }
 }
 
-
 .widget {
     border-radius: 8px;
 
@@ -68,16 +67,19 @@ td.mat-column-position {
         border-bottom-style: none;
     }
 
-
     th {
         font-weight: lighter;
     }
 }
 
 .highlighted-passed {
-    border-left: 4px solid var(--primary-color);        
+    border-left: 4px solid var(--primary-color);
+}
+
+.highlighted-passed-2 {
+    border-left: 4px solid var(--accent-color);
 }
 
 .highlighted-not-passed {
-    border-left: 4px solid var(--warn-color);        
+    border-left: 4px solid var(--warn-color);
 }

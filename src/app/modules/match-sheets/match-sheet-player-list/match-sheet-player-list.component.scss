@@ -1,0 +1,99 @@
+table {
+    width: 100%;
+    max-height: calc(100vh - (56px + 48px));
+    overflow: auto;
+}
+
+.mat-column-expand {
+    flex: 0 0 48px !important;
+    justify-content: right;
+    padding: 0px;
+}
+
+.mat-column-info {
+    flex: 0 0 auto !important;
+    min-width: 80px !important;
+    justify-content: right;
+    padding: 0px;
+}
+
+.mat-column-number {
+    flex: 0 0 33px !important;
+    justify-content: right;
+    padding: 0;
+}
+
+.mat-column-name1 {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    // flex: 0 0 250px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.mat-column-attended {
+    flex: 0 0 58px !important;
+}
+
+.mat-column-noAlinea1 {
+    flex: 0 0 150px !important;
+    width: 150px !important;
+}
+
+.mat-mdc-table-sticky-border-elem-right {
+    border-left: 1px solid #e0e0e0;
+}
+
+.mat-mdc-table-sticky-border-elem-left {
+    border-right: 1px solid #e0e0e0;
+}
+
+mat-form-field {
+    margin-top: 1rem;
+}
+
+mat-header-cell,
+mat-cell {
+    padding: 0 8px !important;
+}
+
+.disabled-row {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.player-detail {
+    overflow: hidden;
+}
+
+.player-controls {
+    min-height: 150px;
+}
+
+.player-row {
+    border-bottom-width: 0;
+}
+
+.player-detail-row {
+    height: 0;
+    min-height: 0;
+    background-color: whitesmoke !important;
+}
+
+.example-expanded-row {
+    height: auto;
+    background-color: whitesmoke !important;
+}
+
+.cannot-play {
+    border-left: 8px solid var(--red-card-color) !important;
+}
+
+.can-play {
+    border-left: 4px solid var(--primary-color);
+}
+
+.no-bautizado {
+    border-left: 6px solid var(--accent-color);
+}

@@ -62,7 +62,7 @@ export class PlayerService {
         map(actions =>
           actions.map(action => {
             const obj = { id: action.payload.doc.id, ...action.payload.doc.data() } as IPlayer;
-            obj.dateBirth = this.excelService.parseDate(obj.fechaNacimiento);
+            obj.dateBirth = this.excelService.convertExcelDateToJSDate(obj.fechaNacimiento);
             return new Player(obj);
           })
         )
@@ -108,7 +108,7 @@ export class PlayerService {
     const snapshot = await query.get();
     const data = snapshot.docs.map(doc => {
       const obj = { id: doc.id, ...doc.data() } as IPlayer;
-      obj.dateBirth = this.excelService.parseDate(obj.fechaNacimiento);
+      obj.dateBirth = this.excelService.convertExcelDateToJSDate(obj.fechaNacimiento);
       return new Player(obj);
     });
     console.log(`${data.length} Players read filtered by ${filterBy} ${op} ${value}`);

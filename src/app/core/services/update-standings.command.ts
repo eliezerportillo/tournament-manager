@@ -4,18 +4,28 @@ import { ITeam } from '@app-core/models/team';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UpdateStandingsCommand {
+  constructor(private db: AngularFirestore) {}
 
-
-
-  constructor(private db: AngularFirestore) { }
-
-  async execute(matches: IMatch[], previous: ITeam[]) {
+  async execute(
+    matches: IMatch[],
+    previous: ITeam[],
+    teamsBonusFairPlay: string[]
+  ) {
     const standings = this.calcKardex(matches, previous);
+    this.processBonusFairPlay(standings, teamsBonusFairPlay);
     await this.saveDataToFirestore(standings);
     return standings;
+  }
+
+  processBonusFairPlay(standings: ITeam[], teamsBonusFairPlay: string[]) {
+    for (const team of standings) {
+      if (teamsBonusFairPlay.includes(team.nombre)) {
+        team.Pts += 1;
+      }
+    }
   }
 
   calcKardex(matches: IMatch[], previous: ITeam[]) {
@@ -26,10 +36,8 @@ export class UpdateStandingsCommand {
   }
 
   private calcTrend(previous: ITeam[], news: ITeam[]) {
-
-
     news.forEach((team, index) => {
-      const prevIndex = previous.findIndex(x => x.nombre == team.nombre);
+      const prevIndex = previous.findIndex((x) => x.nombre == team.nombre);
       if (prevIndex >= 0) {
         if (index < prevIndex) {
           // down
@@ -63,10 +71,11 @@ export class UpdateStandingsCommand {
       team.Pts = 0;
     }
 
-    for (const match of matches.map(x => new MatchResult(x)).filter(x => x.played)) {
-
-      const local = _teams.find(x => match.local == x.nombre);
-      const visita = _teams.find(x => match.visita == x.nombre);
+    for (const match of matches
+      .map((x) => new MatchResult(x))
+      .filter((x) => x.played)) {
+      const local = _teams.find((x) => match.local == x.nombre);
+      const visita = _teams.find((x) => match.visita == x.nombre);
 
       if (local) {
         local.PJ = Number(local.PJ ?? 0) + 1;
@@ -85,8 +94,8 @@ export class UpdateStandingsCommand {
       // Detect winner
       if (match.hasWinner) {
         // when winner
-        const winner = _teams.find(x => match.winner == x.nombre);
-        const loser = _teams.find(x => match.loser == x.nombre);
+        const winner = _teams.find((x) => match.winner == x.nombre);
+        const loser = _teams.find((x) => match.loser == x.nombre);
 
         if (winner) {
           winner.G = Number(winner.G ?? 0) + 1;
@@ -95,9 +104,7 @@ export class UpdateStandingsCommand {
         if (loser) {
           loser.P = Number(loser.P ?? 0) + 1;
         }
-
-      }
-      else {
+      } else {
         // When draw
         if (local) {
           local.E = Number(local.E ?? 0) + 1;
@@ -109,10 +116,10 @@ export class UpdateStandingsCommand {
 
       // count points
       if (local) {
-        local.Pts = (Number(local.G ?? 0) * 3) + (Number(local.E ?? 0) * 1);
+        local.Pts = Number(local.G ?? 0) * 3 + Number(local.E ?? 0) * 1;
       }
       if (visita) {
-        visita.Pts = (Number(visita.G ?? 0) * 3) + (Number(visita.E ?? 0) * 1);
+        visita.Pts = Number(visita.G ?? 0) * 3 + Number(visita.E ?? 0) * 1;
       }
     }
 
@@ -149,10 +156,8 @@ export class UpdateStandingsCommand {
       });
 
       await batch.commit();
-
     } catch (error) {
       console.error(`Error saving data from 'Equipos' to Firestore:`, error);
     }
   }
-
 }

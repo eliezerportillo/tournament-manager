@@ -15,6 +15,7 @@ export class CleanTournamentComponent {
     { exists: false, size: 0, name: 'Jugadores', data: [{ id: 'placeholder' }] },
     { exists: false, size: 0, name: 'Partidos', data: [{ id: 'placeholder' }] },
     { exists: false, size: 0, name: 'Patrocinadores', data: [{ id: 'placeholder' }] },
+    { exists: false, size: 0, name: 'sheets', data: [{ id: 'placeholder' }] },
     { exists: false, size: 0, name: 'badges', data: [{ id: 'placeholder' }] },
     { exists: false, size: 0, name: 'banners', data: [{ id: 'placeholder', active: false, autoMessge: '', imageUrl: '', phoneNumber: '' }] },
     { exists: false, size: 0, name: 'settings', data: [{ id: 'placeholder', defaultRoute: 'ranking', tournamentName: '', companyName: '', zoneName: '' }] },

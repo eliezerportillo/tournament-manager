@@ -1,7 +1,18 @@
-.profile-photo {
-    width: 32px; /* Adjust the width and height as needed */
-    height: 32px;
-    border-radius: 50%; /* This creates a circular border */
-    object-fit: cover; /* Ensures the image covers the entire container */
-  }
-  
+.profile-photo {  
+  border-radius: 50%; /* This creates a circular border */
+  object-fit: cover; /* Ensures the image covers the entire container */
+}
+.small {
+  width: 32px;
+  height: 32px;
+}
+
+.medium {
+  width: 64px;
+  height: 64px;
+}
+
+.large {
+  width: 128px;
+  height: 128px;
+}

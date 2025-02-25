@@ -1,0 +1,157 @@
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+    <ng-container matColumnDef="expand" stycky>
+        <mat-header-cell *matHeaderCellDef aria-label="row actions"></mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <button mat-icon-button aria-label="expand row"
+                (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="number">
+        <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.numero}} </mat-cell>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            {{row.name}}
+        </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="attended">
+        <mat-header-cell *matHeaderCellDef> Asistió </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <mat-checkbox [(ngModel)]="row.attended" (change)="onAttendance(row, $event.checked)">
+
+            </mat-checkbox>
+        </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="info">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let row" fxLayoutAlign="center center">
+            <app-player-stats [player]="row"></app-player-stats>
+        </mat-cell>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+        <mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
+            <div class="player-detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px"
+                [class.disabled-row]="row.noAlinea || !row.attended"
+                [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+
+                <!-- player info -->
+                <div>
+                    <app-player-photo [player]="row" size="large"></app-player-photo>
+                    <div class="goalkeeper" *ngIf="row.portero" fxLayout="row" fxLayoutAlign="start center">
+                        <img src="assets/gloves.png" alt="Portero" title="Portero">
+                        Portero Oficial
+                    </div>
+                    <div class="cap" *ngIf="row.capitan" fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>star</mat-icon>
+                        Capitán
+                    </div>
+                    <div color="warn" fxLayout="row" *ngIf="row.noAlinea" fxLayoutAlign="start center">
+                        <mat-icon>warning</mat-icon>
+                        No puede alinear
+                    </div>
+                    <div color="warn" fxLayout="row" *ngIf="row.noBautizado" fxLayoutAlign="start center">
+                        <mat-icon color="accent">info</mat-icon>
+                        No Bautizado
+                    </div>
+                </div>
+
+                <div class="player-controls" fxFlex fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="8px">
+                    <!-- Goles -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                        <button mat-icon-button (click)="onGoal(row, -1)">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                        {{row.goles}}
+                        <button mat-icon-button (click)="onGoal(row, 1)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+
+
+                        <mat-icon class="goals">sports_soccer</mat-icon>
+                        <span>Goles</span>
+
+
+                    </div>
+                    <!-- Asistencias -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                        <button mat-icon-button (click)="onAssist(row, -1)">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                        {{row.asistencias}}
+                        <button mat-icon-button (click)="onAssist(row, 1)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <mat-icon class="assists">emoji_people</mat-icon>
+                        <span>Asistencias</span>
+                    </div>
+
+                    <!-- Amarillas -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                        <button mat-icon-button (click)="onYellowCard(row, -1)">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                        {{row.amarillas}}
+                        <button mat-icon-button (click)="onYellowCard(row, 1)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <mat-icon class="yellow-cards">crop_portrait</mat-icon>
+                        <span>Tarjetas Amarillas</span>
+                    </div>
+
+                    <!-- Rojas -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                        <button mat-icon-button (click)="onRedCard(row, -1)">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                        {{row.rojas}}
+                        <button mat-icon-button (click)="onRedCard(row, 1)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <mat-icon class="red-cards">crop_portrait</mat-icon>
+                        <span>Tarjetas Rojas</span>
+                    </div>
+                    <!-- Auto Goles -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                        <button mat-icon-button (click)="onOwnGoal(row, -1)">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                        {{row.autogoles}}
+                        <button mat-icon-button (click)="onOwnGoal(row, 1)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+
+
+                        <mat-icon class="goals" color="warn">sports_soccer</mat-icon>
+                        <span>Auto Goles</span>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" class="player-row"
+        [class.example-expanded-row]="expandedElement === row" [class.can-play]="!row.noAlinea"
+        [class.no-bautizado]="row.noBautizado" [class.cannot-play]="row.noAlinea"
+        (click)="(expandedElement = expandedElement === row ? null : row); $event.stopPropagation()"></mat-row>
+
+    <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="player-detail-row"></mat-row>
+</table>

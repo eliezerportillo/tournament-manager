@@ -5,10 +5,9 @@ import { TeamService } from '@app-core/services/team.service';
 @Component({
   selector: 'app-team-list',
   templateUrl: './team-list.component.html',
-  styleUrls: ['./team-list.component.scss']
+  styleUrls: ['./team-list.component.scss'],
 })
 export class TeamListComponent implements OnInit {
-
   private teamService = inject(TeamService);
 
   @Input()
@@ -27,7 +26,7 @@ export class TeamListComponent implements OnInit {
   modes = MatchDisplayType;
 
   constructor() {
-    this, this.mode = MatchDisplayType.table;
+    this, (this.mode = MatchDisplayType.table);
     this.columns = [
       StandingColumn.Team,
       StandingColumn.MatchesPlayed,
@@ -38,9 +37,8 @@ export class TeamListComponent implements OnInit {
       StandingColumn.GoalsConsided,
       StandingColumn.GoalDif,
       StandingColumn.Points,
-      StandingColumn.Last
+      StandingColumn.Last,
     ];
-
   }
 
   teamImages: { [name: string]: string } = {};
@@ -50,7 +48,9 @@ export class TeamListComponent implements OnInit {
 
   async loadTeamImages() {
     for (const team of this.teams) {
-      this.teamImages[team.nombre] = await this.teamService.getTeamImageUrl(team.nombre);
+      this.teamImages[team.nombre] = await this.teamService.getTeamImageUrl(
+        team.nombre
+      );
     }
   }
 
@@ -58,14 +58,36 @@ export class TeamListComponent implements OnInit {
     return this.teamImages[team.nombre];
   }
 
-   // Función para determinar si una fila debe ser resaltada
-   isHighlighted(element: ITeam): boolean {
+  // Función para determinar si una fila debe ser resaltada
+  highlightedType(element: ITeam): string {
     // Cambia este código según tus criterios para resaltar las primeras 8 filas
-    return this.teams.indexOf(element) < 4;
+
+    switch (this.teams.indexOf(element)) {
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        return 'highlighted-passed';
+      case 8:
+      case 9:
+      case 10:
+      case 11:
+      case 12:
+      case 13:
+      case 14:
+      case 15:
+        return 'highlighted-passed-2';
+      default:
+        return 'highlighted-not-passed';
+    }
   }
 }
 
 export enum MatchDisplayType {
   table = 'table',
-  widget = 'widget'
+  widget = 'widget',
 }

@@ -1,0 +1,46 @@
+.scan-section {
+  text-align: center;
+  border: 2px dashed #bbb;
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.scan-section h3 {
+  margin-bottom: 10px;
+}
+
+.scan-section button {
+  background-color: #004d99;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.scan-section button:hover {
+  background-color: #003366;
+}
+
+mat-drawer-content {
+  min-height: calc(100vh - 64px);
+}
+
+.tab-content {
+  
+  max-width: 100%;
+  overflow: auto;
+}
+
+.tab-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.attendance-number {
+  margin-top: 4px;
+  font-size: smaller;
+}

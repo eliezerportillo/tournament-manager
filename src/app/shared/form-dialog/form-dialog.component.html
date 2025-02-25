@@ -1,0 +1,14 @@
+<mat-toolbar>{{ data.title }}</mat-toolbar>
+<form [formGroup]="form">
+    <p>{{ data.description }}</p>
+    <mat-form-field>
+        <mat-label>{{ data.label }}</mat-label>
+        <mat-select formControlName="selectedItems" multiple>
+            <mat-option *ngFor="let item of data.items" [value]="item">{{ item }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
+<mat-toolbar fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+    <button mat-button (click)="close()">Cancelar</button>
+    <button mat-raised-button (click)="save()" color="primary">Confirmar</button>
+</mat-toolbar>

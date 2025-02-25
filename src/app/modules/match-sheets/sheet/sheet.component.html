@@ -1,0 +1,169 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>info</mat-icon>
+    </button>
+    Cédula Deportiva
+
+    <span class="spacer"></span>
+    <button mat-raised-button color="accent" (click)="publishResults()" [disabled]="!canPublish || loading">
+        Publicar Resultados
+    </button>
+</mat-toolbar>
+
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer mode="side" [opened]="opened" #drawer>
+        <ng-container *ngIf="matchSheet">
+            <!-- Column 1: Match and Team Information -->
+            <div fxLayout="column">
+                <ng-container *ngIf="match">
+                    <mat-list>
+                        <div mat-subheader>Información del partido</div>
+
+                        <mat-list-item>
+                            <app-team-image matListItemIcon [src]="match.imageUrlLocal"></app-team-image>
+                            <div matListItemLine>Local</div>
+                            <div matListItemTitle>{{local}}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <app-team-image matListItemIcon [src]="match.imageUrlVisita"></app-team-image>
+                            <div matListItemLine>Visitante</div>
+                            <div matListItemTitle>{{visita}}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>flag</mat-icon>
+                            <div matListItemLine>{{match.etapa}}</div>
+                            <div matListItemTitle>{{match.numero}}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>event</mat-icon>
+                            <div matListItemLine>Fecha</div>
+                            <div matListItemTitle>{{match.dateTime | date:'dd \'de\' MMMM, yyyy'}}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>access_time</mat-icon>
+                            <div matListItemLine>Hora</div>
+                            <div matListItemTitle>{{match.dateTime | hour}}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>place</mat-icon>
+                            <div matListItemLine>Campo</div>
+                            <div matListItemTitle>{{match.campo}}</div>
+                        </mat-list-item>
+
+                        <div mat-subheader>Resultado del partido</div>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>scoreboard</mat-icon>
+                            <div matListItemLine>{{ match.local}}</div>
+                            <div matListItemTitle>{{matchSheet.homeScore}}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>scoreboard</mat-icon>
+                            <div matListItemLine>{{ match.visita }}</div>
+                            <div matListItemTitle>{{matchSheet.awayScore}}</div>
+                        </mat-list-item>
+
+                        <div mat-subheader>Tarjetas</div>
+                        <mat-list-item>
+
+                            <div matListItemIcon>
+                                <mat-icon class="yellow-cards">crop_portrait</mat-icon>
+                            </div>
+
+                            <div matListItemTitle>{{ totalYellowCards }}</div>
+                            <div matListItemLine>Tarjetas amarillas</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <div matListItemIcon>
+                                <mat-icon class="red-cards">crop_portrait</mat-icon>
+                            </div>
+                            <div matListItemTitle>{{ totalRedCards }}</div>
+                            <div matListItemLine>Tarjetas rojas</div>
+                        </mat-list-item>
+
+                    </mat-list>
+                </ng-container>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Comentarios</mat-label>
+                    <textarea matInput placeholder="Escribe comentarios finales del partido." rows="10"
+                        [(ngModel)]="matchSheet.comments"></textarea>
+                </mat-form-field>
+
+
+                <mat-nav-list>
+                    <a mat-list-item [routerLink]="['/' + zone + '/sheets']">
+                        <mat-icon matListItemIcon>list</mat-icon>
+                        <span>Ver todas las cédulas</span>
+                    </a>
+                </mat-nav-list>
+            </div>
+        </ng-container>
+    </mat-drawer>
+
+    <mat-drawer-content fxLayout="column">
+        <!-- Column 2: Match and Team Information -->
+        <mat-tab-group>
+            <!-- <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon>camera</mat-icon>
+                    <span>Escáner</span>
+                </ng-template>
+
+                <ng-template matTabContent>
+                    <app-player-card-reader (scanSuccess)="onAttendedEventScanner($event)"></app-player-card-reader>
+                </ng-template>
+            </mat-tab> -->
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <ng-container *ngIf="match">
+
+                        <div class="tab-label">
+                            <span>{{local}}</span>
+                            <span class="attendance-number">{{ attendanceNumber(homePlayers) }}/{{ homePlayers.length }}
+                                jugadores</span>
+                        </div>
+
+                    </ng-container>
+                </ng-template>
+                <ng-template matTabContent>
+                    <ng-container *ngIf="homePlayers">
+                        <app-match-sheet-player-list [players]="homePlayers" (onGoalEvent)="onGoalEvent($event)"
+                            (onOwnGoalEvent)="onOwnGoalEvent($event)" (onAssistEvent)="onAssistEvent($event)"
+                            (onYellowCardEvent)="onYellowCardEvent($event)" (onRedCardEvent)="onRedCardEvent($event)"
+                            (onAttendanceEvent)="onAttendedEvent($event)"></app-match-sheet-player-list>
+                    </ng-container>
+                </ng-template>
+
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <ng-container *ngIf="match">
+
+                        <div class="tab-label">
+                            <span>{{visita}}</span>
+                            <span class="attendance-number">{{ attendanceNumber(awayPlayers) }}/{{ awayPlayers.length }}
+                                jugadores</span>
+                        </div>
+
+                    </ng-container>
+                </ng-template>
+
+                <ng-template matTabContent>
+
+                    <ng-container *ngIf="awayPlayers">
+                        <app-match-sheet-player-list [players]="awayPlayers" (onGoalEvent)="onGoalEvent($event)"
+                            (onOwnGoalEvent)="onOwnGoalEvent($event)" (onAssistEvent)="onAssistEvent($event)"
+                            (onYellowCardEvent)="onYellowCardEvent($event)" (onRedCardEvent)="onRedCardEvent($event)"
+                            (onAttendanceEvent)="onAttendedEvent($event)"></app-match-sheet-player-list>
+                    </ng-container>
+                </ng-template>
+
+            </mat-tab>
+
+
+        </mat-tab-group>
+    </mat-drawer-content>
+</mat-drawer-container>

@@ -19,12 +19,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-
-
-
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSortModule } from '@angular/material/sort';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [],
@@ -35,6 +34,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTabsModule,
     MatSnackBarModule,
     MatTableModule,
+    MatSortModule,
     MatCardModule,
     MatRippleModule,
     MatButtonModule,
@@ -50,8 +50,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTooltipModule,
     MatInputModule,
     MatDialogModule,
-    
-    MatCheckboxModule
-  ]
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    MatBadgeModule,
+  ],
 })
-export class MaterialModule { }
+export class MaterialModule {}

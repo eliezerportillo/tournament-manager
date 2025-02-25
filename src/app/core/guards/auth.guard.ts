@@ -3,11 +3,13 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { CanActivateFn, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { environment } from '@app-environments/environment';
+import { RouteService } from '@app-core/services/route.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
 
   const auth: AngularFireAuth = inject(AngularFireAuth)
   const router: Router = inject(Router);
+  const routeService = inject(RouteService);
 
   return auth.authState.pipe(map(user => {
     if (!environment.production) return true;
@@ -19,7 +21,8 @@ export const authGuard: CanActivateFn = (route, state) => {
     if (user) {
       return true;
     } else {
-      router.navigate(['/login'], { queryParams }); // Redirect to login page if not logged in
+      const zone = routeService.findZoneRouteParam(route);      
+      router.navigate([`/${zone}/login`], { queryParams }); 
       return false;
     }
   }));

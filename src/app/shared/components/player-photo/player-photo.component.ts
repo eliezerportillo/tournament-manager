@@ -24,6 +24,8 @@ export class PlayerPhotoComponent implements OnInit {
     return this._player;
   }
 
+  @Input() size: 'small' | 'medium' | 'large' = 'small';
+
   ngOnInit(): void {
   }
 
