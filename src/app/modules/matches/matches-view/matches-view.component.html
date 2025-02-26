@@ -1,6 +1,16 @@
+<div class="date-picker" fxLayout="column" fxLayoutAlign="start stretch">
+    <app-match-date-filter-picker (onChanges)="loadMatchesByDate($event)"></app-match-date-filter-picker>
+</div>
 <ng-container *ngIf="(matches$ | async) as matches">
+    <div class="no-matches-found" *ngIf="matches.length === 0">
+        <p *ngIf="isToday(); else notToday">No hay partidos programados para el día de hoy. Por favor, elija
+            otra fecha.</p>
+        <ng-template #notToday>
+            <p>No hay partidos programados para la fecha seleccionada. Por favor, elija otra fecha.</p>
+        </ng-template>
+    </div>
     <div *ngFor="let group of matches">
-        <mat-toolbar>{{ group.key | excelDate | dateStatus }}</mat-toolbar>
+        <!-- <mat-toolbar>{{ group.key | excelDate | dateStatus }}</mat-toolbar> -->
         <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
 
             <ng-container *ngFor="let match of group.values">

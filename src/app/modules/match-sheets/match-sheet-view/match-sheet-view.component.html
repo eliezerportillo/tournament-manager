@@ -2,12 +2,7 @@
     Cedulas deportivas
 
     <span class="spacer"></span>
-    <mat-form-field appearance="fill">
-        <mat-label>Fecha</mat-label>
-        <input matInput [matDatepicker]="dp3" [formControl]="dateControl">
-        <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
-        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-    </mat-form-field>
+    <app-match-date-filter-picker (onChanges)="getMatchesByDate($event)"></app-match-date-filter-picker>
 </mat-toolbar>
 
 

@@ -1,0 +1,6 @@
+<mat-form-field appearance="fill">
+    <mat-label>Fecha</mat-label>
+    <input matInput [matDatepicker]="dp3" [formControl]="dateControl" placeholder="Selecciona una fecha">
+    <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+    <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+</mat-form-field>

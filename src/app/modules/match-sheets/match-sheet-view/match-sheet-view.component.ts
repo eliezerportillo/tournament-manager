@@ -16,45 +16,21 @@ export class MatchSheetViewComponent implements OnInit {
 
   router = inject(Router);
   matchesByDate: { [key: string]: IMatch[] } = {};
-  dateControl: FormControl = new FormControl({
-    value: new Date(),
-    disabled: true,
-  });
-
   loading = false;
   constructor(private matchesService: MatchService) {}
+  dateISO: string = '';
 
-  ngOnInit(): void {
-    const lastSelectedDate = localStorage.getItem('matches-selectedDate');
-    if (lastSelectedDate) {
-      this.dateControl.setValue(new Date(lastSelectedDate));
-    }
-    // const matchesByDate = storedMatches ? JSON.parse(storedMatches) : {};
-    // this.matchesByDate = matchesByDate;
-
-    this.dateControl.valueChanges
-      .pipe(tap((date) => this.getMatchesByDate(date)))
-      .subscribe();
-
-    this.getMatchesByDate(this.dateControl.value);
-  }
+  ngOnInit(): void {}
 
   get matches(): IMatch[] {
-    return (
-      this.matchesByDate[this.dateControl.value.toISOString().split('T')[0]] ||
-      []
-    );
+    return this.matchesByDate[this.dateISO] || [];
   }
 
   async getMatchesByDate(date: Date) {
-    const dateString = date.toISOString();
-    localStorage.setItem('matches-selectedDate', dateString);
-    const dateISO = date.toISOString().split('T')[0];
-
-    if (!this.matchesByDate[dateISO]) {
+    this.dateISO = date.toISOString().split('T')[0];
+    if (!this.matchesByDate[this.dateISO]) {
       const matches = await this.matchesService.getMatchesByDate(date);
-      this.matchesByDate[dateISO] = matches;
-      // localStorage.setItem('matchesByDate', JSON.stringify(this.matchesByDate));
+      this.matchesByDate[this.dateISO] = matches;
     }
   }
 
