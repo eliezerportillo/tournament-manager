@@ -68,7 +68,7 @@ export class MatchService {
       throw new Error('Invalid date');
     }
     const collection = this.db.collection<IMatch>('Partidos', (ref) =>
-      ref.orderBy('fecha').orderBy('hora').where('fecha', '==', excelDate)
+      ref.orderBy('fecha').where('fecha', '==', excelDate)
     );
     return await firstValueFrom(this.getMatchesFromCollection(collection));
   }
@@ -121,12 +121,16 @@ export class MatchService {
           dateTime: this.parseDateTime(match.fecha, match.hora),
         })) as IMatch[];
       }),
-      map((matches: IMatch[]) => matches.sort((a, b) => a.fecha - b.fecha)),
+      map((matches: IMatch[]) => matches.sort((a, b) => a.hora - b.hora)),
       switchMap((matches) => this.getTeamImages(matches))
     );
   }
 
   private getTeamImages(matches: IMatch[]): Observable<IMatch[]> {
+    if (matches.length === 0) {
+      return of([]);
+    }
+
     // Obtener todos los nombres únicos de equipos
     const uniqueTeamNames = Array.from(
       new Set([

@@ -1,9 +1,19 @@
 mat-toolbar {
-
     font-size: 16px;
-
 }
 
 app-match-standing {
     margin: 0 4px;
+}
+
+.date-picker {
+    margin-top: 1rem;
+}
+
+.no-matches-found {
+    border: 1px dashed var(--primary-color);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: 8px;
+    text-align: center;
 }
