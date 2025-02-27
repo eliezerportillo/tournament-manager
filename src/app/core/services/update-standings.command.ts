@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { IMatch, MatchResult } from '@app-core/models/match';
 import { ITeam } from '@app-core/models/team';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ITeamFairPlayPoint } from '@app-core/models/team-fair-play-point';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +14,29 @@ export class UpdateStandingsCommand {
   async execute(
     matches: IMatch[],
     previous: ITeam[],
-    teamsBonusFairPlay: string[]
+    newFairPlayPoints: string[]
   ) {
     const standings = this.calcKardex(matches, previous);
-    this.processBonusFairPlay(standings, teamsBonusFairPlay);
-    await this.saveDataToFirestore(standings);
+    this.applyNewFairPlayPoints(standings, newFairPlayPoints);
+    await this.applyExistingFairPlayPoints(standings);
+    await this.saveDataToFirestore(standings, newFairPlayPoints);
     return standings;
   }
 
-  processBonusFairPlay(standings: ITeam[], teamsBonusFairPlay: string[]) {
+  async applyExistingFairPlayPoints(standings: ITeam[]) {
+    const existingFairPlayPoints = await firstValueFrom(
+      this.db.collection('fairPlayPoints').get()
+    );
+    existingFairPlayPoints.forEach((doc) => {
+      const data = doc.data() as ITeamFairPlayPoint;
+      const team = standings.find((t) => t.nombre === data.teamName);
+      if (team) {
+        team.Pts += data.points || 0;
+      }
+    });
+  }
+
+  applyNewFairPlayPoints(standings: ITeam[], teamsBonusFairPlay: string[]) {
     for (const team of standings) {
       if (teamsBonusFairPlay.includes(team.nombre)) {
         team.Pts += 1;
@@ -143,21 +159,38 @@ export class UpdateStandingsCommand {
     });
   }
 
-  async saveDataToFirestore(data: ITeam[]) {
-    try {
-      const collectionRef = this.db.firestore.collection('Equipos');
+  async saveDataToFirestore(data: ITeam[], teamsBonusFairPlay: string[]) {
+    const db = this.db.firestore;
+    const collectionRef = db.collection('Equipos');
+    const fairPlayCollectionRef = db.collection('fairPlayPoints');
 
-      // Using batch to perform a batch write for faster insertion
-      const batch = this.db.firestore.batch();
+    await db.runTransaction(async (transaction) => {
+      for (const item of data) {
+        const docRef = collectionRef.doc(item.id);
+        transaction.set(docRef, item);
+      }
 
-      data.forEach((item) => {
-        const docRef = collectionRef.doc(item.id); // Auto-generated document ID
-        batch.set(docRef, item);
-      });
+      for (const teamName of teamsBonusFairPlay) {
+        const querySnapshot = await fairPlayCollectionRef
+          .where('teamName', '==', teamName)
+          .limit(1)
+          .get();
 
-      await batch.commit();
-    } catch (error) {
-      console.error(`Error saving data from 'Equipos' to Firestore:`, error);
-    }
+        if (!querySnapshot.empty) {
+          const docRef = querySnapshot.docs[0].ref;
+          const data = querySnapshot.docs[0].data() as ITeamFairPlayPoint;
+          transaction.update(docRef, {
+            points: (data.points || 0) + 1,
+          });
+        } else {
+          const newDocRef = fairPlayCollectionRef.doc();
+          const fairPlayData: ITeamFairPlayPoint = {
+            teamName,
+            points: 1,
+          };
+          transaction.set(newDocRef, fairPlayData);
+        }
+      }
+    });
   }
 }

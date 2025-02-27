@@ -19,9 +19,7 @@ export class ExportExcelComponent {
   collections: IExportedCollection[] = [
     new TeamExportedCollection('Equipos', (ref) => ref.orderBy('Pts', 'desc')),
     new PlayerExportedCollection('Jugadores', (ref) => ref.orderBy('equipo')),
-    new MatchExportedCollection('Partidos', (ref) =>
-      ref.orderBy('fecha').orderBy('hora')
-    ),
+    new MatchExportedCollection('Partidos', (ref) => ref.orderBy('fecha')),
   ];
   exportingCompleted = false;
   loading = false;
@@ -123,6 +121,7 @@ class PlayerExportedCollection extends ExportedCollection<IPlayer> {
       capitan: x.capitan ? 1 : 0,
       portero: x.portero ? 1 : 0,
       noBautizado: x.noBautizado,
+      otraDenominacion: x.otraDenominacion,
       amarillas: x.amarillas,
       rojas: x.rojas,
       goles: x.goles,
