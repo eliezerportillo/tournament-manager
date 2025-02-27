@@ -119,12 +119,12 @@ export class TeamService {
       return this.teamImagesCache[teamName];
     }
 
-    console.log('getTeamImageUrl');
     const imagePath = Team.createImageUrl(teamName);
     const storageRef = this.storage.ref(imagePath);
     let imageUrl: string;
     try {
       imageUrl = await firstValueFrom(storageRef.getDownloadURL());
+      console.log('getTeamImageUrl');
     } catch (error) {
       // Handle the exception and provide a default URL
       imageUrl = 'assets/default_team_image.png';

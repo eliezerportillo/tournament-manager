@@ -30,7 +30,7 @@ export class MatchService {
 
   constructor(private db: AngularFirestore) {
     this.matchesCollection = this.db.collection<IMatch>('Partidos', (ref) =>
-      ref.orderBy('fecha').where('esClasificacion', '==', 0)
+      ref.orderBy('fecha')
     );
     this.sheetsCollection = this.db.collection<IMatchSheet>('sheets');
     this.standingsCollection = this.db.collection<LineUp>('Alineaciones');
