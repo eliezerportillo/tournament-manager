@@ -11,16 +11,16 @@
     </ng-template>
     <mat-card class="legend">
         <mat-card-content>
-    
+
             <div fxLayout="row" fxLayoutAlign="space-between center">
-    
-    
+
+
                 <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
                     <app-match-result-icon matchResult="up" [showText]="true"></app-match-result-icon>
                     <app-match-result-icon matchResult="down" [showText]="true"></app-match-result-icon>
                     <app-match-result-icon matchResult="equals" [showText]="true"></app-match-result-icon>
                 </div>
-    
+
                 <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="8px">
                     <p>Últimos partidos</p>
                     <app-match-result-icon matchResult="win" [showText]="true"></app-match-result-icon>
@@ -29,8 +29,12 @@
                     <app-match-result-icon matchResult="noplay" [showText]="true"></app-match-result-icon>
                 </div>
             </div>
-    
-    
+
+
         </mat-card-content>
     </mat-card>
+</ng-container>
+<ng-container *ngIf="teamsFairPlay$ | async as teams">
+    <mat-toolbar>Puntos Fair Play</mat-toolbar>
+    <app-team-fair-play-list [teams]="teams"></app-team-fair-play-list>
 </ng-container>

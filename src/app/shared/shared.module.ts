@@ -31,6 +31,7 @@ import { AgePipe } from './pipes/age.pipe';
 import { PlayerStatsComponent } from './components/player-stats/player-stats.component';
 import { FormDialogComponent } from './form-dialog/form-dialog.component';
 import { MatchDateFilterPickerComponent } from './components/match-date-filter-picker/match-date-filter-picker.component';
+import { TeamFairPlayListComponent } from './components/team-fair-play-list/team-fair-play-list.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { MatchDateFilterPickerComponent } from './components/match-date-filter-p
     PlayerStatsComponent,
     FormDialogComponent,
     MatchDateFilterPickerComponent,
+    TeamFairPlayListComponent,
   ],
   imports: [
     CommonModule,
@@ -100,6 +102,7 @@ import { MatchDateFilterPickerComponent } from './components/match-date-filter-p
     PlayerStatsComponent,
     FormDialogComponent,
     MatchDateFilterPickerComponent,
+    TeamFairPlayListComponent,
   ],
   providers: [DatePipe, AgePipe],
 })
