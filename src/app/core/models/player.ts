@@ -13,6 +13,7 @@ export interface IPlayer extends INamedObject {
   capitan?: boolean | number;
   portero?: number;
   noBautizado?: boolean | number;
+  otraDenominacion?: boolean | number;
   correo?: string;
   fechaNacimiento?: number;
   dateBirth: Date | null;

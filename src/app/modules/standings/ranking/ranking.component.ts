@@ -2,28 +2,35 @@ import { Component, OnInit } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ITeam } from '@app-core/models/team';
 import { TeamService } from '@app-core/services/team.service';
+import { ITeamFairPlayPoint } from '@app-core/models/team-fair-play-point';
 
 @Component({
   selector: 'app-ranking',
   templateUrl: './ranking.component.html',
-  styleUrls: ['./ranking.component.scss']
+  styleUrls: ['./ranking.component.scss'],
 })
 export class RankingComponent implements OnInit {
-
   teams$?: Observable<ITeam[]>;
   groupedTeams: { [key: string]: ITeam[] } = {};
+  teamsFairPlay$?: Observable<ITeamFairPlayPoint[]>;
 
-
-  constructor(private teamService: TeamService) {
-  }
+  constructor(private teamService: TeamService) {}
 
   ngOnInit(): void {
     this.teams$ = this.teamService.getRankedTeams().pipe(
-      map(teams => {
+      map((teams) => {
         this.groupedTeams = this.groupTeamsByGroup(teams);
         return teams;
       })
     );
+
+    this.teamsFairPlay$ = this.teamService
+      .getFairPlayPoints()
+      .pipe(
+        map((teamsFairPlay) =>
+          teamsFairPlay.sort((a, b) => b.points - a.points)
+        )
+      );
   }
 
   private groupTeamsByGroup(teams: ITeam[]): { [key: string]: ITeam[] } {
@@ -40,5 +47,4 @@ export class RankingComponent implements OnInit {
   get groupKeys(): string[] {
     return Object.keys(this.groupedTeams);
   }
-
 }
