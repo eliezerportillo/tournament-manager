@@ -39,7 +39,7 @@ const routes: Routes = [
               import('@app-modules/reset/reset.module').then(
                 (m) => m.ResetModule
               ),
-          }
+          },
         ],
       },
       {
@@ -50,25 +50,37 @@ const routes: Routes = [
       {
         path: 'sheets',
         loadChildren: () =>
-          import('@app-modules/match-sheets/match-sheets.module').then((m) => m.MatchSheetsModule),
+          import('@app-modules/match-sheets/match-sheets.module').then(
+            (m) => m.MatchSheetsModule
+          ),
       },
       {
         path: 'login',
         loadChildren: () =>
           import('@app-modules/login/login.module').then((m) => m.LoginModule),
       },
-
       {
         path: 'players',
         loadChildren: () =>
-          import('@app-modules/public-players/public-players.module').then((m) => m.PublicPlayersModule),
+          import('@app-modules/public-players/public-players.module').then(
+            (m) => m.PublicPlayersModule
+          ),
+      },
+      {
+        path: 'photo',
+        loadChildren: () =>
+          import(
+            '@app-modules/team-photo-capture/team-photo-capture.module'
+          ).then((m) => m.TeamPhotoCaptureModule),
       },
       {
         path: 'widget',
         loadChildren: () =>
-          import('@app-modules/widgets/widgets.module').then((m) => m.WidgetsModule),
-      }
-    ]
+          import('@app-modules/widgets/widgets.module').then(
+            (m) => m.WidgetsModule
+          ),
+      },
+    ],
   },
   {
     path: '',
@@ -78,12 +90,12 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: ''
-  }
+    redirectTo: '',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

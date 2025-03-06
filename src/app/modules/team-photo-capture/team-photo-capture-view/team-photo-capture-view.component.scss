@@ -1,0 +1,39 @@
+.webcam-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.webcam-container webcam {
+    width: auto;
+    height: 100%; /* Full height */
+    border-radius: 10px;
+}
+
+.overlay-buttons {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+}
+
+.photo-preview {
+    position: fixed;
+    inset: 0;
+
+    img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+}

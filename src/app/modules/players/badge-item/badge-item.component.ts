@@ -10,14 +10,12 @@ import { AgePipe } from '@app-shared/pipes/age.pipe';
 @Component({
   selector: 'app-badge-item',
   templateUrl: './badge-item.component.html',
-  styleUrls: ['./badge-item.component.scss']
+  styleUrls: ['./badge-item.component.scss'],
 })
 export class BadgeItemComponent implements OnInit {
-
   // inject agepipe
 
   agePipe = inject(AgePipe);
-  
 
   @Input()
   badge?: IBadge;
@@ -25,16 +23,12 @@ export class BadgeItemComponent implements OnInit {
   @Input()
   player?: IPlayer;
 
-
   accountService = inject(AccountService);
-  imageService = inject(ImageService);    
+  imageService = inject(ImageService);
   playerImage$: any;
   age: number = 0;
 
-
-  constructor(private elementRef: ElementRef) {
-    
-  }
+  constructor(private elementRef: ElementRef) {}
 
   get componyName(): string {
     return this.accountService.companyName;
@@ -44,12 +38,20 @@ export class BadgeItemComponent implements OnInit {
     return this.accountService.tournamentName;
   }
 
+  get edition(): string {
+    return this.accountService.edition;
+  }
+
+  get season(): string {
+    return this.accountService.season;
+  }
+
   ngOnInit(): void {
     if (this.badge) {
-      this.playerImage$ = this.imageService.getImageBlob(this.badge?.photoUrl)
+      this.playerImage$ = this.imageService.getImageBlob(this.badge?.photoUrl);
     }
 
-    if(this.player){
+    if (this.player) {
       this.age = this.agePipe.transform(this.player.dateBirth ?? '');
     }
   }
@@ -61,5 +63,4 @@ export class BadgeItemComponent implements OnInit {
   getImage(url: string) {
     return this.imageService.getImageBlob(url);
   }
-  
 }

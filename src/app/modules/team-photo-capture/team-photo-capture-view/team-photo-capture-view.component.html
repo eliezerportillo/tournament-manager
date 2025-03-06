@@ -1,0 +1,21 @@
+<div class="webcam-container" *ngIf="!webcamImage">
+    <webcam [width]="screenWidth" [allowCameraSwitch]="true" [trigger]="trigger.asObservable()"
+        (imageCapture)="webcamImage = $event">
+    </webcam>
+    <div class="overlay-buttons">
+        <button mat-raised-button color="primary" (click)="capture()">
+            <mat-icon>camera</mat-icon>
+            Capturar
+        </button>
+    </div>
+</div>
+<div class="photo-preview" *ngIf="webcamImage">
+    <img [src]="webcamImage.imageAsDataUrl" alt="photopreview" />
+    <div class="overlay-buttons">
+        <button mat-flat-button color="accent" (click)="captureAgain()">
+            <mat-icon>camera_alt</mat-icon>
+            Capturar de nuevo
+        </button>
+        <button mat-raised-button color="primary" (click)="submit()">Enviar</button>
+    </div>
+</div>
