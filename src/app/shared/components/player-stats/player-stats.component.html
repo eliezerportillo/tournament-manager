@@ -29,6 +29,10 @@
         <mat-icon class="assists">emoji_people</mat-icon>
     </ng-container>
 
+    <ng-container *ngIf="player.faltas">
+        <span *ngIf="showCount">{{player.faltas}}</span>
+        <mat-icon class="fouls">report</mat-icon>
+    </ng-container>
 
     <ng-container *ngIf="player.portero">
         <img class="goalkeeper" src="assets/gloves.png" alt="Portero" title="Portero">

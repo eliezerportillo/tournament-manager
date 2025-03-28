@@ -62,6 +62,7 @@ export class PublishMatchResultsCommand {
         goles: (playerData.goles || 0) + player.goals,
         autogoles: (playerData.autogoles || 0) + player.ownGoals,
         asistencias: (playerData.asistencias || 0) + player.assists,
+        faltas: (playerData.faltas || 0) + player.faults,
         amarillas: (playerData.amarillas || 0) + player.yellowCards,
         rojas: (playerData.rojas || 0) + player.redCards,
       });

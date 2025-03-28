@@ -49,8 +49,8 @@
             <div class="edition-name"
                 [ngStyle]="{'background-color': player?.noBautizado ? 'var(--accent-color)' : 'transparent'}">
                 <p class="vertical-text"
-                    [ngStyle]="{'color': !player?.noBautizado ? 'var(--primary-color)' : 'var(--white)'}">TERCERA
-                    EDICIÓN</p>
+                    [ngStyle]="{'color': !player?.noBautizado ? 'var(--primary-color)' : 'var(--white)'}">{{edition}}
+                </p>
             </div>
 
             <div class="badge-info">
@@ -75,7 +75,7 @@
                     <h2>EDAD</h2>
                     <p *ngIf="age < 18" class="badge-age">MENOR</p>
 
-                    <p class="badge-season">AGOSTO 2024 - DICIEMBRE 2024</p>
+                    <p class="badge-season">{{season}}</p>
                 </div>
 
             </div>

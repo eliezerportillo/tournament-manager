@@ -1,0 +1,46 @@
+<mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+<ng-container *ngIf="selectedTeam">
+    <mat-toolbar>
+        <app-logo></app-logo>
+        <span>{{ selectedTeam }}</span>
+    </mat-toolbar>
+    <div class="webcam-container" *ngIf="!webcamImage">
+        <webcam [width]="screenWidth" [allowCameraSwitch]="true" [trigger]="trigger.asObservable()"
+            (imageCapture)="webcamImage = $event">
+        </webcam>
+
+        <div class="overlay-buttons" [ngClass]="{ 'landscape': isLandscape }">
+            <button class="capture-button" (click)="capture()"></button>
+        </div>
+    </div>
+    <div class="photo-preview" *ngIf="webcamImage">
+        <mat-toolbar class="transparent">
+            <button mat-flat-button color="accent" (click)="captureAgain()">
+                <mat-icon>camera_alt</mat-icon>
+                Capturar de nuevo
+            </button>
+            <span class="spacer"></span>
+            <!-- <button mat-raised-button color="primary" (click)="submit()">Enviar</button> -->
+            {{ now | date: 'dd/MM/yyyy HH:mm:ss' }}
+        </mat-toolbar>
+        <ng-container *ngIf="isGeoLocationAvailable && markerPosition; else noMap">
+            <google-map class="map" width="100vw" height="200px" [center]="markerPosition" [zoom]="15"
+                [options]="{ disableDefaultUI: true, draggable: false, scrollwheel: false, disableDoubleClickZoom: true }">
+                <map-marker [position]="markerPosition"></map-marker>
+            </google-map>
+        </ng-container>
+        <!-- <mat-toolbar class="transparent">
+            <span class="spacer"></span>
+            {{ now | date: 'dd/MM/yyyy HH:mm:ss' }}
+            <span class="spacer"></span>
+        </mat-toolbar> -->
+        <img [src]="webcamImage.imageAsDataUrl" alt="photopreview" />
+        <ng-template #noMap>
+
+            <div class="no-map">
+                Obteniedo ubicación...
+            </div>
+
+        </ng-template>
+    </div>
+</ng-container>

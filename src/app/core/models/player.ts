@@ -9,6 +9,7 @@ export interface IPlayer extends INamedObject {
   goles?: number;
   autogoles?: number;
   asistencias?: number;
+  faltas?: number;
 
   capitan?: boolean | number;
   portero?: number;
@@ -39,6 +40,7 @@ export class Player implements IPlayer {
     this.goles = player.goles;
     this.autogoles = player.autogoles;
     this.asistencias = player.asistencias;
+    this.faltas = player.faltas;
     this.capitan = player.capitan;
     this.portero = player.portero;
     this.noBautizado = player.noBautizado;
@@ -62,6 +64,7 @@ export class Player implements IPlayer {
   goles?: number;
   autogoles?: number | undefined;
   asistencias?: number | undefined;
+  faltas?: number | undefined;
   capitan?: boolean | number | undefined;
   portero?: number | undefined;
   noBautizado?: boolean | undefined | number;

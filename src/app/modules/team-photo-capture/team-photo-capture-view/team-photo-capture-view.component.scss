@@ -1,0 +1,82 @@
+.webcam-container {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 56px); /* Full height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.webcam-container webcam {
+    width: auto;
+    height: 100%; /* Full height */
+    border-radius: 10px;
+}
+
+.top-bar {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: white;
+    font-size: 24px;
+}
+
+.flash-icon,
+.camera-switch-icon {
+    cursor: pointer;
+}
+
+.overlay-buttons {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.capture-button {
+    width: 70px;
+    height: 70px;
+    background-color: red;
+    border: 5px solid rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.photo-preview {
+    // display: flex;
+    // flex-direction: row;
+    // flex-wrap: wrap;
+}
+
+.photo-preview img {
+    max-width: 100%;
+
+    border-radius: 10px;
+}
+
+.landscape {
+}
+
+.map {
+    border-radius: 10px;
+}
+
+.no-map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    border: 2px dashed var(--primary-color);
+    border-radius: 10px;
+    color: var(--primary-color);
+}
