@@ -74,6 +74,10 @@ export class MatchSheetPlayerListComponent implements AfterViewInit {
     player: SheetPlayer;
     value: boolean;
   }>();
+  @Output() onFaultEvent = new EventEmitter<{
+    player: SheetPlayer;
+    value: number;
+  }>();
 
   ngAfterViewInit() {
     if (this.sort) this.dataSource.sort = this.sort;
@@ -107,7 +111,7 @@ export class MatchSheetPlayerListComponent implements AfterViewInit {
 
   onFaults(player: SheetPlayer, value: number) {
     if (value >= 0 || this.canDecrement(player, 'faltas')) {
-      this.onAssistEvent.emit({ player, value });
+      this.onFaultEvent.emit({ player, value });
     }
   }
 
