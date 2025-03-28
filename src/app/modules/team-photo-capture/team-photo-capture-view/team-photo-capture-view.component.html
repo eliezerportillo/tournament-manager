@@ -2,7 +2,7 @@
 <ng-container *ngIf="selectedTeam">
     <mat-toolbar>
         <app-logo></app-logo>
-        <span>{{ selectedTeam }}</span>
+        Foto del equipo
     </mat-toolbar>
     <div class="webcam-container" *ngIf="!webcamImage">
         <webcam [width]="screenWidth" [allowCameraSwitch]="true" [trigger]="trigger.asObservable()"
@@ -19,11 +19,14 @@
                 <mat-icon>camera_alt</mat-icon>
                 Capturar de nuevo
             </button>
+        </mat-toolbar>
+        <mat-toolbar class="transparent">
+            <span>{{ selectedTeam }}</span>
             <span class="spacer"></span>
-            <!-- <button mat-raised-button color="primary" (click)="submit()">Enviar</button> -->
             {{ now | date: 'dd/MM/yyyy HH:mm:ss' }}
         </mat-toolbar>
         <ng-container *ngIf="isGeoLocationAvailable && markerPosition; else noMap">
+            <img [src]="webcamImage.imageAsDataUrl" alt="photopreview" />
             <google-map class="map" width="100vw" height="200px" [center]="markerPosition" [zoom]="15"
                 [options]="{ disableDefaultUI: true, draggable: false, scrollwheel: false, disableDoubleClickZoom: true }">
                 <map-marker [position]="markerPosition"></map-marker>
@@ -34,11 +37,10 @@
             {{ now | date: 'dd/MM/yyyy HH:mm:ss' }}
             <span class="spacer"></span>
         </mat-toolbar> -->
-        <img [src]="webcamImage.imageAsDataUrl" alt="photopreview" />
         <ng-template #noMap>
 
             <div class="no-map">
-                Obteniedo ubicación...
+                Para visualizar la foto es necesario conceder permiso de ubicación...
             </div>
 
         </ng-template>
