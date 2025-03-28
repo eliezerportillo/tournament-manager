@@ -127,6 +127,7 @@ class PlayerExportedCollection extends ExportedCollection<IPlayer> {
       goles: x.goles,
       autogoles: x.autogoles,
       asistencias: x.asistencias,
+      faltas: x.faltas,
       correo: x.correo,
       celular: x.celular,
     };

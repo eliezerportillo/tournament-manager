@@ -71,14 +71,16 @@ export class StandingsViewComponent implements OnInit {
         description: 'Seleccione el equipo(s) que recibirá el punto fair play',
         label: 'Equipos',
         items: this.teams.map((item) => item.nombre),
+        multiple: true,
+        canCancel: true,
       })
       .subscribe(async (result: FormDialogResult) => {
-        if (result.continue) {
+        if (result.success) {
           this.processing = true;
           this.teams = await this.updateStandingsCommand.execute(
             this.data.matches,
             this.data.teams,
-            result.selectedItems
+            result.selection as string[]
           );
           this.processing = false;
           this.close();

@@ -20,6 +20,7 @@ export interface IMatchSheetPlayer {
   ownGoals: number;
   goals: number;
   assists: number;
+  faults: number;
   yellowCards: number;
   redCards: number;
 }
@@ -57,6 +58,7 @@ export class MatchSheetPlayer extends BaseObject implements IMatchSheetPlayer {
   ownGoals: number;
   goals: number;
   assists: number;
+  faults: number;
   yellowCards: number;
   redCards: number;
 
@@ -74,6 +76,7 @@ export class MatchSheetPlayer extends BaseObject implements IMatchSheetPlayer {
     this.ownGoals = 0;
     this.goals = 0;
     this.assists = 0;
+    this.faults = 0;
     this.yellowCards = 0;
     this.redCards = 0;
   }

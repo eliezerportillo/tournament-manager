@@ -105,6 +105,12 @@ export class MatchSheetPlayerListComponent implements AfterViewInit {
     }
   }
 
+  onFaults(player: SheetPlayer, value: number) {
+    if (value >= 0 || this.canDecrement(player, 'faltas')) {
+      this.onAssistEvent.emit({ player, value });
+    }
+  }
+
   onYellowCard(player: SheetPlayer, value: number) {
     if (value >= 0 || this.canDecrement(player, 'amarillas')) {
       this.onYellowCardEvent.emit({ player, value });

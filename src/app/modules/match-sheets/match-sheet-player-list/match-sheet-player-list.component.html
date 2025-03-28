@@ -94,8 +94,21 @@
                         <button mat-icon-button (click)="onAssist(row, 1)">
                             <mat-icon>add</mat-icon>
                         </button>
-                        <mat-icon class="assists">emoji_people</mat-icon>
+                        <mat-icon class="assists">crop_portrait</mat-icon>
                         <span>Asistencias</span>
+                    </div>
+
+                    <!-- Faltas -->
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                        <button mat-icon-button (click)="onFaults(row, -1)">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                        {{row.faltas}}
+                        <button mat-icon-button (click)="onFaults(row, 1)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <mat-icon class="assists">report</mat-icon>
+                        <span>Faltas</span>
                     </div>
 
                     <!-- Amarillas -->

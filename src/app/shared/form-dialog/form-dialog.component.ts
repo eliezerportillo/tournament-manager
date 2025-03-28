@@ -17,16 +17,17 @@ export class FormDialogComponent implements IModalComponent {
   fb: FormBuilder = inject(FormBuilder);
   constructor(@Inject(MAT_DIALOG_DATA) public data: IModalData) {
     this.form = this.fb.group({
-      selectedItems: [[]],
+      selectedItems: [[], this.data.required ? Validators.required : []],
     });
   }
 
   save() {
     if (this.form.valid) {
-      this.dialogRef.close({
-        selectedItems: this.form.value.selectedItems,
-        continue: true,
-      });
+      const result: FormDialogResult = {
+        selection: this.form.value.selectedItems,
+        success: true,
+      };
+      this.dialogRef.close(result);
     }
   }
 
@@ -42,9 +43,13 @@ interface IModalData {
   description: string;
   label: string;
   items: string[];
+  multiple: boolean;
+  required: boolean;
+  buttons: string[];
+  canCancel: boolean;
 }
 
 export interface FormDialogResult {
-  selectedItems: string[];
-  continue: boolean;
+  selection: string[] | string;
+  success: boolean;
 }

@@ -23,6 +23,7 @@ import { PublishMatchResultsCommand } from '@app-core/services/publish-match-res
 import { RegisterPlayerAttendanceCommand } from '@app-core/services/register-player-attendance.command';
 import { RouteService } from '@app-core/services/route.service';
 import { UpdatePlayerAssistsCommand } from '@app-core/services/update-player-assits.commad';
+import { UpdatePlayerFaultsCommand } from '@app-core/services/update-player-faults.commad';
 import { UpdatePlayerRedCardCommand } from '@app-core/services/update-player-red-cards.command';
 import { UpdatePlayerYellowCardCommand } from '@app-core/services/update-player-yellow-card.command';
 import { UpdateScoreOnGoalEventCommand } from '@app-core/services/update-score-on-goal-event.command';
@@ -54,6 +55,7 @@ export class SheetComponent implements OnInit {
   updatePlayerYellowCardCommand = inject(UpdatePlayerYellowCardCommand);
   updatePlayerRedCardCommand = inject(UpdatePlayerRedCardCommand);
   updatePlayerAssistsCommand = inject(UpdatePlayerAssistsCommand);
+  updatePlayerFaultsCommand = inject(UpdatePlayerFaultsCommand);
   registerPlayerAttendanceCommand = inject(RegisterPlayerAttendanceCommand);
   publishResultsCommand = inject(PublishMatchResultsCommand);
   breakpointObserver = inject(BreakpointObserver);
@@ -70,6 +72,14 @@ export class SheetComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private matchService: MatchService
   ) {}
+
+  get totalFaults() {
+    return (
+      this.matchSheet?.players
+        .map((p) => p.faults)
+        .reduce((acc, curr) => acc + curr, 0) ?? 0
+    );
+  }
 
   get totalYellowCards() {
     return (
@@ -238,6 +248,18 @@ export class SheetComponent implements OnInit {
     this.modifyValue(event.player, 'asistencias', event.value);
   }
 
+  onFaultEvent(event: { player: SheetPlayer; value: number }) {
+    if (!this.matchSheet) {
+      return;
+    }
+    this.updatePlayerFaultsCommand.execute(
+      event.player,
+      this.matchSheet.matchId,
+      event.value
+    );
+    this.modifyValue(event.player, 'faltas', event.value);
+  }
+
   onGoalEvent(event: { player: SheetPlayer; value: number }) {
     if (!this.matchSheet) {
       return;
@@ -282,7 +304,13 @@ export class SheetComponent implements OnInit {
 
   modifyValue(
     player: SheetPlayer,
-    key: 'goles' | 'asistencias' | 'amarillas' | 'rojas' | 'autogoles',
+    key:
+      | 'goles'
+      | 'asistencias'
+      | 'faltas'
+      | 'amarillas'
+      | 'rojas'
+      | 'autogoles',
     value: number
   ) {
     if (player && player[key] !== undefined) {
@@ -303,6 +331,7 @@ export class SheetComponent implements OnInit {
         goles: existingPlayer?.goals ?? 0,
         autogoles: existingPlayer?.ownGoals ?? 0,
         asistencias: existingPlayer?.assists ?? 0,
+        faltas: existingPlayer?.faults ?? 0,
         amarillas: existingPlayer?.yellowCards ?? 0,
         rojas: existingPlayer?.redCards ?? 0,
         attended: existingPlayer?.attended ?? false,

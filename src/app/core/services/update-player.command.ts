@@ -13,6 +13,7 @@ export class UpdatePlayerCommand {
     await ref.update({
       goles: player.goles,
       asistencias: player.asistencias,
+      faltas: player.faltas,
       amarillas: player.amarillas,
       rojas: player.rojas,
       numero: player.numero,
