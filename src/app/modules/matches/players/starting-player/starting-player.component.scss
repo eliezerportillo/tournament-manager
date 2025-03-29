@@ -1,8 +1,12 @@
+.player-photo {
+    width: var(--photo-size-tiny);
+    border-radius: 50%;
+}
 .A9ad7e {
     border-radius: 50%;
     border: 2px solid #fff;
-    height: 32px;
-    width: 32px;
+    height: var(--photo-size-tiny);
+    width: var(--photo-size-tiny);
     display: inline-block;
     background-color: white;
 }
@@ -10,7 +14,7 @@
 .A9ad7e .ov5Fzd {
     display: inline-block;
     width: 24px;
-    line-height: 32px
+    line-height: var(--photo-size-tiny);
 }
 
 .A9ad7e .SL6aBd {
@@ -18,7 +22,7 @@
     height: 24px;
     position: absolute;
     margin-top: -8px;
-    margin-left: -7px
+    margin-left: -7px;
 }
 
 .A9ad7e .U2Ceme {
@@ -28,7 +32,7 @@
     margin-top: 20px;
     margin-left: -3px;
     border-radius: 50%;
-    background-color: #fff
+    background-color: #fff;
 }
 
 .A9ad7e .yRmchf {
@@ -39,14 +43,14 @@
     position: absolute;
     border-radius: 50%;
     border: 2px solid #000;
-    background-color: #fff
+    background-color: #fff;
 }
 
 .A9ad7e .NQNibb {
     color: #000;
     display: block;
     font-size: 12px;
-    line-height: 16px
+    line-height: 16px;
 }
 
 .A9ad7e .VOpene {
@@ -54,7 +58,7 @@
     height: 26px;
     position: absolute;
     margin-top: 11px;
-    margin-left: -47px
+    margin-left: -47px;
 }
 
 .A9ad7e .tW5AGc {
@@ -62,21 +66,17 @@
     height: 26px;
     position: absolute;
     margin-top: 15px;
-    margin-left: -41px
+    margin-left: -41px;
 }
 
 .imso-loa:hover .lr-imso-ls-nh {
-    text-decoration: underline
+    text-decoration: underline;
 }
 
 .imso-loa.lr-imso-m-lm:hover,
 .imso-loa.lr-imso-m-rm:hover {
-    text-decoration: underline
+    text-decoration: underline;
 }
-
-
-
-
 
 .lrvl-pnc {
     margin-top: 4px;
@@ -84,5 +84,5 @@
     overflow: hidden;
     display: inline-block;
     text-overflow: ellipsis;
-    white-space: nowrap
+    white-space: nowrap;
 }

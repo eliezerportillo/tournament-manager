@@ -1,6 +1,6 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -18,9 +18,10 @@ $penn-blue-palette: (
   600: #1a2e6a,
   700: #112660,
   800: #081d54,
-  900: #000D3E,
+  900: #000d3e,
 
-  contrast: (50: rgba(black, 0.87),
+  contrast: (
+    50: rgba(black, 0.87),
     100: rgba(black, 0.87),
     200: rgba(black, 0.87),
     300: rgba(black, 0.87),
@@ -33,7 +34,7 @@ $penn-blue-palette: (
     A100: rgba(black, 0.87),
     A200: rgba(black, 0.87),
     A400: white,
-    A700: white,
+    A700: white
   )
 );
 
@@ -46,10 +47,11 @@ $satin-sheen-gold-palette: (
   500: #c6d432,
   600: #c6c327,
   700: #c6ad18,
-  800: #C59700,
+  800: #c59700,
   900: #c17200,
 
-  contrast: (50: rgba(black, 0.87),
+  contrast: (
+    50: rgba(black, 0.87),
     100: rgba(black, 0.87),
     200: rgba(black, 0.87),
     300: rgba(black, 0.87),
@@ -62,7 +64,7 @@ $satin-sheen-gold-palette: (
     A100: rgba(black, 0.87),
     A200: rgba(black, 0.87),
     A400: white,
-    A700: white,
+    A700: white
   )
 );
 
@@ -77,10 +79,15 @@ $tournament-manager-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$tournament-manager-theme: mat.define-light-theme((color: (primary: $tournament-manager-primary,
-        accent: $tournament-manager-accent,
-        warn: $tournament-manager-warn,
-      )));
+$tournament-manager-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $tournament-manager-primary,
+      accent: $tournament-manager-accent,
+      warn: $tournament-manager-warn
+    )
+  )
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -97,6 +104,11 @@ $tournament-manager-theme: mat.define-light-theme((color: (primary: $tournament-
   --yellow-card-color: #f4b228;
   --red-card-color: red;
   --white: white;
+
+  --photo-size-tiny: 64px;
+  --photo-size-small: 100px;
+  --photo-size-medium: 150px;
+  --photo-size-large: 200px;
 }
 
 html,
@@ -110,8 +122,6 @@ body {
   // background-color: whitesmoke;
   color: var(--primary-color);
 }
-
-
 
 .spacer {
   flex: 1 1 auto;
@@ -133,11 +143,11 @@ body {
   background-color: transparent;
 }
 
-.no-data {  
+.no-data {
   margin: 16px 0px;
   border: 2px solid var(--accent-color);
   border-radius: 8px;
-  padding: 16px; 
+  padding: 16px;
 }
 
 .pointer-cursor {
@@ -148,9 +158,9 @@ body {
   text-align: center;
 }
 
-.yellow-cards{
+.yellow-cards {
   color: var(--yellow-card-color);
 }
-.red-cards{
+.red-cards {
   color: var(--red-card-color);
 }
