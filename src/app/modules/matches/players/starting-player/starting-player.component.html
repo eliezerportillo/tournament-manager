@@ -1,12 +1,11 @@
-<ng-container *ngIf="player">
-
-
+<ng-container>
     <div class="A9ad7e imso-loa" [ngStyle]="{backgroundColor: home ? 'white' : 'var(--accent-color)'}" tabindex="0">
-        <ng-container *ngIf="playerImageUrl">
-            <img id="smlc_BZfMZIynGNahqtsP-IOwyAk_31" class="player-photo" [src]="playerImageUrl" alt="player photo">
-        </ng-container>
+        <img *ngIf="showImage" id="smlc_BZfMZIynGNahqtsP-IOwyAk_31" class="player-photo" [src]="playerImageUrl"
+            alt="player photo" @bounce />
     </div>
     <div>
-        <span class="lrvl-pnc" aria-hidden="true">{{player.name | shortName }}</span>
+        <ng-container *ngIf="player">
+            <span class=" lrvl-pnc" aria-hidden="true">{{player.name | shortName }}</span>
+        </ng-container>
     </div>
 </ng-container>
