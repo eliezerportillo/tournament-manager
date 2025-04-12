@@ -1,12 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import {
-  AfterViewInit,
-  Component,
-  inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { IMatch } from '@app-core/models/match';
@@ -22,21 +16,14 @@ import { PlayerService } from '@app-core/services/player.service';
 import { PublishMatchResultsCommand } from '@app-core/services/publish-match-results.command';
 import { RegisterPlayerAttendanceCommand } from '@app-core/services/register-player-attendance.command';
 import { RouteService } from '@app-core/services/route.service';
+import { SaveSheetCommentsCommand } from '@app-core/services/save-sheet-comments.command';
 import { UpdatePlayerAssistsCommand } from '@app-core/services/update-player-assits.commad';
 import { UpdatePlayerFaultsCommand } from '@app-core/services/update-player-faults.commad';
 import { UpdatePlayerRedCardCommand } from '@app-core/services/update-player-red-cards.command';
 import { UpdatePlayerYellowCardCommand } from '@app-core/services/update-player-yellow-card.command';
 import { UpdateScoreOnGoalEventCommand } from '@app-core/services/update-score-on-goal-event.command';
 import { UpdateScoreOnOwnGoalEventCommand } from '@app-core/services/update-score-on-own-goal-event-command.service';
-import {
-  combineLatest,
-  concat,
-  firstValueFrom,
-  map,
-  Observable,
-  of,
-  shareReplay,
-} from 'rxjs';
+import { debounceTime, firstValueFrom, map } from 'rxjs';
 
 @Component({
   selector: 'app-sheet',
@@ -58,6 +45,7 @@ export class SheetComponent implements OnInit {
   updatePlayerFaultsCommand = inject(UpdatePlayerFaultsCommand);
   registerPlayerAttendanceCommand = inject(RegisterPlayerAttendanceCommand);
   publishResultsCommand = inject(PublishMatchResultsCommand);
+  saveSheetCommentsCommand = inject(SaveSheetCommentsCommand);
   breakpointObserver = inject(BreakpointObserver);
   routeService = inject(RouteService);
 
@@ -67,6 +55,7 @@ export class SheetComponent implements OnInit {
   match?: IMatch;
   opened = true;
   zone = '';
+  commentsFormControl = new FormControl('');
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -127,6 +116,15 @@ export class SheetComponent implements OnInit {
       .subscribe((result) => {
         if (result.matches) {
           this.opened = false;
+        }
+      });
+
+    this.commentsFormControl.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe((value) => {
+        if (this.matchSheet && value) {
+          this.saveSheetCommentsCommand.execute(this.matchSheet.matchId, value);
+          this.matchSheet.comments = value;
         }
       });
   }

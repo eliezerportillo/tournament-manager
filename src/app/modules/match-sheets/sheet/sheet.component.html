@@ -97,7 +97,7 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Comentarios</mat-label>
                     <textarea matInput placeholder="Escribe comentarios finales del partido." rows="10"
-                        [(ngModel)]="matchSheet.comments"></textarea>
+                        [formControl]="commentsFormControl"></textarea>
                 </mat-form-field>
 
 
