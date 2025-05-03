@@ -14,12 +14,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatchSheetPlayerListComponent } from './match-sheet-player-list/match-sheet-player-list.component';
 import { PlayerCardReaderComponent } from '@app-shared/components/player-card-reader/player-card-reader.component';
+import { MatchSheetPrintableComponent } from './match-sheet-printable/match-sheet-printable.component';
 
 @NgModule({
   declarations: [
     MatchSheetViewComponent,
     SheetComponent,
     MatchSheetPlayerListComponent,
+    MatchSheetPrintableComponent,
   ],
   imports: [
     SharedModule,

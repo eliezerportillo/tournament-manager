@@ -1,0 +1,124 @@
+<div class="match-sheet">
+    <header>
+        <h1>ASOCIACIÓN DE FUTBOL CRISTIANA</h1>
+        <h2>LIGA AFC GUADALAJARA</h2>
+        <p><strong>Fase:</strong> {{match?.fase}} &nbsp;|&nbsp; <strong>{{match?.etapa}}:</strong> {{match?.numero}}
+        </p>
+        <p><strong>Cancha:</strong> {{match?.campo}}</p>
+        <p><strong>Fecha:</strong> {{ match?.dateTime | date:'EEEE d \'de\' MMMM \'del\' y' }}
+            &nbsp;&nbsp;<strong>Hora:</strong> {{ match?.dateTime | date:'HH:mm' }}</p>
+    </header>
+
+    <section class="teams">
+        <div class="team-names">
+            <div>
+                <strong>Local</strong>
+                <h3>{{match?.local}}</h3>
+                <!-- <img src="{{match?.imageUrlLocal}}" alt="Logo Local" class="team-logo"> -->
+            </div>
+            <div>
+                <strong>Visita</strong>
+                <h3>{{match?.visita}}</h3>
+                <!-- <img src="{{match?.imageUrlVisita}}" alt="Logo Visita" class="team-logo"> -->
+            </div>
+        </div>
+
+        <div class="players">
+            <div class="team team-local">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="num-column">NUM</th>
+                            <th>NOMBRE</th>
+                            <th>GOL</th>
+                            <th>AG</th>
+                            <th>FT</th>
+                            <th>TA</th>
+                            <th>TR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let player of homePlayers">
+                            <td class="num-column">{{player.numero}}</td>
+                            <td>{{player.name | titlecase}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="team team-visit">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="num-column">NUM</th>
+                            <th>NOMBRE</th>
+                            <th>GOL</th>
+                            <th>AG</th>
+                            <th>FT</th>
+                            <th>TA</th>
+                            <th>TR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let player of awayPlayers">
+                            <td class="num-column">{{player.numero}}</td>
+                            <td>{{player.name | titlecase}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="result">
+        <h3>Resultado Final</h3>
+        <div class="result-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="3">{{match?.local}}</th>
+                        <th colspan="3">{{match?.visita}}</th>
+                    </tr>
+                    <tr>
+                        <th>Goles</th>
+                        <th>Faltas</th>
+                        <th style="width: auto;">Nombre y Firma Delegado</th>
+                        <th style="width: auto;">Nombre y Firma Delegado</th>
+                        <th>Faltas</th>
+                        <th>Goles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="height: 24px;">
+                        <td colspan="6"><strong>Nombre y Firma del Árbitro Central</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        <p class="timestamp">{{ currentDate | date:'EEEE d \'de\' MMMM \'del\' y \'hora\' HH:mm:ss' }}</p>
+        <p class="url">afc-torneo.web.app</p>
+    </footer>
+</div>

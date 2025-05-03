@@ -28,7 +28,6 @@ mat-drawer-content {
 }
 
 .tab-content {
-  
   max-width: 100%;
   overflow: auto;
 }
@@ -43,4 +42,10 @@ mat-drawer-content {
 .attendance-number {
   margin-top: 4px;
   font-size: smaller;
+}
+
+.print-area {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
 }
