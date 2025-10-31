@@ -22,5 +22,8 @@
   ],
   "firestore": {
     "indexes": "firebase/firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "firebase/storage.rules"
   }
 }
