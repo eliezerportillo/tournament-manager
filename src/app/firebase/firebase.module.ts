@@ -14,8 +14,8 @@ export function initializeApp(): ModuleWithProviders<AngularFireModule> {
     case 'colima':
       config = environment.firebaseConfigColima;
       break;
-    case 'tijuana':
-      config = environment.firebaseConfigTijuana;
+    case 'mexicali':
+      config = environment.firebaseConfigMexicali;
       break;
     default:
       config = environment.firebaseConfig;
@@ -25,16 +25,14 @@ export function initializeApp(): ModuleWithProviders<AngularFireModule> {
 
 @NgModule({
   declarations: [],
-  imports: [
-    initializeApp(),
-  ],
+  imports: [initializeApp()],
   exports: [
     AngularFireModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthModule,
-    AnalyticsModule
-  ]
+    AnalyticsModule,
+  ],
 })
-export class FirebaseModule { }
+export class FirebaseModule {}

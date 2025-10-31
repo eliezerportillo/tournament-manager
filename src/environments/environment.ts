@@ -19,7 +19,7 @@ export const environment = {
     messagingSenderId: '1005560546360',
     appId: '1:1005560546360:web:4923a97b2f94500e6712cd',
   },
-  firebaseConfigTijuana: {
+  firebaseConfigMexicali: {
     apiKey: 'AIzaSyALmYk-IxQfyf2e3qylKiE8gxoTJ-TTcT0',
     authDomain: 'afc-torneo-dev.firebaseapp.com',
     projectId: 'afc-torneo-dev',

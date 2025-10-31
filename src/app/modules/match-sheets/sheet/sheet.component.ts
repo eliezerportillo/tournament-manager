@@ -68,6 +68,8 @@ export class SheetComponent implements OnInit {
   opened = true;
   zone = '';
 
+  showPrintable = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private matchService: MatchService
@@ -364,5 +366,12 @@ export class SheetComponent implements OnInit {
     this.snackBar.open('Resultados publicados existósamente', 'Cerrar', {
       duration: 3000,
     });
+  }
+
+  print() {
+    this.showPrintable = true;
+    setTimeout(() => {
+      window.print();
+    }, 1000);
   }
 }

@@ -10,7 +10,7 @@
             <!-- <span class="lrvl-tvc lrvl-f">3-1-2</span> -->
         </div>
         <!-- Players -->
-        <div class="lr-vl-ls" >
+        <div class="lr-vl-ls">
             <!-- Drawing items -->
             <div class="lrvl-fl lr-vl-tgc lr-vl-gc"></div>
             <div class="lrvl-fl lrvl-tg lr-vl-gll"></div>
@@ -20,15 +20,16 @@
             <span *ngIf="localStarting && localStarting.length > 0; else noStanding">
 
                 <!-- Formation -->
-                <ng-container *ngFor="let item of getFormation(localLineup, true) as futSystem">
+                <ng-container *ngFor="let item of homeFormation as futSystem">
 
                     <div class="lrvl-fr" [ngStyle]="{height: 100 / futSystem.length +'%'}">
                         <div class="lrvl-pr">
-                            
+
                             <ng-container *ngFor="let p of item.values">
                                 <span class="lrvl-pd" [ngStyle]="{width: 100 / item.values.length +'%'} ">
                                     <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                                        <app-starting-player [player]="p" [playerImageUrl]="getLocalPlayerPhotoUrl(p)" ></app-starting-player>
+                                        <app-starting-player [player]="p"
+                                            [playerImageUrl]="getLocalPlayerPhotoUrl(p)"></app-starting-player>
                                     </div>
                                 </span>
                             </ng-container>
@@ -37,7 +38,7 @@
                     </div>
 
                 </ng-container>
-             
+
             </span>
         </div>
     </div>
@@ -46,7 +47,7 @@
     <!-- visita -->
     <div class="lrvl-tlt lrvl-tl lrvl-bbrc">
         <!-- Players -->
-        <div class="lr-vl-ls" >
+        <div class="lr-vl-ls">
             <!-- Drawing items -->
             <div class="lrvl-fl lrvl-mfc lrvl-lmfc"></div>
             <div class="lrvl-fl lrvl-lgc lr-vl-gc"></div>
@@ -55,16 +56,17 @@
             <!-- Players list -->
             <span *ngIf="visitaStarting && visitaStarting.length > 0; else noStanding">
 
-                 <!-- Formation -->
-                 <ng-container *ngFor="let item of getFormation(visitaLineup, false) as futSystem">
+                <!-- Formation -->
+                <ng-container *ngFor="let item of awayFormation as futSystem">
 
                     <div class="lrvl-fr" [ngStyle]="{height: 100 / futSystem.length +'%'}">
                         <div class="lrvl-pr">
-                            
+
                             <ng-container *ngFor="let p of item.values">
                                 <span class="lrvl-pd" [ngStyle]="{width: 100 / item.values.length +'%'} ">
                                     <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="8px">
-                                        <app-starting-player [home]="false" [player]="p" [playerImageUrl]="getVisitaPlayerPhotoUrl(p)" ></app-starting-player>
+                                        <app-starting-player [home]="false" [player]="p"
+                                            [playerImageUrl]="getVisitaPlayerPhotoUrl(p)"></app-starting-player>
                                     </div>
                                 </span>
                             </ng-container>
@@ -96,7 +98,7 @@
     <div fxFlex>
         <div *ngIf="localSubstitutes && localSubstitutes.length > 0; else noStanding">
             <mat-list role="list">
-                <mat-list-item role="listitem" *ngFor="let p of localSubstitutes">                    
+                <mat-list-item role="listitem" *ngFor="let p of localSubstitutes">
                     <span>{{ p.name | shortName }}</span>
                 </mat-list-item>
             </mat-list>
@@ -107,7 +109,7 @@
 
         <div *ngIf="visitaSubstitutes && visitaSubstitutes.length > 0; else noStanding">
             <mat-list role="list">
-                <mat-list-item role="listitem" *ngFor="let p of visitaSubstitutes ">                    
+                <mat-list-item role="listitem" *ngFor="let p of visitaSubstitutes ">
                     <span>{{ p.name | shortName }}</span>
                 </mat-list-item>
             </mat-list>
