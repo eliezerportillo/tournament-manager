@@ -21,6 +21,9 @@ export interface IPlayer extends INamedObject {
 
   noAlinea: boolean | number;
   celular?: string;
+  status?: string; // Player status: 'Activo', 'INACTIVO', etc.
+  deletedAt?: Date; // When the player was deleted (for INACTIVO players)
+  deletedBy?: string; // Who deleted the player (for INACTIVO players)
 }
 
 export enum PlayerType {
@@ -31,6 +34,14 @@ export enum PlayerType {
 }
 
 export class Player implements IPlayer {
+  /**
+   * Static helper to validate if a player (interface) is a captain
+   * Accepts both boolean true and number 1 as valid captain values
+   */
+  static isCaptain(player: IPlayer): boolean {
+    return player.capitan === true || player.capitan === 1;
+  }
+
   constructor(player: IPlayer) {
     this.equipo = player.equipo;
     this.jugador = player.jugador ?? '';
@@ -44,6 +55,7 @@ export class Player implements IPlayer {
     this.capitan = player.capitan;
     this.portero = player.portero;
     this.noBautizado = player.noBautizado;
+    this.otraDenominacion = player.otraDenominacion;
     this.correo = player.correo;
     this.id = player.id;
     this.fechaNacimiento = player.fechaNacimiento;
@@ -51,6 +63,9 @@ export class Player implements IPlayer {
     this.numero = player.numero;
     this.noAlinea = player.noAlinea;
     this.celular = player.celular;
+    this.status = player.status;
+    this.deletedAt = player.deletedAt;
+    this.deletedBy = player.deletedBy;
   }
 
   numero: string;
@@ -68,9 +83,21 @@ export class Player implements IPlayer {
   capitan?: boolean | number | undefined;
   portero?: number | undefined;
   noBautizado?: boolean | undefined | number;
+  otraDenominacion?: boolean | number | undefined;
   correo?: string | undefined;
   id?: any;
   fechaNacimiento: number | undefined;
   dateBirth: Date | null;
   celular?: string | undefined;
+  status?: string | undefined;
+  deletedAt?: Date | undefined;
+  deletedBy?: string | undefined;
+
+  /**
+   * Validates if this player is a captain
+   * Accepts both boolean true and number 1 as valid captain values
+   */
+  isCaptain(): boolean {
+    return this.capitan === true || this.capitan === 1;
+  }
 }

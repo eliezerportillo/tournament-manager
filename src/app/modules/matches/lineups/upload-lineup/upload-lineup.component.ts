@@ -17,11 +17,9 @@ import { TeamService } from '@app-core/services/team.service';
 @Component({
   selector: 'app-upload-lineup',
   templateUrl: './upload-lineup.component.html',
-  styleUrls: ['./upload-lineup.component.scss']
+  styleUrls: ['./upload-lineup.component.scss'],
 })
 export class UploadLineupComponent implements OnInit {
-
-
   auth: AngularFireAuth = inject(AngularFireAuth);
   playerService: PlayerService = inject(PlayerService);
   bottomSheet: MatBottomSheet = inject(MatBottomSheet);
@@ -29,7 +27,7 @@ export class UploadLineupComponent implements OnInit {
   snackBar: MatSnackBar = inject(MatSnackBar);
   teamService = inject(TeamService);
 
-  captain?: IPlayer;
+  captain?: IPlayer | null;
   localImageUrl: string = '';
 
   team: IPlayer[] = [];
@@ -37,12 +35,10 @@ export class UploadLineupComponent implements OnInit {
   formationCompleted = false;
   futSystems: Formation[];
 
-
   selectedFormationControl: FormControl;
 
-  @ViewChild(FormationPickerComponent) formationPicker?: FormationPickerComponent;
-
-
+  @ViewChild(FormationPickerComponent)
+  formationPicker?: FormationPickerComponent;
 
   constructor() {
     const systems = [
@@ -53,7 +49,7 @@ export class UploadLineupComponent implements OnInit {
       [1, 2, 2, 2],
       [1, 2, 3, 1],
     ];
-    this.futSystems = systems.map(s => new Formation(...s));
+    this.futSystems = systems.map((s) => new Formation(...s));
     this.selectedFormationControl = new FormControl(this.futSystems[0]);
   }
 
@@ -61,15 +57,15 @@ export class UploadLineupComponent implements OnInit {
     return this.selectedFormationControl.value as Formation;
   }
 
-
   get startings() {
     return this.formationPicker?.builder?.players ?? [];
   }
 
   get substitutes() {
-    return this.team.filter(p => !this.startings.map(x => x.name).includes(p.name))
+    return this.team.filter(
+      (p) => !this.startings.map((x) => x.name).includes(p.name)
+    );
   }
-
 
   async handleUpload() {
     this.loading = true;
@@ -78,78 +74,54 @@ export class UploadLineupComponent implements OnInit {
     this.loading = false;
   }
 
-
   private async loadPlayers(teamName: string) {
-    this.team = await firstValueFrom(this.playerService.getPlayersByTeam(teamName));
+    this.team = await firstValueFrom(
+      this.playerService.getPlayersByTeam(teamName)
+    );
   }
 
   async openBottomSheet(position?: Markable) {
-
     if (!position) return;
 
     let players;
     if (position.playerType == PlayerType.portero) {
-      players = this.substitutes.filter(p => p.portero);
+      players = this.substitutes.filter((p) => p.portero);
     } else {
       players = this.substitutes;
     }
-    const ref = this.bottomSheet.open(ListSelectorComponent, { data: { players } });
-    const selectedPlayer: LineUp | undefined = await firstValueFrom(ref.afterDismissed());
+    const ref = this.bottomSheet.open(ListSelectorComponent, {
+      data: { players },
+    });
+    const selectedPlayer: LineUp | undefined = await firstValueFrom(
+      ref.afterDismissed()
+    );
     if (selectedPlayer) {
       position.equipo = selectedPlayer.equipo;
       position.name = selectedPlayer.name;
       position.marked = true;
-      this.formationCompleted = this.formationPicker?.builder?.isCompleted() ?? false;
+      this.formationCompleted =
+        this.formationPicker?.builder?.isCompleted() ?? false;
     }
-
-
   }
 
-
   ngOnInit(): void {
-
-
-
     firstValueFrom(this.auth.authState).then(async (user) => {
       if (user && user.email) {
         this.captain = await this.playerService.getPlayerByEmail(user.email);
-        this.localImageUrl = await this.teamService.getTeamImageUrl(this.captain.equipo);
         if (!this.captain) {
           return;
         }
 
-        this.loadPlayers(this.captain.equipo);
+        this.localImageUrl = await this.teamService.getTeamImageUrl(
+          this.captain.equipo
+        );
 
+        this.loadPlayers(this.captain.equipo);
       }
     });
 
-    this.selectedFormationControl.valueChanges.subscribe(() => this.formationCompleted = false)
+    this.selectedFormationControl.valueChanges.subscribe(
+      () => (this.formationCompleted = false)
+    );
   }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

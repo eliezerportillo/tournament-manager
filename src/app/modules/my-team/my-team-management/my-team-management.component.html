@@ -1,0 +1,227 @@
+<!-- Header Section with Material Container -->
+<mat-card class="header-card" *ngIf="captain">
+    <!-- Team Information -->
+    <mat-card-header class="team-header">
+        <div mat-card-avatar>
+            <mat-icon>admin_panel_settings</mat-icon>
+        </div>
+        <mat-card-title>Gestión del Equipo</mat-card-title>
+        <mat-card-subtitle>{{ captain.equipo }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <!-- Captain Info using Material List -->
+        <mat-list>
+            <mat-list-item>
+                <mat-icon matListItemIcon>person</mat-icon>
+                <div matListItemTitle>Capitán</div>
+                <div matListItemLine>{{ captain.jugador }}</div>
+            </mat-list-item>
+        </mat-list>
+
+        <!-- Management Summary using Grid List -->
+        <mat-grid-list cols="4" rowHeight="120px" gutterSize="16px" *ngIf="managementSummary">
+            <mat-grid-tile>
+                <mat-card class="summary-card">
+                    <mat-card-content class="summary-content">
+                        <mat-icon color="primary" class="summary-icon">group</mat-icon>
+                        <div class="summary-number">{{ managementSummary.totalPlayers }}</div>
+                        <div class="summary-label">Jugadores Activos</div>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-card class="summary-card">
+                    <mat-card-content class="summary-content">
+                        <mat-icon color="warn" class="summary-icon">hourglass_empty</mat-icon>
+                        <div class="summary-number">{{ managementSummary.pendingRequests }}</div>
+                        <div class="summary-label">Solicitudes Pendientes</div>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-card class="summary-card">
+                    <mat-card-content class="summary-content">
+                        <mat-icon color="primary" class="summary-icon">photo_camera</mat-icon>
+                        <div class="summary-number">{{ managementSummary.playersWithPhotos }}</div>
+                        <div class="summary-label">Con Foto</div>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-card class="summary-card">
+                    <mat-card-content class="summary-content">
+                        <mat-icon color="warn" class="summary-icon">photo_camera_back</mat-icon>
+                        <div class="summary-number">{{ managementSummary.playersWithoutPhotos }}</div>
+                        <div class="summary-label">Sin Foto</div>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-card-content>
+</mat-card>
+
+<!-- Pending Requests Section using Expansion Panel -->
+<mat-expansion-panel class="pending-section" *ngIf="pendingPlayers$ | async as pendingPlayers"
+    [expanded]="pendingPlayers.length > 0" [disabled]="pendingPlayers.length === 0">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <mat-icon>hourglass_empty</mat-icon>
+            <span>Solicitudes</span>
+        </mat-panel-title>
+        <mat-panel-description>
+            {{ pendingPlayers.length }} pendientes
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <!-- Pending Players List -->
+    <mat-list *ngIf="pendingPlayers.length > 0; else noPendingRequests">
+        <mat-list-item *ngFor="let pendingPlayer of pendingPlayers; last as isLast" class="pending-list-item">
+            <mat-icon matListItemIcon [color]="getPendingPlayerIconColor(pendingPlayer)">
+                {{ getPendingPlayerIcon(pendingPlayer) }}
+            </mat-icon>
+
+            <div matListItemTitle>{{ pendingPlayer.jugador || pendingPlayer.name }}</div>
+            <div matListItemLine *ngIf="pendingPlayer.numero">#{{ pendingPlayer.numero }}</div>
+
+            <!-- Player characteristics line for pending players -->
+            <div matListItemLine class="player-characteristics" *ngIf="getPendingPlayerCharacteristics(pendingPlayer)">
+                <span class="characteristics-text">{{ getPendingPlayerCharacteristics(pendingPlayer) }}</span>
+            </div>
+
+            <!-- Move status chip to a line -->
+            <div matListItemLine class="status-line">
+                <mat-chip [ngClass]="getPendingStatusClass(pendingPlayer.pendingStatus)">
+                    {{ getPendingStatusText(pendingPlayer.pendingStatus) }}
+                </mat-chip>
+            </div>
+
+            <!-- Actions as trailing content -->
+            <div matListItemMeta class="pending-actions">
+                <button mat-icon-button color="primary" (click)="editPendingPlayer(pendingPlayer)"
+                    [disabled]="pendingPlayer.pendingStatus === 'under_review'" matTooltip="Editar solicitud">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="cancelPendingRequest(pendingPlayer)"
+                    [disabled]="pendingPlayer.pendingStatus === 'under_review' || pendingPlayer.pendingStatus === 'rejected'"
+                    matTooltip="Cancelar solicitud">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </div>
+
+            <!-- Rejection Reason -->
+            <div class="rejection-info"
+                *ngIf="pendingPlayer.pendingStatus === 'rejected' && pendingPlayer.rejectedReason">
+                <mat-divider inset></mat-divider>
+                <div class="rejection-content">
+                    <mat-icon color="warn" class="rejection-icon">info</mat-icon>
+                    <div class="rejection-text">
+                        <strong>Motivo del rechazo:</strong>
+                        <span>{{ pendingPlayer.rejectedReason }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <mat-divider *ngIf="!isLast"></mat-divider>
+        </mat-list-item>
+    </mat-list>
+
+    <ng-template #noPendingRequests>
+        <mat-list>
+            <mat-list-item>
+                <mat-icon matListItemIcon color="accent">check_circle</mat-icon>
+                <div matListItemTitle>No hay solicitudes pendientes</div>
+                <div matListItemLine>Todas las solicitudes han sido procesadas</div>
+            </mat-list-item>
+        </mat-list>
+    </ng-template>
+</mat-expansion-panel>
+
+<!-- Actions Section using Material Toolbar -->
+<mat-toolbar class="actions-toolbar">
+    <span class="toolbar-spacer"></span>
+    <button mat-raised-button color="primary" (click)="registerNewPlayer()" [disabled]="!captain">
+        <mat-icon>person_add</mat-icon>
+        Registrar Nuevo Jugador
+    </button>
+    <span class="toolbar-spacer"></span>
+</mat-toolbar>
+
+
+<!-- Team Players Section using Expansion Panel -->
+<mat-expansion-panel class="players-section" [expanded]="true">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <mat-icon>group</mat-icon>
+            <span>Equipo</span>
+        </mat-panel-title>
+        <mat-panel-description>
+            Gestión de jugadores activos
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <!-- Team Players List -->
+    <mat-list *ngIf="playersWithBadgeInfo$ | async as players; else noPlayers">
+        <mat-list-item *ngFor="let player of players; last as isLast" class="player-list-item"
+            [disabled]="isPlayerInactive(player)">
+            <!-- Use existing player-photo component -->
+            <div matListItemIcon class="player-avatar-container">
+                <app-player-photo [player]="player" size="small" class="player-photo-wrapper">
+                </app-player-photo>
+            </div>
+
+            <div matListItemTitle>
+                {{ player.jugador }}
+            </div>
+            <div matListItemLine>#{{ player.numero }}</div>
+
+            <!-- Player characteristics line -->
+            <div matListItemLine class="player-characteristics" *ngIf="getPlayerCharacteristics(player)">
+                <span class="characteristics-text">{{ getPlayerCharacteristics(player) }}</span>
+            </div>
+
+            <div matListItemLine *ngIf="player.celular">
+                <mat-icon class="inline-icon">phone</mat-icon>
+                {{ player.celular }}
+            </div>
+
+
+            <div matListItemMeta *ngIf="!isPlayerInactive(player)">
+                <button mat-icon-button color="primary" (click)="editPlayer(player)" matTooltip="Editar jugador">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+
+
+            <mat-divider *ngIf="!isLast"></mat-divider>
+        </mat-list-item>
+    </mat-list>
+
+    <ng-template #noPlayers>
+        <!-- Empty State using Material Layout -->
+        <div class="empty-state-container">
+            <div class="empty-state-content">
+                <mat-icon class="empty-state-icon">group_off</mat-icon>
+                <h3 class="empty-state-title">No hay jugadores registrados</h3>
+                <p class="empty-state-description">Comienza registrando el primer jugador de tu equipo.</p>
+                <button mat-raised-button color="primary" (click)="registerNewPlayer()" class="empty-state-action">
+                    <mat-icon>person_add</mat-icon>
+                    Registrar Primer Jugador
+                </button>
+            </div>
+        </div>
+    </ng-template>
+</mat-expansion-panel>
+
+<!-- Loading State using Material Progress -->
+<div class="loading-container" *ngIf="!captain">
+    <mat-card class="loading-card">
+        <mat-card-content class="loading-content">
+            <mat-spinner diameter="48" color="primary"></mat-spinner>
+            <p class="loading-text">Cargando información del equipo...</p>
+        </mat-card-content>
+    </mat-card>
+</div>

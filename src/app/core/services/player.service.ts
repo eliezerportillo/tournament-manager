@@ -80,8 +80,43 @@ export class PlayerService {
       );
   }
 
-  async getPlayerByEmail(email: string): Promise<IPlayer> {
-    return (await this.getFiltered('correo', '==', email))[0];
+  async getPlayerByEmail(email: string): Promise<IPlayer | null> {
+    if (!email) {
+      return null;
+    }
+
+    const players = await this.getFiltered('correo', '==', email);
+    return players.length > 0 ? players[0] : null;
+  }
+
+  async getPlayerById(playerId: string): Promise<IPlayer | null> {
+    if (!playerId) {
+      return null;
+    }
+
+    try {
+      const doc = await firstValueFrom(
+        this.playersCollection.doc(playerId).get()
+      );
+      if (!doc.exists) {
+        return null;
+      }
+
+      const data = doc.data() as IPlayer;
+      const obj = {
+        id: doc.id,
+        ...data,
+      } as IPlayer;
+
+      obj.dateBirth = this.excelService.convertExcelDateToJSDate(
+        obj.fechaNacimiento
+      );
+
+      return new Player(obj);
+    } catch (error) {
+      console.error('Error getting player by ID:', error);
+      return null;
+    }
   }
 
   async getCaptains(): Promise<IPlayer[]> {

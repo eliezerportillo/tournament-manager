@@ -265,6 +265,34 @@
       ]
     },
     {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "faltas",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Jugadores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "asistencias",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "jugador",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "Partidos",
       "queryScope": "COLLECTION",
       "fields": [
@@ -351,6 +379,52 @@
         {
           "fieldPath": "hora",
           "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "players_pending",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "pendingStatus",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "requestedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "players_pending",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "equipo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "requestedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "players_pending",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "equipo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "numero",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "pendingStatus",
+          "order": "ASCENDING"
         }
       ]
     }

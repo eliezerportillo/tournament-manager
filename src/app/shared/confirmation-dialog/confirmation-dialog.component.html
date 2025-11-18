@@ -1,7 +1,20 @@
-<mat-toolbar>Confirmar</mat-toolbar>
-<p class="message">{{ message }}</p>
+<mat-toolbar>{{ data.title || 'Confirmar' }}</mat-toolbar>
+<div class="dialog-content">
+    <p class="message">{{ message }}</p>
+
+    <!-- Text area input for additional text (e.g., rejection reason) -->
+    <mat-form-field *ngIf="data.showTextArea" appearance="outline" class="full-width">
+        <mat-label>{{ data.textAreaPlaceholder || 'Comentario' }}</mat-label>
+        <textarea matInput [(ngModel)]="textValue" rows="4"
+            [placeholder]="data.textAreaPlaceholder || 'Escriba aquí...'" [required]="!!data.textAreaRequired">
+        </textarea>
+    </mat-form-field>
+</div>
 
 <mat-toolbar fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
-    <button mat-button (click)="cancel()">Cancelar</button>
-    <button mat-raised-button (click)="confirm()" color="primary">Confirmar</button>
+    <button mat-button (click)="cancel()">{{ data.cancelButtonText || 'Cancelar' }}</button>
+    <button mat-raised-button (click)="confirm()" [color]="data.confirmButtonColor || 'primary'"
+        [disabled]="isConfirmDisabled()">
+        {{ data.confirmButtonText || 'Confirmar' }}
+    </button>
 </mat-toolbar>

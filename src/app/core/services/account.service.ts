@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { firstValueFrom } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { firstValueFrom, Observable } from 'rxjs';
+import firebase from 'firebase/compat/app';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +16,20 @@ export class AccountService {
     season: '',
   };
   settings: AccountSettings[] = [];
-  constructor(private firestore: AngularFirestore) {
+
+  constructor(
+    private firestore: AngularFirestore,
+    private auth: AngularFireAuth
+  ) {
     this.getTournamentSettings();
+  }
+
+  get currentUser$(): Observable<firebase.User | null> {
+    return this.auth.authState;
+  }
+
+  async getCurrentUser(): Promise<firebase.User | null> {
+    return this.auth.currentUser;
   }
 
   get zoneName(): string {

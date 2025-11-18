@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 
-
 import { PlayersRoutingModule } from '@app-modules/players/players-routing.module';
 import { PlayersViewComponent } from '@app-modules/players/players-view/players-view.component';
 import { PlayerItemComponent } from '@app-modules/players/player-item/player-item.component';
@@ -12,14 +11,13 @@ import { PlayerEditorComponent } from './player-editor/player-editor.component';
 import { CredentialListComponent } from './credential-list/credential-list.component';
 import { BadgeItemComponent } from './badge-item/badge-item.component';
 
-
 @NgModule({
   declarations: [
     PlayersViewComponent,
     PlayerItemComponent,
     PlayerEditorComponent,
     CredentialListComponent,
-    BadgeItemComponent
+    BadgeItemComponent,
   ],
   imports: [
     PlayersRoutingModule,
@@ -27,7 +25,8 @@ import { BadgeItemComponent } from './badge-item/badge-item.component';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    FlexLayoutModule
-  ]
+    FlexLayoutModule,
+  ],
+  exports: [BadgeItemComponent],
 })
-export class PlayersModule { }
+export class PlayersModule {}
