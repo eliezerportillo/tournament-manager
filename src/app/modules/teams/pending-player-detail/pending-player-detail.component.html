@@ -126,6 +126,24 @@
 
                 </div>
 
+                <!-- Church -->
+                <div *ngIf="originalPlayer.iglesia !== pendingPlayer.iglesia">
+                    <mat-list>
+                        <span mat-subheader>Iglesia</span>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>account_balance</mat-icon>
+                            <div matListItemTitle>Actual:</div>
+                            <div matListItemLine>{{ originalPlayer.iglesia || 'No especificado' }}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon color="primary">account_balance</mat-icon>
+                            <div matListItemTitle>Nuevo:</div>
+                            <div matListItemLine class="highlight-text">{{ pendingPlayer.iglesia }}</div>
+                        </mat-list-item>
+                    </mat-list>
+
+                </div>
+
                 <!-- Birth Date -->
                 <div *ngIf="originalPlayer.dateBirth !== pendingPlayer.dateBirth">
                     <mat-list>
@@ -227,6 +245,13 @@
                         <mat-icon matListItemIcon>email</mat-icon>
                         <div matListItemTitle>Email:</div>
                         <div matListItemLine>{{ pendingPlayer.correo || 'No especificado' }}</div>
+                    </mat-list-item>
+
+
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>account_balance</mat-icon>
+                        <div matListItemTitle>Iglesia:</div>
+                        <div matListItemLine>{{ pendingPlayer.iglesia || 'No especificado' }}</div>
                     </mat-list-item>
 
 

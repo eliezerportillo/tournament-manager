@@ -14,7 +14,7 @@
         <form [formGroup]="playerForm" class="player-form">
 
             <!-- Player Information Section -->
-            <mat-card class="form-section-card">
+            <mat-card class="form-section-card" appearance="outlined">
                 <mat-card-header>
                     <mat-card-title>
                         <mat-icon>person</mat-icon>
@@ -88,7 +88,7 @@
             </mat-card>
 
             <!-- Contact Information Section -->
-            <mat-card class="form-section-card">
+            <mat-card class="form-section-card" appearance="outlined">
                 <mat-card-header>
                     <mat-card-title>
                         <mat-icon>contact_phone</mat-icon>
@@ -114,6 +114,16 @@
                         <input matInput formControlName="correo" type="email" placeholder="jugador@ejemplo.com">
                         <mat-error *ngIf="playerForm.get('correo')?.invalid && playerForm.get('correo')?.touched">
                             {{ getErrorMessage('correo') }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Church -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Iglesia</mat-label>
+                        <mat-icon matPrefix>account_balance</mat-icon>
+                        <input matInput formControlName="iglesia" placeholder="Iglesia a la que pertenece">
+                        <mat-error *ngIf="playerForm.get('iglesia')?.invalid && playerForm.get('iglesia')?.touched">
+                            {{ getErrorMessage('iglesia') }}
                         </mat-error>
                     </mat-form-field>
                 </mat-card-content>

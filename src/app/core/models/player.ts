@@ -18,6 +18,7 @@ export interface IPlayer extends INamedObject {
   correo?: string;
   fechaNacimiento?: number;
   dateBirth: Date | null;
+  iglesia?: string; // Church information
 
   noAlinea: boolean | number;
   celular?: string;
@@ -57,6 +58,7 @@ export class Player implements IPlayer {
     this.noBautizado = player.noBautizado;
     this.otraDenominacion = player.otraDenominacion;
     this.correo = player.correo;
+    this.iglesia = player.iglesia;
     this.id = player.id;
     this.fechaNacimiento = player.fechaNacimiento;
     this.dateBirth = player.dateBirth;
@@ -85,6 +87,7 @@ export class Player implements IPlayer {
   noBautizado?: boolean | undefined | number;
   otraDenominacion?: boolean | number | undefined;
   correo?: string | undefined;
+  iglesia?: string | undefined;
   id?: any;
   fechaNacimiento: number | undefined;
   dateBirth: Date | null;

@@ -35,6 +35,8 @@ export class MyTeamManagementComponent implements OnInit {
   teamBadges: IBadge[] = [];
   teamPlayers$: Observable<IPlayer[]> | null = null;
   pendingPlayers$: Observable<IPendingPlayer[]> | null = null;
+  activePendingPlayers$: Observable<IPendingPlayer[]> | null = null;
+  rejectedPendingPlayers$: Observable<IPendingPlayer[]> | null = null;
   playersWithBadgeInfo$: Observable<any[]> | null = null;
   managementSummary: {
     totalPlayers: number;
@@ -73,6 +75,43 @@ export class MyTeamManagementComponent implements OnInit {
         );
         this.pendingPlayers$ = this.captainStrategy.getPendingRequestsForTeam(
           this.captain.equipo
+        );
+
+        // Create separate streams for active and rejected requests for better UX
+        this.activePendingPlayers$ = this.pendingPlayers$.pipe(
+          map((players) =>
+            players
+              .filter((p) => p.pendingStatus !== 'rejected')
+              .sort((a, b) => {
+                // Sort by status priority: pending_creation, pending_update, pending_deletion, under_review
+                const statusOrder: { [key: string]: number } = {
+                  pending_creation: 1,
+                  pending_update: 2,
+                  pending_deletion: 3,
+                  under_review: 4,
+                };
+                const aOrder = statusOrder[a.pendingStatus as string] || 5;
+                const bOrder = statusOrder[b.pendingStatus as string] || 5;
+                return aOrder - bOrder;
+              })
+          )
+        );
+
+        this.rejectedPendingPlayers$ = this.pendingPlayers$.pipe(
+          map((players) =>
+            players
+              .filter((p) => p.pendingStatus === 'rejected')
+              .sort((a, b) => {
+                // Sort rejected by most recent first
+                const aTime = this.convertTimestampToDate(
+                  a.reviewedAt || a.requestedAt || 0
+                ).getTime();
+                const bTime = this.convertTimestampToDate(
+                  b.reviewedAt || b.requestedAt || 0
+                ).getTime();
+                return bTime - aTime;
+              })
+          )
         );
 
         // Load team badges
@@ -136,9 +175,14 @@ export class MyTeamManagementComponent implements OnInit {
                   )
                 ).length;
 
+                // Count only active (non-rejected) pending requests
+                const activePendingCount = pending.filter(
+                  (p) => p.pendingStatus !== 'rejected'
+                ).length;
+
                 return {
                   totalPlayers: activePlayers.length,
-                  pendingRequests: pending.length,
+                  pendingRequests: activePendingCount,
                   playersWithPhotos,
                   playersWithoutPhotos:
                     activePlayers.length - playersWithPhotos,

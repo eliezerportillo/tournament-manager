@@ -30,6 +30,8 @@ export class PendingPlayersListComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
 
   pendingPlayers$: Observable<IPendingPlayer[]> | null = null;
+  activePendingPlayers$: Observable<IPendingPlayer[]> | null = null;
+  rejectedPendingPlayers$: Observable<IPendingPlayer[]> | null = null;
   pendingSummary$: Observable<PendingPlayerSummary> | null = null;
 
   // Filter options
@@ -112,11 +114,75 @@ export class PendingPlayersListComponent implements OnInit {
       })
     );
 
+    // Create separate streams for active and rejected requests for better UX
+    this.activePendingPlayers$ = allPending$.pipe(
+      map((players) => {
+        let filteredPlayers = players.filter(
+          (p) => p.pendingStatus !== 'rejected'
+        );
+
+        // Apply filters only if not showing all
+        if (
+          this.selectedStatus !== 'all' &&
+          this.selectedStatus !== 'rejected'
+        ) {
+          filteredPlayers = filteredPlayers.filter(
+            (p) => p.pendingStatus === this.selectedStatus
+          );
+        }
+
+        if (this.selectedTeam !== 'all') {
+          filteredPlayers = filteredPlayers.filter(
+            (p) => p.equipo === this.selectedTeam
+          );
+        }
+
+        // Sort by status priority: pending_creation, pending_update, pending_deletion, under_review
+        return filteredPlayers.sort((a, b) => {
+          const statusOrder: { [key: string]: number } = {
+            pending_creation: 1,
+            pending_update: 2,
+            pending_deletion: 3,
+            under_review: 4,
+          };
+          const aOrder = statusOrder[a.pendingStatus as string] || 5;
+          const bOrder = statusOrder[b.pendingStatus as string] || 5;
+          return aOrder - bOrder;
+        });
+      })
+    );
+
+    this.rejectedPendingPlayers$ = allPending$.pipe(
+      map((players) => {
+        let filteredPlayers = players.filter(
+          (p) => p.pendingStatus === 'rejected'
+        );
+
+        if (this.selectedTeam !== 'all') {
+          filteredPlayers = filteredPlayers.filter(
+            (p) => p.equipo === this.selectedTeam
+          );
+        }
+
+        // Sort rejected by most recent first
+        return filteredPlayers.sort((a, b) => {
+          const aTime = this.convertTimestampToDate(
+            a.reviewedAt || a.requestedAt || 0
+          ).getTime();
+          const bTime = this.convertTimestampToDate(
+            b.reviewedAt || b.requestedAt || 0
+          ).getTime();
+          return bTime - aTime;
+        });
+      })
+    );
+
     // Calculate summary statistics
     this.pendingSummary$ = allPending$.pipe(
       map((players) => {
         const summary: PendingPlayerSummary = {
-          totalPending: players.length,
+          totalPending: players.filter((p) => p.pendingStatus !== 'rejected')
+            .length,
           pendingCreation: players.filter(
             (p) => p.pendingStatus === PendingStatus.PENDING_CREATION
           ).length,
@@ -212,6 +278,26 @@ export class PendingPlayersListComponent implements OnInit {
         return 'warn'; // Material warn color - matches "Rechazados"
       default:
         return 'primary'; // Default to primary color
+    }
+  }
+
+  /**
+   * Gets Material chip color for pending status
+   */
+  getPendingChipColor(
+    status: PendingStatus
+  ): 'primary' | 'accent' | 'warn' | undefined {
+    switch (status) {
+      case PendingStatus.PENDING_CREATION:
+        return 'accent'; // Green-ish color for new creations
+      case PendingStatus.PENDING_UPDATE:
+        return 'primary'; // Blue color for updates
+      case PendingStatus.PENDING_DELETION:
+        return 'warn'; // Red color for deletions
+      case PendingStatus.REJECTED:
+        return 'warn'; // Red color for rejected
+      default:
+        return undefined; // Default chip color
     }
   }
 

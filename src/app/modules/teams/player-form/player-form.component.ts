@@ -138,6 +138,7 @@ export class PlayerFormComponent implements OnInit {
         this.data.player?.correo || '',
         [Validators.required, Validators.email],
       ],
+      iglesia: [this.data.player?.iglesia || '', [Validators.required]],
       capitan: [!!this.data.player?.capitan],
       portero: [!!this.data.player?.portero],
       noBautizado: [!!this.data.player?.noBautizado],
@@ -407,6 +408,8 @@ export class PlayerFormComponent implements OnInit {
       switch (controlName) {
         case 'correo':
           return 'El correo electrónico es obligatorio';
+        case 'iglesia':
+          return 'La iglesia es obligatoria';
         default:
           return 'Este campo es obligatorio';
       }

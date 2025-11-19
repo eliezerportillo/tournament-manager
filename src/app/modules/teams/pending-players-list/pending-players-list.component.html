@@ -74,33 +74,35 @@
         </mat-card-content>
     </mat-card>
 
-    <!-- Players List using Angular Material List -->
+    <!-- Active Players List using Angular Material List -->
     <mat-card appearance="outlined">
         <mat-card-header>
             <mat-icon mat-card-avatar color="primary">people</mat-icon>
-            <mat-card-title>Solicitudes Pendientes</mat-card-title>
+            <mat-card-title>Solicitudes Pendientes Activas</mat-card-title>
             <mat-card-subtitle>Lista de solicitudes por revisar</mat-card-subtitle>
         </mat-card-header>
 
-        <div *ngIf="pendingPlayers$ | async as pendingPlayers; else loadingTemplate">
+        <div *ngIf="activePendingPlayers$ | async as activePendingPlayers; else loadingTemplate">
             <!-- Empty State using CSS Grid -->
-            <mat-card-content *ngIf="pendingPlayers.length === 0">
+            <mat-card-content *ngIf="activePendingPlayers.length === 0">
                 <div class="empty-state">
                     <mat-icon color="accent" class="large-icon">check_circle</mat-icon>
-                    <h3 class="mat-h3">No hay solicitudes pendientes</h3>
+                    <h3 class="mat-h3">No hay solicitudes pendientes activas</h3>
                     <p class="mat-body-1 mat-text-secondary">
                         <ng-container [ngSwitch]="selectedStatus">
                             <span *ngSwitchCase="'all'">No hay solicitudes pendientes en este momento.</span>
-                            <span *ngSwitchDefault>No hay solicitudes con el estado seleccionado.</span>
+                            <span *ngSwitchDefault>No hay solicitudes activas con el estado seleccionado.</span>
                         </ng-container>
                     </p>
                 </div>
             </mat-card-content>
 
-            <!-- Players List using mat-list -->
-            <mat-list *ngIf="pendingPlayers.length > 0">
-                <mat-list-item *ngFor="let player of pendingPlayers; last as isLast">
-                    <mat-icon matListItemIcon>person</mat-icon>
+            <!-- Active Players List using mat-list -->
+            <mat-list *ngIf="activePendingPlayers.length > 0">
+                <mat-list-item *ngFor="let player of activePendingPlayers; last as isLast">
+                    <mat-icon matListItemIcon [color]="getPendingStatusColor(player.pendingStatus)">
+                        {{ getPendingStatusIcon(player.pendingStatus) }}
+                    </mat-icon>
 
                     <div matListItemTitle>{{ player.jugador }}</div>
 
@@ -112,7 +114,7 @@
 
                     <!-- Status chip line -->
                     <div matListItemLine>
-                        <mat-chip>
+                        <mat-chip [color]="getPendingChipColor(player.pendingStatus)">
                             {{ getPendingStatusText(player.pendingStatus) }}
                         </mat-chip>
                     </div>
@@ -136,6 +138,69 @@
                 <div class="loading-state">
                     <mat-spinner diameter="48" color="primary"></mat-spinner>
                     <p class="mat-body-1">Cargando solicitudes pendientes...</p>
+                </div>
+            </mat-card-content>
+        </ng-template>
+    </mat-card>
+
+    <!-- Rejected Players List using Angular Material List -->
+    <mat-card appearance="outlined" class="rejected-card" *ngIf="rejectedPendingPlayers$ | async as rejectedPlayers">
+        <mat-card-header>
+            <mat-icon mat-card-avatar color="warn">block</mat-icon>
+            <mat-card-title>Solicitudes Rechazadas</mat-card-title>
+            <mat-card-subtitle>Historial de solicitudes rechazadas</mat-card-subtitle>
+        </mat-card-header>
+
+        <div *ngIf="rejectedPlayers.length > 0; else noRejectedRequests">
+            <!-- Rejected Players List using mat-list -->
+            <mat-list>
+                <mat-list-item *ngFor="let player of rejectedPlayers; last as isLast" class="rejected-item">
+                    <mat-icon matListItemIcon color="warn">
+                        {{ getPendingStatusIcon(player.pendingStatus) }}
+                    </mat-icon>
+
+                    <div matListItemTitle>{{ player.jugador }}</div>
+
+                    <!-- Team information line -->
+                    <div matListItemLine>
+                        <mat-icon class="small-icon">groups</mat-icon>
+                        {{ player.equipo }}
+                    </div>
+
+                    <!-- Status chip line -->
+                    <div matListItemLine>
+                        <mat-chip color="warn">
+                            {{ getPendingStatusText(player.pendingStatus) }}
+                        </mat-chip>
+                    </div>
+
+                    <!-- Rejection reason line -->
+                    <div matListItemLine *ngIf="player.rejectedReason" class="rejection-reason">
+                        <mat-icon class="small-icon">info</mat-icon>
+                        {{ player.rejectedReason }}
+                    </div>
+
+                    <!-- Actions as trailing content -->
+                    <div matListItemMeta>
+                        <button mat-icon-button color="primary" (click)="reviewPlayer(player); $event.stopPropagation()"
+                            matTooltip="Ver detalles">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                    </div>
+
+                    <mat-divider *ngIf="!isLast"></mat-divider>
+                </mat-list-item>
+            </mat-list>
+        </div>
+
+        <ng-template #noRejectedRequests>
+            <mat-card-content>
+                <div class="empty-state">
+                    <mat-icon color="accent" class="large-icon">sentiment_satisfied</mat-icon>
+                    <h3 class="mat-h3">No hay solicitudes rechazadas</h3>
+                    <p class="mat-body-1 mat-text-secondary">
+                        No se han rechazado solicitudes recientemente.
+                    </p>
                 </div>
             </mat-card-content>
         </ng-template>

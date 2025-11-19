@@ -65,21 +65,21 @@
 </mat-card>
 
 <!-- Pending Requests Section using Expansion Panel -->
-<mat-expansion-panel class="pending-section" *ngIf="pendingPlayers$ | async as pendingPlayers"
-    [expanded]="pendingPlayers.length > 0" [disabled]="pendingPlayers.length === 0">
+<mat-expansion-panel class="pending-section" *ngIf="activePendingPlayers$ | async as activePendingPlayers"
+    [expanded]="activePendingPlayers.length > 0" [disabled]="activePendingPlayers.length === 0">
     <mat-expansion-panel-header>
         <mat-panel-title>
             <mat-icon>hourglass_empty</mat-icon>
-            <span>Solicitudes</span>
+            <span>Pendientes</span>
         </mat-panel-title>
         <mat-panel-description>
-            {{ pendingPlayers.length }} pendientes
+            {{ activePendingPlayers.length }} activas
         </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <!-- Pending Players List -->
-    <mat-list *ngIf="pendingPlayers.length > 0; else noPendingRequests">
-        <mat-list-item *ngFor="let pendingPlayer of pendingPlayers; last as isLast" class="pending-list-item">
+    <!-- Active Pending Players List -->
+    <mat-list *ngIf="activePendingPlayers.length > 0; else noPendingRequests">
+        <mat-list-item *ngFor="let pendingPlayer of activePendingPlayers; last as isLast" class="pending-list-item">
             <mat-icon matListItemIcon [color]="getPendingPlayerIconColor(pendingPlayer)">
                 {{ getPendingPlayerIcon(pendingPlayer) }}
             </mat-icon>
@@ -106,23 +106,9 @@
                     <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button color="warn" (click)="cancelPendingRequest(pendingPlayer)"
-                    [disabled]="pendingPlayer.pendingStatus === 'under_review' || pendingPlayer.pendingStatus === 'rejected'"
-                    matTooltip="Cancelar solicitud">
+                    [disabled]="pendingPlayer.pendingStatus === 'under_review'" matTooltip="Cancelar solicitud">
                     <mat-icon>cancel</mat-icon>
                 </button>
-            </div>
-
-            <!-- Rejection Reason -->
-            <div class="rejection-info"
-                *ngIf="pendingPlayer.pendingStatus === 'rejected' && pendingPlayer.rejectedReason">
-                <mat-divider inset></mat-divider>
-                <div class="rejection-content">
-                    <mat-icon color="warn" class="rejection-icon">info</mat-icon>
-                    <div class="rejection-text">
-                        <strong>Motivo del rechazo:</strong>
-                        <span>{{ pendingPlayer.rejectedReason }}</span>
-                    </div>
-                </div>
             </div>
 
             <mat-divider *ngIf="!isLast"></mat-divider>
@@ -138,6 +124,59 @@
             </mat-list-item>
         </mat-list>
     </ng-template>
+</mat-expansion-panel>
+
+<!-- Rejected Requests Section (Collapsible) -->
+<mat-expansion-panel class="rejected-section" *ngIf="rejectedPendingPlayers$ | async as rejectedPlayers"
+    [expanded]="false" [disabled]="rejectedPlayers.length === 0">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <mat-icon color="warn">block</mat-icon>
+            <span>Rechazadas</span>
+        </mat-panel-title>
+        <mat-panel-description>
+            {{ rejectedPlayers.length }} rechazadas
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <!-- Rejected Players List -->
+    <mat-list *ngIf="rejectedPlayers.length > 0">
+        <mat-list-item *ngFor="let pendingPlayer of rejectedPlayers; last as isLast"
+            class="pending-list-item rejected-item">
+            <mat-icon matListItemIcon color="warn">
+                {{ getPendingPlayerIcon(pendingPlayer) }}
+            </mat-icon>
+
+            <div matListItemTitle>{{ pendingPlayer.jugador || pendingPlayer.name }}</div>
+            <div matListItemLine *ngIf="pendingPlayer.numero">#{{ pendingPlayer.numero }}</div>
+
+            <!-- Player characteristics line for pending players -->
+            <div matListItemLine class="player-characteristics" *ngIf="getPendingPlayerCharacteristics(pendingPlayer)">
+                <span class="characteristics-text">{{ getPendingPlayerCharacteristics(pendingPlayer) }}</span>
+            </div>
+
+            <!-- Move status chip to a line -->
+            <div matListItemLine class="status-line">
+                <mat-chip [ngClass]="getPendingStatusClass(pendingPlayer.pendingStatus)">
+                    {{ getPendingStatusText(pendingPlayer.pendingStatus) }}
+                </mat-chip>
+            </div>
+
+            <!-- Rejection Reason -->
+            <div class="rejection-info" *ngIf="pendingPlayer.rejectedReason">
+                <mat-divider inset></mat-divider>
+                <div class="rejection-content">
+                    <mat-icon color="warn" class="rejection-icon">info</mat-icon>
+                    <div class="rejection-text">
+                        <strong>Motivo del rechazo:</strong>
+                        <span>{{ pendingPlayer.rejectedReason }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <mat-divider *ngIf="!isLast"></mat-divider>
+        </mat-list-item>
+    </mat-list>
 </mat-expansion-panel>
 
 <!-- Actions Section using Material Toolbar -->
@@ -186,6 +225,11 @@
             <div matListItemLine *ngIf="player.celular">
                 <mat-icon class="inline-icon">phone</mat-icon>
                 {{ player.celular }}
+            </div>
+
+            <div matListItemLine *ngIf="player.iglesia">
+                <mat-icon class="inline-icon">account_balance</mat-icon>
+                {{ player.iglesia }}
             </div>
 
 
