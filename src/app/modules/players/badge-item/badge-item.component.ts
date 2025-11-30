@@ -6,6 +6,7 @@ import { AccountService } from '@app-core/services/account.service';
 import { ImageService } from '@app-core/services/image.service';
 import { environment } from '@app-environments/environment';
 import { AgePipe } from '@app-shared/pipes/age.pipe';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-badge-item',
@@ -47,8 +48,19 @@ export class BadgeItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.badge) {
-      this.playerImage$ = this.imageService.getImageBlob(this.badge?.photoUrl);
+    if (
+      this.badge &&
+      this.badge.photoUrl &&
+      this.badge.photoUrl.trim() !== ''
+    ) {
+      this.playerImage$ = this.imageService
+        .getImageBlob(this.badge.photoUrl)
+        .pipe(
+          catchError((error) => {
+            console.warn('Failed to load player image:', error);
+            return of(null); // Return null if image fails to load
+          })
+        );
     }
 
     if (this.player) {
@@ -61,6 +73,14 @@ export class BadgeItemComponent implements OnInit {
   }
 
   getImage(url: string) {
-    return this.imageService.getImageBlob(url);
+    if (!url || url.trim() === '') {
+      return of(null);
+    }
+    return this.imageService.getImageBlob(url).pipe(
+      catchError((error) => {
+        console.warn('Failed to load image:', error);
+        return of(null);
+      })
+    );
   }
 }
