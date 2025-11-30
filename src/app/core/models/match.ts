@@ -24,8 +24,8 @@ export interface IMatch extends IEntity {
 export class Match {
   static noPlay(match: IMatch): boolean {
     return [
-      match.local.toLocaleLowerCase(),
-      match.visita.toLocaleLowerCase(),
+      match.local?.toLocaleLowerCase(),
+      match.visita?.toLocaleLowerCase(),
     ].includes('descansa');
   }
   static isFinished(matchDateTime: Date): boolean {
