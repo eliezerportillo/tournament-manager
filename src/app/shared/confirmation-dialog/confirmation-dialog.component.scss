@@ -1,4 +1,22 @@
-.message{
-    padding: 16px;
-    white-space: normal;
+.dialog-content {
+    padding: 16px 24px;
+    min-height: 100px;
+}
+
+.message {
+    padding: 0;
+    margin-bottom: 16px;
+    white-space: pre-line;
+}
+
+.full-width {
+    width: 100%;
+}
+
+mat-toolbar {
+    padding: 0 16px;
+
+    &:last-child {
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+    }
 }

@@ -126,6 +126,10 @@ export class PlayerEditorComponent implements IModalComponent {
         isGoalkeeper: [data.isNew ? false : data.player.portero ?? false],
         isListener: [data.isNew ? false : data.player.noBautizado ?? false],
         email: [data.isNew ? '' : data.player.correo ?? '', Validators.email],
+        church: [
+          data.isNew ? '' : data.player.iglesia ?? '',
+          Validators.required,
+        ],
         cannotPlay: [data.isNew ? false : data.player.noAlinea ?? false],
       },
       {
@@ -187,6 +191,7 @@ export class PlayerEditorComponent implements IModalComponent {
     this.data.player.portero = this.form.value?.isGoalkeeper ? 1 : 0;
     this.data.player.noBautizado = this.form.value?.isListener ? 1 : 0;
     this.data.player.correo = this.form.value?.email;
+    this.data.player.iglesia = this.form.value?.church;
 
     await this.updatePlayerCommand.execute(this.data.player);
   }
@@ -201,6 +206,7 @@ export class PlayerEditorComponent implements IModalComponent {
       portero: this.form.value?.isGoalkeeper,
       noBautizado: this.form.value?.isListener,
       dateBirth: null,
+      iglesia: this.form.value?.church,
       noAlinea: this.form.value?.cannotPlay,
     };
 
@@ -231,6 +237,7 @@ interface PlayerForm {
   isCap: boolean;
   isListener: boolean;
   email: string;
+  church: string;
 }
 
 enum TypePlayerForm {

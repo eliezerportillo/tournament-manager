@@ -13,27 +13,39 @@ const routes: Routes = [
     children: [
       {
         path: 'scores',
-        component: ScoresViewComponent
+        component: ScoresViewComponent,
       },
       {
         path: 'operations',
         component: AdminOperationsViewComponent,
-        data: { title: 'Operaciones de Administrador' }
+        data: { title: 'Operaciones de Administrador' },
       },
       {
         path: 'sponsors',
-        loadChildren: () => import('@app-modules/sponsors/sponsors.module').then(m => m.SponsorsModule)
+        loadChildren: () =>
+          import('@app-modules/sponsors/sponsors.module').then(
+            (m) => m.SponsorsModule
+          ),
       },
       {
         path: 'players',
-        loadChildren: () => import('@app-modules/players/players.module').then(m => m.PlayersModule)
-      }
-    ]
-  }
+        loadChildren: () =>
+          import('@app-modules/players/players.module').then(
+            (m) => m.PlayersModule
+          ),
+      },
+      {
+        path: 'teams',
+        loadChildren: () =>
+          import('@app-modules/teams/teams.module').then((m) => m.TeamsModule),
+        data: { title: 'Gestión de Equipos' },
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

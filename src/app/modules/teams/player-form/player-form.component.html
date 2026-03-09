@@ -1,0 +1,152 @@
+<!-- Player Form using Material Bottom Sheet -->
+<div class="player-form-container">
+    <!-- Header with Material Toolbar -->
+    <mat-toolbar class="form-header">
+        <button mat-icon-button (click)="onCancel()" [disabled]="isLoading" matTooltip="Volver">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span class="form-title">{{ isEditMode ? 'Editar Jugador' : 'Registrar Nuevo Jugador' }}</span>
+        <span class="toolbar-spacer"></span>
+    </mat-toolbar>
+
+    <!-- Form Content -->
+    <div class="form-content">
+        <form [formGroup]="playerForm" class="player-form">
+
+            <!-- Player Information Section -->
+            <mat-card class="form-section-card" appearance="outlined">
+                <mat-card-header>
+                    <mat-card-title>
+                        <mat-icon>person</mat-icon>
+                        Información del jugador
+                    </mat-card-title>
+                </mat-card-header>
+
+                <mat-card-content class="form-fields">
+                    <!-- Player Number -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Número de Camiseta</mat-label>
+                        <mat-icon matPrefix>tag</mat-icon>
+                        <input matInput formControlName="numero" type="number" min="1" max="999" placeholder="1-999">
+                        <mat-error *ngIf="hasError('numero', 'required')">
+                            {{ getErrorMessage('numero') }}
+                        </mat-error>
+                        <mat-error *ngIf="hasError('numero', 'pattern')">
+                            {{ getErrorMessage('numero') }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Player Name -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nombre Completo</mat-label>
+                        <mat-icon matPrefix>person</mat-icon>
+                        <input matInput formControlName="nombre" placeholder="Nombre completo del jugador"
+                            class="uppercase-input" (input)="onNameInput($event)">
+                        <mat-error *ngIf="playerForm.get('nombre')?.invalid && playerForm.get('nombre')?.touched">
+                            {{ getErrorMessage('nombre') }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Birth Date -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Fecha de Nacimiento</mat-label>
+                        <mat-icon matPrefix>cake</mat-icon>
+                        <input matInput formControlName="fechaNacimiento" type="date" placeholder="dd/mm/aaaa">
+                        <mat-error
+                            *ngIf="playerForm.get('fechaNacimiento')?.invalid && playerForm.get('fechaNacimiento')?.touched">
+                            {{ getErrorMessage('fechaNacimiento') }}
+                        </mat-error>
+                        <mat-hint *ngIf="hasWarning('fechaNacimiento')" class="warning-hint">
+                            <mat-icon>warning</mat-icon>
+                            {{ getWarningMessage('fechaNacimiento') }}
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <!-- Player Characteristics using Material Chips -->
+                    <div class="characteristics-section">
+                        <h4 class="section-subtitle">Características del Jugador</h4>
+                        <div class="characteristics-grid">
+                            <mat-checkbox formControlName="capitan" color="primary">
+                                <mat-icon>military_tech</mat-icon>
+                                Es capitán
+                            </mat-checkbox>
+                            <mat-checkbox formControlName="portero" color="primary">
+                                <mat-icon>sports_handball</mat-icon>
+                                Es portero
+                            </mat-checkbox>
+                            <mat-checkbox formControlName="noBautizado" color="primary">
+                                <mat-icon>help_outline</mat-icon>
+                                No es bautizado
+                            </mat-checkbox>
+                            <mat-checkbox formControlName="otraDenominacion" color="primary">
+                                <mat-icon>account_balance</mat-icon>
+                                Es de otra denominación
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Contact Information Section -->
+            <mat-card class="form-section-card" appearance="outlined">
+                <mat-card-header>
+                    <mat-card-title>
+                        <mat-icon>contact_phone</mat-icon>
+                        Información de contacto
+                    </mat-card-title>
+                </mat-card-header>
+
+                <mat-card-content class="form-fields">
+                    <!-- Phone -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Celular</mat-label>
+                        <mat-icon matPrefix>phone</mat-icon>
+                        <input matInput formControlName="celular" type="tel" placeholder="3350181347">
+                        <mat-error *ngIf="playerForm.get('celular')?.invalid && playerForm.get('celular')?.touched">
+                            {{ getErrorMessage('celular') }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Email -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Correo Electrónico</mat-label>
+                        <mat-icon matPrefix>alternate_email</mat-icon>
+                        <input matInput formControlName="correo" type="email" placeholder="jugador@ejemplo.com">
+                        <mat-error *ngIf="playerForm.get('correo')?.invalid && playerForm.get('correo')?.touched">
+                            {{ getErrorMessage('correo') }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Church -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Iglesia</mat-label>
+                        <mat-icon matPrefix>account_balance</mat-icon>
+                        <input matInput formControlName="iglesia" placeholder="Iglesia a la que pertenece">
+                        <mat-error *ngIf="playerForm.get('iglesia')?.invalid && playerForm.get('iglesia')?.touched">
+                            {{ getErrorMessage('iglesia') }}
+                        </mat-error>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+        </form>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-actions">
+        <!-- Primary action button (Save/Register) -->
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="hasBlockingErrors || isLoading"
+            class="submit-button">
+            <mat-icon *ngIf="!isLoading">{{ primaryButtonIcon }}</mat-icon>
+            <mat-spinner *ngIf="isLoading" diameter="20" color="accent"></mat-spinner>
+            {{ primaryButtonText }}
+        </button>
+
+        <!-- Delete button (only in edit mode for active players) -->
+        <button mat-stroked-button color="warn" (click)="onDelete()"
+            [disabled]="isLoading || !isEditMode || data.pendingPlayerId" *ngIf="isEditMode && !data.pendingPlayerId"
+            class="delete-button" matTooltip="Solicitar baja del jugador">
+            <mat-icon>delete</mat-icon>
+            {{ deleteButtonText }}
+        </button>
+    </div>
+</div>

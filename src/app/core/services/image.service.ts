@@ -4,12 +4,16 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ImageService {
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) { }
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
 
   getImageBlob(url: string): Observable<SafeUrl> {
+    // Validate the URL before making the HTTP request
+    if (!url || url.trim() === '') {
+      throw new Error('Invalid URL provided for image loading');
+    }
 
     /*
     In order to this process works cors config should be run previously for the firebase project.
@@ -62,15 +66,13 @@ Please make sure to replace `your-firebase-project` with your actual Firebase pr
 
 After applying the CORS configuration, Firebase Storage should allow requests from the specified origins according to the rules you defined in the JSON file. Keep in mind that changes may take some time to propagate. If you still encounter issues, please review the configuration and ensure it matches your requirements.
     */
-    return this.http.get(url, { responseType: 'arraybuffer' })
-      .pipe(
-        map((response: ArrayBuffer) => {
-          const blob = new Blob([response], { type: 'image/png' }); // Adjust the type if necessary                              
-          return this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob));          
-        })
-      );
+    return this.http.get(url, { responseType: 'arraybuffer' }).pipe(
+      map((response: ArrayBuffer) => {
+        const blob = new Blob([response], { type: 'image/png' }); // Adjust the type if necessary
+        return this.sanitizer.bypassSecurityTrustUrl(
+          window.URL.createObjectURL(blob)
+        );
+      })
+    );
   }
-
 }
-
-

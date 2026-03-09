@@ -8,7 +8,7 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-    
+
     <ng-container *ngIf="players | async as p; else noPlayers">
         <button mat-flat-button (click)="newPlayer()" color="accent">Nuevo jugador</button>
         <h2 fxLayout="row" fxLayoutAlign="center space-between">

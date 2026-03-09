@@ -48,6 +48,13 @@ const routes: Routes = [
           import('@app-modules/admin/admin.module').then((m) => m.AdminModule),
       },
       {
+        path: 'my-team',
+        loadChildren: () =>
+          import('@app-modules/my-team/my-team.module').then(
+            (m) => m.MyTeamModule
+          ),
+      },
+      {
         path: 'sheets',
         loadChildren: () =>
           import('@app-modules/match-sheets/match-sheets.module').then(

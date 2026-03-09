@@ -1,0 +1,69 @@
+﻿mat-form-field {
+    width: 100%;
+}
+
+// Loading and empty states
+.loading-state,
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+    text-align: center;
+
+    .large-icon {
+        font-size: 3rem;
+        width: 3rem;
+        height: 3rem;
+    }
+}
+
+// Filter controls
+.filter-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    mat-form-field {
+        flex: 1;
+    }
+}
+
+// Small icons in lists
+.small-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+// Status chips with improved visuals
+mat-chip {
+    font-weight: 500;
+}
+
+// Rejected requests section styling
+.rejected-card {
+    border-left: 4px solid #f44336; // Red accent border
+    opacity: 0.9; // Slightly dimmed to de-emphasize
+
+    mat-card-header {
+        background-color: rgba(244, 67, 54, 0.05); // Light red background
+    }
+
+    .rejected-item {
+        opacity: 0.8; // Make items appear less prominent
+
+        &:hover {
+            opacity: 1; // Full opacity on hover for readability
+            background-color: rgba(244, 67, 54, 0.03);
+        }
+    }
+
+    .rejection-reason {
+        font-style: italic;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 0.9rem;
+    }
+}

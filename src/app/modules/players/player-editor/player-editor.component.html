@@ -2,7 +2,7 @@
     <button mat-button (click)="close()">
         <mat-icon>arrow_back</mat-icon>
         <ng-container *ngIf="isNew else updateTitle">
-            <span>Agragar jugador a {{data.team}}</span>
+            <span>Registrar jugador a {{data.team}}</span>
         </ng-container>
     </button>
     <span class="spacer"></span>
@@ -54,6 +54,15 @@
                         <input matInput placeholder="Correo electrónico" formControlName="email">
                         <mat-icon matSuffix>
                             alternate_email
+                        </mat-icon>
+                    </mat-form-field>
+
+                    <!-- Church -->
+                    <mat-form-field>
+                        <mat-label>Iglesia</mat-label>
+                        <input matInput placeholder="Nombre de la iglesia" formControlName="church">
+                        <mat-icon matSuffix>
+                            account_balance
                         </mat-icon>
                     </mat-form-field>
 
@@ -111,6 +120,15 @@
             <input matInput placeholder="Correo electrónico" formControlName="email">
             <mat-icon matSuffix>
                 alternate_email
+            </mat-icon>
+        </mat-form-field>
+
+        <!-- Church -->
+        <mat-form-field>
+            <mat-label>Iglesia</mat-label>
+            <input matInput placeholder="Iglesia a la que pertenece" formControlName="church">
+            <mat-icon matSuffix>
+                account_balance
             </mat-icon>
         </mat-form-field>
         <mat-toolbar>

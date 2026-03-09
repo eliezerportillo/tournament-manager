@@ -3,6 +3,7 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -24,6 +25,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [],
@@ -36,6 +40,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatTableModule,
     MatSortModule,
     MatCardModule,
+    MatChipsModule,
     MatRippleModule,
     MatButtonModule,
     MatListModule,
@@ -53,6 +58,9 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatBadgeModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatDividerModule,
   ],
 })
 export class MaterialModule {}

@@ -1,0 +1,306 @@
+<div>
+    <!-- Header -->
+    <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+        {{ pendingPlayer.jugador }}
+        <button mat-icon-button (click)="close()" [disabled]="isLoading" matTooltip="Cerrar">
+            <mat-icon>close</mat-icon>
+        </button>
+
+    </mat-toolbar>
+
+    <!-- Content -->
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px">
+        <!-- Request Information -->
+        <mat-card appearance="outlined">
+            <mat-card-header>
+                <mat-icon mat-card-avatar [color]="getPendingStatusColor(pendingPlayer.pendingStatus)">
+                    {{ getPendingStatusIcon(pendingPlayer.pendingStatus) }}
+                </mat-icon>
+                <mat-card-title>Información de la Solicitud</mat-card-title>
+                <mat-card-subtitle>{{ getPendingStatusText(pendingPlayer.pendingStatus) }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>person</mat-icon>
+                        <div matListItemTitle>Solicitado por:</div>
+                        <div matListItemLine>{{ pendingPlayer.requestedBy }}</div>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>schedule</mat-icon>
+                        <div matListItemTitle>Fecha de solicitud:</div>
+                        <div matListItemLine>{{ convertTimestampToDate(pendingPlayer.requestedAt) | date:'medium' }}
+                        </div>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>groups</mat-icon>
+                        <div matListItemTitle>Equipo:</div>
+                        <div matListItemLine>{{ pendingPlayer.equipo }}</div>
+                    </mat-list-item>
+                    <mat-list-item *ngIf="pendingPlayer.rejectedReason">
+                        <mat-icon matListItemIcon color="warn">error</mat-icon>
+                        <div matListItemTitle>Motivo de rechazo:</div>
+                        <div matListItemLine class="error-text">{{ pendingPlayer.rejectedReason }}</div>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Player Data Comparison (for updates) -->
+        <mat-card *ngIf="pendingPlayer.pendingStatus === 'pending_update' && originalPlayer" appearance="outlined">
+            <mat-card-header>
+                <mat-icon mat-card-avatar>compare</mat-icon>
+                <mat-card-title>Comparación de Datos</mat-card-title>
+                <mat-card-subtitle>Datos actuales vs. cambios propuestos</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <!-- Player Name -->
+                <div *ngIf="originalPlayer.jugador !== pendingPlayer.jugador">
+                    <mat-list>
+                        <span mat-subheader>Nombre del jugador</span>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>person_outline</mat-icon>
+                            <div matListItemTitle>Actual:</div>
+                            <div matListItemLine>{{ originalPlayer.jugador }}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon color="primary">person</mat-icon>
+                            <div matListItemTitle>Nuevo:</div>
+                            <div matListItemLine class="highlight-text">{{ pendingPlayer.jugador }}</div>
+                        </mat-list-item>
+                    </mat-list>
+
+                </div>
+
+                <!-- Jersey Number -->
+                <div *ngIf="originalPlayer.numero !== pendingPlayer.numero">
+                    <mat-list>
+                        <span mat-subheader>Número de playera</span>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>tag</mat-icon>
+                            <div matListItemTitle>Actual:</div>
+                            <div matListItemLine>{{ originalPlayer.numero }}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon color="primary">tag</mat-icon>
+                            <div matListItemTitle>Nuevo:</div>
+                            <div matListItemLine class="highlight-text">{{ pendingPlayer.numero }}</div>
+                        </mat-list-item>
+                    </mat-list>
+
+                </div>
+
+                <!-- Phone -->
+                <div *ngIf="originalPlayer.celular !== pendingPlayer.celular">
+                    <mat-list>
+                        <span mat-subheader>Teléfono</span>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>phone_outlined</mat-icon>
+                            <div matListItemTitle>Actual:</div>
+                            <div matListItemLine>{{ originalPlayer.celular || 'No especificado' }}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon color="primary">phone</mat-icon>
+                            <div matListItemTitle>Nuevo:</div>
+                            <div matListItemLine class="highlight-text">{{ pendingPlayer.celular }}</div>
+                        </mat-list-item>
+                    </mat-list>
+
+                </div>
+
+                <!-- Email -->
+                <div *ngIf="originalPlayer.correo !== pendingPlayer.correo">
+                    <mat-list>
+                        <span mat-subheader>Correo electrónico</span>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>email_outlined</mat-icon>
+                            <div matListItemTitle>Actual:</div>
+                            <div matListItemLine>{{ originalPlayer.correo || 'No especificado' }}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon color="primary">email</mat-icon>
+                            <div matListItemTitle>Nuevo:</div>
+                            <div matListItemLine class="highlight-text">{{ pendingPlayer.correo }}</div>
+                        </mat-list-item>
+                    </mat-list>
+
+                </div>
+
+                <!-- Church -->
+                <div *ngIf="originalPlayer.iglesia !== pendingPlayer.iglesia">
+                    <mat-list>
+                        <span mat-subheader>Iglesia</span>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>account_balance</mat-icon>
+                            <div matListItemTitle>Actual:</div>
+                            <div matListItemLine>{{ originalPlayer.iglesia || 'No especificado' }}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon color="primary">account_balance</mat-icon>
+                            <div matListItemTitle>Nuevo:</div>
+                            <div matListItemLine class="highlight-text">{{ pendingPlayer.iglesia }}</div>
+                        </mat-list-item>
+                    </mat-list>
+
+                </div>
+
+                <!-- Birth Date -->
+                <div *ngIf="originalPlayer.dateBirth !== pendingPlayer.dateBirth">
+                    <mat-list>
+                        <span mat-subheader>Fecha de nacimiento</span>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon>cake_outlined</mat-icon>
+                            <div matListItemTitle>Actual:</div>
+                            <div matListItemLine>{{ originalPlayer.dateBirth | date:'mediumDate' }}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon matListItemIcon color="primary">cake</mat-icon>
+                            <div matListItemTitle>Nuevo:</div>
+                            <div matListItemLine class="highlight-text">{{ pendingPlayer.dateBirth | date:'mediumDate'
+                                }}</div>
+                        </mat-list-item>
+                    </mat-list>
+
+                </div>
+
+                <!-- Special Characteristics -->
+                <div *ngIf="originalPlayer.capitan !== pendingPlayer.capitan || 
+                      originalPlayer.portero !== pendingPlayer.portero || 
+                      originalPlayer.noBautizado !== pendingPlayer.noBautizado || 
+                      originalPlayer.otraDenominacion !== pendingPlayer.otraDenominacion">
+                    <mat-list>
+                        <span mat-subheader>Características especiales</span>
+                        <mat-list-item>
+                            <div matListItemTitle>Actual:</div>
+                            <div matListItemLine>
+                                <span
+                                    *ngIf="originalPlayer.capitan || originalPlayer.portero || originalPlayer.noBautizado || originalPlayer.otraDenominacion; else noCharacteristics">
+                                    <span *ngIf="originalPlayer.capitan">Capitán</span><span
+                                        *ngIf="originalPlayer.capitan && (originalPlayer.portero || originalPlayer.noBautizado || originalPlayer.otraDenominacion)">
+                                        • </span><span *ngIf="originalPlayer.portero">Portero</span><span
+                                        *ngIf="originalPlayer.portero && (originalPlayer.noBautizado || originalPlayer.otraDenominacion)">
+                                        • </span><span *ngIf="originalPlayer.noBautizado">No bautizado</span><span
+                                        *ngIf="originalPlayer.noBautizado && originalPlayer.otraDenominacion"> •
+                                    </span><span *ngIf="originalPlayer.otraDenominacion">Otra denominación</span>
+                                </span>
+                                <ng-template #noCharacteristics>
+                                    <span>Ninguna</span>
+                                </ng-template>
+                            </div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <div matListItemTitle>Nuevo:</div>
+                            <div matListItemLine>
+                                <span
+                                    *ngIf="pendingPlayer.capitan || pendingPlayer.portero || pendingPlayer.noBautizado || pendingPlayer.otraDenominacion; else noNewCharacteristics"
+                                    class="highlight-text">
+                                    <span *ngIf="pendingPlayer.capitan">Capitán</span><span
+                                        *ngIf="pendingPlayer.capitan && (pendingPlayer.portero || pendingPlayer.noBautizado || pendingPlayer.otraDenominacion)">
+                                        • </span><span *ngIf="pendingPlayer.portero">Portero</span><span
+                                        *ngIf="pendingPlayer.portero && (pendingPlayer.noBautizado || pendingPlayer.otraDenominacion)">
+                                        • </span><span *ngIf="pendingPlayer.noBautizado">No bautizado</span><span
+                                        *ngIf="pendingPlayer.noBautizado && pendingPlayer.otraDenominacion"> •
+                                    </span><span *ngIf="pendingPlayer.otraDenominacion">Otra denominación</span>
+                                </span>
+                                <ng-template #noNewCharacteristics>
+                                    <span class="highlight-text">Ninguna</span>
+                                </ng-template>
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Player Details (for creation and deletion) -->
+        <mat-card *ngIf="pendingPlayer.pendingStatus !== 'pending_update'" appearance="outlined">
+            <mat-card-header>
+                <mat-icon mat-card-avatar>person</mat-icon>
+                <mat-card-title>Detalles del Jugador</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>person</mat-icon>
+                        <div matListItemTitle>Nombre:</div>
+                        <div matListItemLine>{{ pendingPlayer.jugador }}</div>
+                    </mat-list-item>
+
+
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>tag</mat-icon>
+                        <div matListItemTitle>Número:</div>
+                        <div matListItemLine>{{ pendingPlayer.numero }}</div>
+                    </mat-list-item>
+
+
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>phone</mat-icon>
+                        <div matListItemTitle>Teléfono:</div>
+                        <div matListItemLine>{{ pendingPlayer.celular || 'No especificado' }}</div>
+                    </mat-list-item>
+
+
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>email</mat-icon>
+                        <div matListItemTitle>Email:</div>
+                        <div matListItemLine>{{ pendingPlayer.correo || 'No especificado' }}</div>
+                    </mat-list-item>
+
+
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>account_balance</mat-icon>
+                        <div matListItemTitle>Iglesia:</div>
+                        <div matListItemLine>{{ pendingPlayer.iglesia || 'No especificado' }}</div>
+                    </mat-list-item>
+
+
+                    <mat-list-item>
+                        <mat-icon matListItemIcon>cake</mat-icon>
+                        <div matListItemTitle>Fecha de nacimiento:</div>
+                        <div matListItemLine>{{ pendingPlayer.dateBirth | date:'mediumDate' }}</div>
+                    </mat-list-item>
+
+
+                    <mat-list-item
+                        *ngIf="pendingPlayer.capitan || pendingPlayer.portero || pendingPlayer.noBautizado || pendingPlayer.otraDenominacion">
+                        <div matListItemTitle>Características:</div>
+                        <div matListItemLine>
+                            <span *ngIf="pendingPlayer.capitan">Capitán</span><span
+                                *ngIf="pendingPlayer.capitan && (pendingPlayer.portero || pendingPlayer.noBautizado || pendingPlayer.otraDenominacion)">
+                                • </span><span *ngIf="pendingPlayer.portero">Portero</span><span
+                                *ngIf="pendingPlayer.portero && (pendingPlayer.noBautizado || pendingPlayer.otraDenominacion)">
+                                • </span><span *ngIf="pendingPlayer.noBautizado">No bautizado</span><span
+                                *ngIf="pendingPlayer.noBautizado && pendingPlayer.otraDenominacion"> • </span><span
+                                *ngIf="pendingPlayer.otraDenominacion">Otra denominación</span>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+
+        <div fxLayout="column" fxLayoutAlign="stretch" fxLayoutGap="12px" class="detail-actions">
+            <button mat-stroked-button color="warn" (click)="rejectPlayer()" [disabled]="areActionsDisabled()"
+                matTooltip="Rechazar esta solicitud">
+                <mat-icon>block</mat-icon>
+                Rechazar solicitud
+            </button>
+
+            <button mat-raised-button color="primary" (click)="approvePlayer()" [disabled]="areActionsDisabled()"
+                matTooltip="Aprobar esta solicitud">
+                <mat-icon>check</mat-icon>
+                {{ getApprovalButtonText() }}
+            </button>
+
+            <!-- Loading Spinner -->
+            <div *ngIf="isLoading" class="loading-overlay" fxLayout="column" fxLayoutAlign="center center"
+                fxLayoutGap="12px">
+                <mat-spinner diameter="40"></mat-spinner>
+                <span>Procesando solicitud...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+
+</div>
