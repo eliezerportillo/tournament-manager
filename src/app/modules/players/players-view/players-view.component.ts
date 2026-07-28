@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { IPlayer } from '@app-core/models/player';
 import { TeamService } from '@app-core/services/team.service';
 import { PlayerService } from '@app-core/services/player.service';
-import { Observable, firstValueFrom } from 'rxjs';
+import { Observable, firstValueFrom, map } from 'rxjs';
 import { ITeam } from '@app-core/models/team';
 import { ModalService } from '@app-core/services/modal.service';
 import { PlayerEditorComponent } from '@app-modules/players/player-editor/player-editor.component';
@@ -14,7 +14,7 @@ import { CredentialListComponent } from '../credential-list/credential-list.comp
 @Component({
   selector: 'app-players-view',
   templateUrl: './players-view.component.html',
-  styleUrls: ['./players-view.component.scss']
+  styleUrls: ['./players-view.component.scss'],
 })
 export class PlayersViewComponent implements OnInit {
   bottomSheet: MatBottomSheet = inject(MatBottomSheet);
@@ -29,13 +29,11 @@ export class PlayersViewComponent implements OnInit {
   constructor(fb: FormBuilder) {
     this.teams = [];
     this.playersList = {};
-    this.form = fb.group(
-      {
-        teamName: fb.control<string>('')
-      }
-    );
+    this.form = fb.group({
+      teamName: fb.control<string>(''),
+    });
 
-    this.form.valueChanges.subscribe(value => this.onFormChanges(value));
+    this.form.valueChanges.subscribe((value) => this.onFormChanges(value));
   }
 
   getStorageValue(key: LocalStorageKeys): string {
@@ -55,20 +53,16 @@ export class PlayersViewComponent implements OnInit {
     return this.form.value?.teamName;
   }
 
-
-
-
   get players() {
     return this.playersList[this.teamName];
   }
-
 
   refreshPlayersList(filter: PlayersFilter): void {
     this.getPlayers(filter.teamName);
   }
 
   ngOnInit(): void {
-    this.getTeams()
+    this.getTeams();
   }
 
   async getTeams() {
@@ -80,27 +74,45 @@ export class PlayersViewComponent implements OnInit {
   }
 
   async getPlayers(teamName: string) {
-    this.playersList[teamName] = this.playerService.getPlayersByTeam(teamName);
+    this.playersList[teamName] = this.playerService
+      .getPlayersByTeam(teamName)
+      .pipe(
+        map((players) =>
+          players.filter(
+            (player) =>
+              String(player.status ?? '').toUpperCase() !== 'INACTIVO',
+          ),
+        ),
+      );
   }
 
   onSelected(player: IPlayer) {
-    this.modalService.open(PlayerEditorComponent, { player: player, isNew: false, team: this.teamName }).subscribe(result => {
-      if (result) {
-
-      }
-    });
+    this.modalService
+      .open(PlayerEditorComponent, {
+        player: player,
+        isNew: false,
+        team: this.teamName,
+      })
+      .subscribe((result) => {
+        if (result) {
+        }
+      });
   }
 
   newPlayer() {
-    this.modalService.open(PlayerEditorComponent, { isNew: true, team: this.teamName }).subscribe(result => {
-      if (result) {
-
-      }
-    });
+    this.modalService
+      .open(PlayerEditorComponent, { isNew: true, team: this.teamName })
+      .subscribe((result) => {
+        if (result) {
+        }
+      });
   }
 
-  viewCredentials(players: IPlayer[]){
-    this.modalService.open(CredentialListComponent, { players, teamName: this.teamName })
+  viewCredentials(players: IPlayer[]) {
+    this.modalService.open(CredentialListComponent, {
+      players,
+      teamName: this.teamName,
+    });
   }
 }
 
