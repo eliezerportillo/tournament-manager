@@ -1,11 +1,20 @@
-<div class="tournament-bracket" fxLayout="row" fxLayoutAlign="start center" >
-    <div class="round" *ngFor="let round of rounds" fxLayout="column" fxLayoutAlign="start stretch">
-       
-        <ng-container *ngFor="let match of round.values">           
+<mat-tab-group *ngIf="groupedBracket.length > 0 && shouldGroupBracket">
+    <mat-tab *ngFor="let group of groupedBracket" label="Grupo {{ group.key }}">
+        <div class="tournament-bracket" fxLayout="row" fxLayoutAlign="start center">
+            <div class="round" *ngFor="let round of group.rounds" fxLayout="column" fxLayoutAlign="start stretch">
+                <ng-container *ngFor="let match of round.values">
+                    <app-match class="match" [match]="match" showHeader="true"></app-match>
+                </ng-container>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>
+
+<div class="tournament-bracket" *ngIf="groupedBracket.length > 0 && !shouldGroupBracket" fxLayout="row"
+    fxLayoutAlign="start center">
+    <div class="round" *ngFor="let round of groupedBracket[0].rounds" fxLayout="column" fxLayoutAlign="start stretch">
+        <ng-container *ngFor="let match of round.values">
             <app-match class="match" [match]="match" showHeader="true"></app-match>
         </ng-container>
-
     </div>
-
-
 </div>

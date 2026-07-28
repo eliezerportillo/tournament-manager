@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 export const captainGuard: CanActivateFn = (
   route,
-  state
+  state,
 ): Observable<boolean> => {
   const playerService = inject(PlayerService);
   const accountService = inject(AccountService);
@@ -29,13 +29,14 @@ export const captainGuard: CanActivateFn = (
       }
 
       // Convert promise to observable
+      const x = '';
       return from(playerService.getPlayerByEmail(user.email)).pipe(
         map((player) => {
           if (!player) {
             snackBar.open(
               'No tienes un jugador asociado. Contacta al administrador.',
               'Cerrar',
-              { duration: 5000 }
+              { duration: 5000 },
             );
             const zone = routeService.findZoneRouteParam(route);
             router.navigate([`/${zone}`]);
@@ -47,7 +48,7 @@ export const captainGuard: CanActivateFn = (
             snackBar.open(
               'No tienes permisos de capitán para gestionar el equipo.',
               'Cerrar',
-              { duration: 5000 }
+              { duration: 5000 },
             );
             const zone = routeService.findZoneRouteParam(route);
             router.navigate([`/${zone}`]);
@@ -61,12 +62,12 @@ export const captainGuard: CanActivateFn = (
           snackBar.open(
             'Error al validar permisos. Intenta nuevamente.',
             'Cerrar',
-            { duration: 5000 }
+            { duration: 5000 },
           );
           const zone = routeService.findZoneRouteParam(route);
           router.navigate([`/${zone}`]);
           return of(false);
-        })
+        }),
       );
     }),
     catchError((error) => {
@@ -77,6 +78,6 @@ export const captainGuard: CanActivateFn = (
       const zone = routeService.findZoneRouteParam(route);
       router.navigate([`/${zone}`]);
       return of(false);
-    })
+    }),
   );
 };

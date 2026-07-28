@@ -38,7 +38,17 @@ export class CredentialListComponent implements IModalComponent, OnInit {
   }
 
   getPlayer(badge: IBadge) {
-    return this.data.players.find(x => x.name == badge.playerName);
+    // Búsqueda exacta
+    let player = this.data.players.find(x => x.name === badge.playerName);
+    if (player) return player;
+
+    // Búsqueda tolerante (lowercase, normalization)
+    const badgeNameNorm = (badge.playerName || '').toLowerCase().trim();
+    player = this.data.players.find(x =>
+      (x.name || '').toLowerCase().trim() === badgeNameNorm ||
+      (x.jugador || '').toLowerCase().trim() === badgeNameNorm
+    );
+    return player;
   }
 
   loading = false;

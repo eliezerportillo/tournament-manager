@@ -19,6 +19,7 @@ export interface IMatch extends IEntity {
 
   campo: string;
   comisionado: string;
+  grupo?: string;
 }
 
 export class Match {

@@ -1,15 +1,31 @@
-<app-stats-list name="Goleadores Top" [players]="goals" statName="goles">
-    <mat-icon>sports_soccer</mat-icon>
-</app-stats-list>
+<mat-tab-group *ngIf="groupKeys.length > 0 && shouldGroupStats">
+    <mat-tab *ngFor="let group of groupKeys" label="Grupo {{ group }}">
+        <app-stats-list name="Goleadores Top" [players]="groupedStats[group].goals" statName="goles">
+            <mat-icon>sports_soccer</mat-icon>
+        </app-stats-list>
+        <app-stats-list name="Tarjetas Amarillas" [players]="groupedStats[group].yellows" statName="amarillas">
+            <mat-icon class="yellow-cards">crop_portrait</mat-icon>
+        </app-stats-list>
+        <app-stats-list name="Tarjetas Rojas" [players]="groupedStats[group].reds" statName="rojas">
+            <mat-icon class="red-cards">crop_portrait</mat-icon>
+        </app-stats-list>
+        <app-stats-list name="Faltas" [players]="groupedStats[group].faults" statName="faltas">
+            <mat-icon>report</mat-icon>
+        </app-stats-list>
+    </mat-tab>
+</mat-tab-group>
 
-<app-stats-list name="Tarjetas Amarillas" [players]="yellows" statName="amarillas">
-    <mat-icon class="yellow-cards">crop_portrait</mat-icon>
-</app-stats-list>
-
-<app-stats-list name="Tarjetas Rojas" [players]="reds" statName="rojas">
-    <mat-icon class="red-cards">crop_portrait</mat-icon>
-</app-stats-list>
-
-<app-stats-list name="Faltas" [players]="faults" statName="faltas">
-    <mat-icon>report</mat-icon>
-</app-stats-list>
+<ng-container *ngIf="groupKeys.length > 0 && !shouldGroupStats">
+    <app-stats-list name="Goleadores Top" [players]="groupedStats[groupKeys[0]].goals" statName="goles">
+        <mat-icon>sports_soccer</mat-icon>
+    </app-stats-list>
+    <app-stats-list name="Tarjetas Amarillas" [players]="groupedStats[groupKeys[0]].yellows" statName="amarillas">
+        <mat-icon class="yellow-cards">crop_portrait</mat-icon>
+    </app-stats-list>
+    <app-stats-list name="Tarjetas Rojas" [players]="groupedStats[groupKeys[0]].reds" statName="rojas">
+        <mat-icon class="red-cards">crop_portrait</mat-icon>
+    </app-stats-list>
+    <app-stats-list name="Faltas" [players]="groupedStats[groupKeys[0]].faults" statName="faltas">
+        <mat-icon>report</mat-icon>
+    </app-stats-list>
+</ng-container>

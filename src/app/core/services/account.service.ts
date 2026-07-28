@@ -14,12 +14,14 @@ export class AccountService {
     zoneName: '',
     edition: '',
     season: '',
+    groupBracket: false,
+    groupStats: false,
   };
   settings: AccountSettings[] = [];
 
   constructor(
     private firestore: AngularFirestore,
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
   ) {
     this.getTournamentSettings();
   }
@@ -52,9 +54,21 @@ export class AccountService {
     return this.settings[0]?.season ?? `Temporada ${new Date().getFullYear()}`;
   }
 
+  get groupBracket(): boolean {
+    return this.settings[0]?.groupBracket ?? false;
+  }
+
+  get groupStats(): boolean {
+    return this.settings[0]?.groupStats ?? false;
+  }
+
   async getTournamentSettings(): Promise<void> {
+    if (this.settings.length > 0) {
+      return;
+    }
+
     const querySnapshot = await firstValueFrom(
-      this.firestore.collection('settings').get()
+      this.firestore.collection('settings').get(),
     );
     querySnapshot.forEach((doc) => {
       this.settings.push(doc.data() as AccountSettings);
@@ -71,4 +85,6 @@ interface AccountSettings {
   zoneName: string;
   edition: string;
   season: string;
+  groupBracket?: boolean;
+  groupStats?: boolean;
 }

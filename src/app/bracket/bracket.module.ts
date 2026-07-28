@@ -3,16 +3,15 @@ import { BracketRoutingModule } from './bracket-routing.module';
 import { BracketViewComponent } from './bracket-view/bracket-view.component';
 import { SharedModule } from '@app-shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { MaterialModule } from '@app-material/material.module';
 
 @NgModule({
-  declarations: [
-    BracketViewComponent
-  ],
+  declarations: [BracketViewComponent],
   imports: [
     SharedModule,
+    MaterialModule,
     FlexLayoutModule,
-    BracketRoutingModule
-  ]
+    BracketRoutingModule,
+  ],
 })
-export class BracketModule { }
+export class BracketModule {}
