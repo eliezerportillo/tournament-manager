@@ -16,6 +16,7 @@ export class AccountService {
     season: '',
     groupBracket: false,
     groupStats: false,
+    matchWidgetStandings: false,
   };
   settings: AccountSettings[] = [];
 
@@ -62,6 +63,10 @@ export class AccountService {
     return this.settings[0]?.groupStats ?? false;
   }
 
+  get matchWidgetStandings(): boolean {
+    return this.settings[0]?.matchWidgetStandings ?? false;
+  }
+
   async getTournamentSettings(): Promise<void> {
     if (this.settings.length > 0) {
       return;
@@ -87,4 +92,5 @@ interface AccountSettings {
   season: string;
   groupBracket?: boolean;
   groupStats?: boolean;
+  matchWidgetStandings?: boolean;
 }

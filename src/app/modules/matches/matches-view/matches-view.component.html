@@ -19,8 +19,17 @@
                         [attr.data-date]="match.dateTime.toISOString()"></app-match>
                 </ng-container>
                 <ng-template #notSame>
-                    <app-match-standing [match]="match" (selected)="onSelected($event)"
-                        [attr.data-date]="match.dateTime.toISOString()"></app-match-standing>
+                    <ng-container *ngIf="useMatchStandingWidget else notUseMatchStandingWidget">
+
+
+                        <app-match-standing #matchElement [match]="match" (selected)="onSelected($event)"
+                            [attr.data-date]="match.dateTime.toISOString()"></app-match-standing>
+                    </ng-container>
+                    <ng-template #notUseMatchStandingWidget>
+
+                        <app-match #matchElement [match]="match" (selected)="onSelected($event)"
+                            [attr.data-date]="match.dateTime.toISOString()"></app-match>
+                    </ng-template>
                 </ng-template>
 
             </ng-container>
