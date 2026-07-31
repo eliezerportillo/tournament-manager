@@ -90,7 +90,7 @@ export class PlayerPendingService {
    */
   async createPendingPlayer(
     player: IPlayer,
-    captainEmail: string
+    captainEmail: string,
   ): Promise<void> {
     // Sanitize player data to remove undefined values
     const sanitizedPlayer = this.sanitizePlayerData(player);
@@ -112,7 +112,7 @@ export class PlayerPendingService {
   async createPendingUpdate(
     playerId: string,
     updates: Partial<IPlayer>,
-    captainEmail: string
+    captainEmail: string,
   ): Promise<void> {
     // Sanitize player data to remove undefined values
     const sanitizedUpdates = this.sanitizePlayerData(updates as IPlayer);
@@ -135,7 +135,7 @@ export class PlayerPendingService {
   async createPendingDeletion(
     playerId: string,
     player: IPlayer,
-    captainEmail: string
+    captainEmail: string,
   ): Promise<void> {
     // Sanitize player data to remove undefined values
     const sanitizedPlayer = this.sanitizePlayerData(player);
@@ -156,11 +156,11 @@ export class PlayerPendingService {
    * Gets pending players by status
    */
   getPendingPlayersByStatus(
-    status: PendingStatus
+    status: PendingStatus,
   ): Observable<IPendingPlayer[]> {
     return this.db
       .collection<IPendingPlayer>(this.collectionName, (ref) =>
-        ref.where('pendingStatus', '==', status).orderBy('requestedAt', 'desc')
+        ref.where('pendingStatus', '==', status).orderBy('requestedAt', 'desc'),
       )
       .snapshotChanges()
       .pipe(
@@ -174,8 +174,8 @@ export class PlayerPendingService {
               ...convertedData,
               id: action.payload.doc.id, // Always use the actual document ID
             } as IPendingPlayer;
-          })
-        )
+          }),
+        ),
       );
   }
 
@@ -185,7 +185,7 @@ export class PlayerPendingService {
   getPendingPlayersByTeam(teamName: string): Observable<IPendingPlayer[]> {
     return this.db
       .collection<IPendingPlayer>(this.collectionName, (ref) =>
-        ref.where('equipo', '==', teamName).orderBy('requestedAt', 'desc')
+        ref.where('equipo', '==', teamName).orderBy('requestedAt', 'desc'),
       )
       .snapshotChanges()
       .pipe(
@@ -199,8 +199,8 @@ export class PlayerPendingService {
               ...convertedData,
               id: action.payload.doc.id, // Always use the actual document ID
             } as IPendingPlayer;
-          })
-        )
+          }),
+        ),
       );
   }
 
@@ -210,7 +210,7 @@ export class PlayerPendingService {
   getAllPendingPlayers(): Observable<IPendingPlayer[]> {
     return this.db
       .collection<IPendingPlayer>(this.collectionName, (ref) =>
-        ref.orderBy('requestedAt', 'desc')
+        ref.orderBy('requestedAt', 'desc'),
       )
       .snapshotChanges()
       .pipe(
@@ -224,8 +224,8 @@ export class PlayerPendingService {
               ...convertedData,
               id: action.payload.doc.id, // Always use the actual document ID
             } as IPendingPlayer;
-          })
-        )
+          }),
+        ),
       );
   }
 
@@ -234,7 +234,7 @@ export class PlayerPendingService {
    */
   async markAsUnderReview(
     pendingId: string,
-    adminEmail: string
+    adminEmail: string,
   ): Promise<void> {
     const ref = this.db.firestore
       .collection(this.collectionName)
@@ -277,7 +277,7 @@ export class PlayerPendingService {
   async rejectPendingPlayer(
     pendingId: string,
     rejectedReason: string,
-    reviewedBy: string
+    reviewedBy: string,
   ): Promise<void> {
     console.log('🔄 Starting rejection process:', {
       pendingId,
@@ -305,7 +305,7 @@ export class PlayerPendingService {
       if (!doc.exists) {
         console.error(
           '❌ Document not found in collection:',
-          this.collectionName
+          this.collectionName,
         );
         throw new Error('Solicitud pendiente no encontrada');
       }
@@ -380,7 +380,7 @@ export class PlayerPendingService {
   async updatePendingPlayer(
     pendingId: string,
     updates: Partial<IPlayer>,
-    requestedBy: string
+    requestedBy: string,
   ): Promise<void> {
     const ref = this.db.firestore
       .collection(this.collectionName)
@@ -420,7 +420,7 @@ export class PlayerPendingService {
   async isPlayerNumberUnique(
     teamName: string,
     numero: string,
-    playerName?: string
+    playerName?: string,
   ): Promise<boolean> {
     console.log('🔍 Validating jersey number uniqueness:', {
       teamName,
@@ -450,7 +450,7 @@ export class PlayerPendingService {
 
         if (isCurrentPlayer) {
           console.log(
-            `⚪ Excluding active player: ${activePlayerName} (same as editing player)`
+            `⚪ Excluding active player: ${activePlayerName} (same as editing player)`,
           );
         }
 
@@ -479,7 +479,7 @@ export class PlayerPendingService {
     const pendingSnapshot = await pendingPlayersQuery.get();
     console.log(
       '⏳ Total pending players with same number:',
-      pendingSnapshot.docs.length
+      pendingSnapshot.docs.length,
     );
 
     const conflictingDocs: string[] = [];
@@ -497,7 +497,7 @@ export class PlayerPendingService {
 
         if (isCurrentPlayer) {
           console.log(
-            `⚪ Excluding pending player: ${pendingPlayerName} (same as editing player)`
+            `⚪ Excluding pending player: ${pendingPlayerName} (same as editing player)`,
           );
         } else {
           console.log(`❌ Conflict found with pending player:`, {
@@ -537,7 +537,7 @@ export class PlayerPendingService {
    * Gets a pending player by ID
    */
   async getPendingPlayerById(
-    pendingId: string
+    pendingId: string,
   ): Promise<IPendingPlayer | null> {
     const doc = await this.db.firestore
       .collection(this.collectionName)
@@ -564,7 +564,7 @@ export class PlayerPendingService {
    */
   async approvePendingCreation(
     pendingId: string,
-    adminEmail: string
+    adminEmail: string,
   ): Promise<void> {
     const batch = this.db.firestore.batch();
 
@@ -625,25 +625,16 @@ export class PlayerPendingService {
         } else {
           console.warn(
             'Invalid dateBirth value, skipping conversion:',
-            playerData.dateBirth
+            playerData.dateBirth,
           );
         }
       }
 
       batch.set(playerRef, playerData);
 
-      // Create badge entry without photo initially
-      const badgeRef = this.db.firestore.collection('badges').doc(playerRef.id);
-      const badgeData = {
-        teamName: playerData.equipo,
-        playerName: playerData.jugador,
-        playerNumber: playerData.numero,
-        playerId: playerRef.id,
-        createdAt: new Date(),
-        createdBy: adminEmail,
-        // photoUrl: null, // No photo initially - will be added when photo is captured
-      };
-      batch.set(badgeRef, badgeData);
+      // Do not create the badge here. The badge will be created by the photo-capture
+      // flow once a real player identity is available and a photo is uploaded.
+      // This avoids writing incomplete badge documents when approval data is missing.
 
       // Delete pending record
       batch.delete(pendingRef);
@@ -682,7 +673,7 @@ export class PlayerPendingService {
    */
   async approvePendingUpdate(
     pendingId: string,
-    adminEmail: string
+    adminEmail: string,
   ): Promise<void> {
     const batch = this.db.firestore.batch();
 
@@ -701,7 +692,7 @@ export class PlayerPendingService {
 
       if (pendingData.pendingStatus !== PendingStatus.PENDING_UPDATE) {
         throw new Error(
-          'El estado de la solicitud no es válido para actualización'
+          'El estado de la solicitud no es válido para actualización',
         );
       }
 
@@ -751,34 +742,12 @@ export class PlayerPendingService {
         } else {
           console.warn(
             'Invalid dateBirth value, skipping conversion:',
-            updateData.dateBirth
+            updateData.dateBirth,
           );
         }
       }
 
       batch.update(playerRef, updateData);
-
-      // Update badge if it exists
-      const badgeQuery = this.db.firestore
-        .collection('badges')
-        .where('playerId', '==', pendingData.originalPlayerId)
-        .limit(1);
-
-      const badgeSnapshot = await badgeQuery.get();
-      if (!badgeSnapshot.empty) {
-        const badgeDoc = badgeSnapshot.docs[0];
-        const badgeRef = this.db.firestore
-          .collection('badges')
-          .doc(badgeDoc.id);
-        const badgeUpdateData = {
-          teamName: updateData.equipo,
-          playerName: updateData.jugador,
-          playerNumber: updateData.numero,
-          updatedAt: new Date(),
-          updatedBy: adminEmail,
-        };
-        batch.update(badgeRef, badgeUpdateData);
-      }
 
       // Delete pending record
       batch.delete(pendingRef);
@@ -808,7 +777,7 @@ export class PlayerPendingService {
     } catch (error) {
       console.error('Error approving player update:', error);
       throw new Error(
-        `Error al aprobar la actualización del jugador: ${error}`
+        `Error al aprobar la actualización del jugador: ${error}`,
       );
     }
   }
@@ -819,7 +788,7 @@ export class PlayerPendingService {
    */
   async approvePendingDeletion(
     pendingId: string,
-    adminEmail: string
+    adminEmail: string,
   ): Promise<void> {
     const batch = this.db.firestore.batch();
 
@@ -838,7 +807,7 @@ export class PlayerPendingService {
 
       if (pendingData.pendingStatus !== PendingStatus.PENDING_DELETION) {
         throw new Error(
-          'El estado de la solicitud no es válido para eliminación'
+          'El estado de la solicitud no es válido para eliminación',
         );
       }
 

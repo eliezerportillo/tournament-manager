@@ -14,14 +14,14 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 @Component({
   selector: 'app-player-photo-capture-view',
   templateUrl: './player-photo-capture-view.component.html',
-  styleUrls: ['./player-photo-capture-view.component.scss']
+  styleUrls: ['./player-photo-capture-view.component.scss'],
 })
 export class PlayerPhotoCaptureViewComponent implements OnInit {
   storage: AngularFireStorage = inject(AngularFireStorage);
   sanitizer: DomSanitizer = inject(DomSanitizer);
   teamService = inject(TeamService);
   playerService = inject(PlayerService);
-  firestore = inject(AngularFirestore)
+  firestore = inject(AngularFirestore);
 
   screenWidth?: number;
 
@@ -31,7 +31,7 @@ export class PlayerPhotoCaptureViewComponent implements OnInit {
   public deviceId?: string;
   public videoOptions: MediaTrackConstraints = {
     // Set any desired constraints for the video stream
-    facingMode: ''
+    facingMode: '',
   };
 
   public errors: WebcamInitError[] = [];
@@ -48,19 +48,18 @@ export class PlayerPhotoCaptureViewComponent implements OnInit {
   form: FormGroup;
   playersList: PlayerList;
 
-
   constructor(fb: FormBuilder) {
     this.playersList = {};
 
     const teamNameControl = fb.control<string>('', Validators.required);
-    this.form = fb.group(
-      {
-        teamName: teamNameControl,
-        playerName: fb.control<string>('')
-      }
-    );
+    this.form = fb.group({
+      teamName: teamNameControl,
+      playerName: fb.control<string>(''),
+    });
 
-    teamNameControl.valueChanges.subscribe(value => this.refreshPlayersList(value));
+    teamNameControl.valueChanges.subscribe((value) =>
+      this.refreshPlayersList(value),
+    );
   }
 
   get teamName() {
@@ -102,7 +101,6 @@ export class PlayerPhotoCaptureViewComponent implements OnInit {
     this.errors.push(error);
   }
 
-
   public triggerSnapshot(): void {
     this.trigger.next();
   }
@@ -110,7 +108,6 @@ export class PlayerPhotoCaptureViewComponent implements OnInit {
   imageCroppedEvent?: ImageCroppedEvent;
 
   imageCropped(event: ImageCroppedEvent) {
-
     // this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl ?? '');
     this.croppedImage = event.base64;
 
@@ -123,51 +120,103 @@ export class PlayerPhotoCaptureViewComponent implements OnInit {
     if (!this.croppedImage) return;
 
     this.uploadImageToFirebase(this.croppedImage);
+  }
 
+  private async resolveSelectedPlayer(): Promise<IPlayer | null> {
+    const teamName = this.form.value?.teamName?.toString().trim();
+    const playerName = this.form.value?.playerName?.toString().trim();
+
+    if (!teamName || !playerName) {
+      return null;
+    }
+
+    const players = await firstValueFrom(
+      this.playerService.getPlayersByTeam(teamName),
+    );
+
+    return (
+      players.find((player) => {
+        const candidateNames = [player.jugador, player.name].filter(
+          (value): value is string => !!value && value.trim().length > 0,
+        );
+
+        return candidateNames.some(
+          (candidate) =>
+            candidate.trim().toUpperCase() === playerName.toUpperCase(),
+        );
+      }) ?? null
+    );
+  }
+
+  private getValidBadgeIdentity(selectedPlayer: IPlayer | null): {
+    teamName: string;
+    playerName: string;
+  } | null {
+    const teamName = this.form.value?.teamName?.toString().trim();
+    const playerName =
+      selectedPlayer?.jugador?.trim() ||
+      selectedPlayer?.name?.trim() ||
+      this.form.value?.playerName?.toString().trim();
+
+    if (!teamName || !playerName) {
+      return null;
+    }
+
+    return { teamName, playerName };
   }
 
   uploaded = false;
   async uploadImageToFirebase(blob: string) {
     this.uploaded = false;
 
-    const refStorage = this.storage.ref(`images/players/${this.form.value.teamName}-${this.form.value.playerName}`);
-    const task = await refStorage.putString(blob, 'data_url', { contentType: 'image/png' });
+    const selectedPlayer = await this.resolveSelectedPlayer();
+    const badgeIdentity = this.getValidBadgeIdentity(selectedPlayer);
+
+    if (!badgeIdentity) {
+      this.uploadedImageUrl = '';
+      this.uploaded = false;
+      return;
+    }
+
+    const refStorage = this.storage.ref(
+      `images/players/${badgeIdentity.teamName}-${badgeIdentity.playerName}`,
+    );
+    const task = await refStorage.putString(blob, 'data_url', {
+      contentType: 'image/png',
+    });
     const url = await task.ref.getDownloadURL();
 
-    await this.updateFirestoreDocument(url);
-
+    await this.updateFirestoreDocument(url, badgeIdentity);
   }
 
   uploadedImageUrl: string = '';
 
-  async updateFirestoreDocument(photoUrl: string) {
+  async updateFirestoreDocument(
+    photoUrl: string,
+    badgeIdentity: { teamName: string; playerName: string },
+  ) {
     const collection = this.firestore.collection('badges');
-    const teamName = this.form.value.teamName;
-    const playerName = this.form.value.playerName;
     const snapshot = await collection.ref
-      .where('teamName', '==', teamName)
-      .where('playerName', '==', playerName)
+      .where('teamName', '==', badgeIdentity.teamName)
+      .where('playerName', '==', badgeIdentity.playerName)
+      .limit(1)
       .get();
 
     const data = snapshot.docs[0];
-    let docRef;
-    if (data) {
-      docRef = collection.ref.doc(data.id);
-    } else {
-      docRef = collection.ref.doc();
-    }
+    const docRef = data ? collection.doc(data.id) : collection.doc();
 
-    await docRef.set({
-      teamName: teamName,
-      playerName: playerName,
-      photoUrl: photoUrl
-    });
+    await docRef.set(
+      {
+        teamName: badgeIdentity.teamName,
+        playerName: badgeIdentity.playerName,
+        photoUrl: photoUrl,
+      },
+      { merge: true },
+    );
 
     this.uploadedImageUrl = photoUrl;
     this.uploaded = true;
-
   }
-
 }
 
 interface PlayersFilter {

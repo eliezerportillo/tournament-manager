@@ -7,7 +7,8 @@
 
     </div>
     <button mat-button [matMenuTriggerFor]="menu">
-        Menú
+        <span>{{ (menuLabel$ | async) || 'Menú' }}</span>
+        <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
         <button mat-menu-item routerLink="/">Página principal</button>
@@ -15,6 +16,10 @@
         <button mat-menu-item routerLink="my-team">
             <mat-icon>groups</mat-icon>
             Mi Equipo
+        </button>
+        <button mat-menu-item *ngIf="accountService.currentUser$ | async" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Cerrar sesión
         </button>
     </mat-menu>
 
